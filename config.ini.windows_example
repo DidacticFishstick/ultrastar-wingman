@@ -15,7 +15,5 @@ colors = gray,dark_blue,yellow,flame
 
 [OTHER]
 players_file = players.txt
-; https://github.com/yt-dlp/yt-dlp
 youtube_dl = executables/yt-dlp.exe
-; https://ffmpeg.org/
 ffmpeg = executables/ffmpeg.exe
