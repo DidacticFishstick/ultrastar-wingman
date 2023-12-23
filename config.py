@@ -3,7 +3,7 @@ import configparser
 import os.path
 from pathlib import Path
 
-_parser = argparse.ArgumentParser(description="Didactic Fishstick")
+_parser = argparse.ArgumentParser(description="Ultrastar Wingman")
 _parser.add_argument("-c", "--config", help="The config file (default: ./config.ini)", default="./config.ini", required=False)
 
 _args = _parser.parse_args()
