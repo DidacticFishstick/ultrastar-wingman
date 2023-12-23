@@ -3,6 +3,8 @@ import asyncio
 import json
 import logging
 import os.path
+import platform
+import signal
 import subprocess
 import threading
 from getpass import getpass
@@ -28,11 +30,14 @@ def restart_usdx():
     global usdx_process
     if usdx_process is not None:
         logging.info("Stopping USDX")
-        # os.kill(usdx_process.pid, signal.CTRL_C_EVENT)
-        subprocess.call(['taskkill', '/F', '/T', '/PID', str(usdx_process.pid)])
-        # usdx_process.terminate()
+
+        if platform.system() == "Windows":
+            subprocess.call(['taskkill', '/F', '/T', '/PID', str(usdx_process.pid)])
+        else:
+            os.kill(usdx_process.pid, signal.SIGKILL)
+
     logging.info("Starting USDX")
-    usdx_process = subprocess.Popen(str(config.usdx_path), shell=True)
+    usdx_process = subprocess.Popen(str(config.usdx_path))
 
 
 @app.route('/')
