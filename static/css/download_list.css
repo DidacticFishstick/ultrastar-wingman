@@ -1,0 +1,75 @@
+#searchForm {
+    position: relative;
+    padding: 0 20px;
+}
+
+#searchForm h1 {
+    color: var(--color);
+    display: block;
+    text-align: center;
+    font-size: 24px;
+}
+
+#searchForm label {
+    position: absolute;
+    padding: 10px;
+}
+
+#searchForm label svg {
+    stroke: var(--color2);
+}
+
+#searchForm input[type="text"],
+#searchForm select {
+    display: block;
+    width: 100%;
+    padding: 12px 20px 12px 50px;
+    margin: 0 auto 12px auto;
+    max-width: 800px;
+    box-sizing: border-box;
+    color: var(--color);
+    background: var(--bg-input);
+    outline: none;
+    border: none;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+#searchForm select {
+    -webkit-appearance: none; /* for iOS */
+    -moz-appearance: none; /* for Firefox */
+    appearance: none; /* Standard syntax */
+    cursor: pointer;
+}
+
+#searchForm .search {
+    display: block;
+    width: 50%;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--color);
+    background: var(--bg-input);
+    padding: 8px;
+    margin: 24px auto 12px auto;
+    font-size: 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+#search a {
+    display: block;
+    width: max-content;
+    margin: 0 auto;
+    color: var(--color2);
+    text-decoration: none;
+    font-size: 16px;
+    text-align: center;
+}
+
+#songs {
+    margin-top: 16px;
+}
+
+#songs:not(:empty) {
+    border-top: 1px solid var(--color2);
+}

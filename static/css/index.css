@@ -1,0 +1,38 @@
+main {
+    background: linear-gradient(0deg, var(--bg) 10%, #000 40vh);
+}
+
+.cat_background {
+    background-color: #000;
+    background-image: url("../icons/singing_cat.jpg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-top: 10vh;
+    height: 40vh;
+}
+
+h1 {
+    color: var(--color);
+    text-align: center;
+}
+
+.navigation {
+    display: flex;
+    justify-content: space-around;
+    flex-flow: wrap;
+    max-width: 300px;
+    margin: 50px auto 0 auto;
+}
+
+.navigation > span {
+    cursor: pointer;
+}
+
+.navigation span svg {
+    stroke: var(--color2);
+}
+
+.navigation span:hover svg {
+    stroke: var(--color);
+}

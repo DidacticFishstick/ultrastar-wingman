@@ -1,0 +1,367 @@
+:root {
+    --bg: #0D0E10;
+    --bg2: #202020;
+    --bg-accent: #3A0A0B;
+    --bg-header: #1e1f22;
+    --bg-console: #000;
+    --color: #fff;
+    --color2: #888;
+    --color-accent: #e7191a;
+    --bg-btn: #282828;
+    --bg-input: #121213;
+    --bg-popup: #343434;
+    --color-console: #d0d0d0;
+    --color-console-error: #c93535;
+
+    --floating-shadow: 2px 3px 8px 0px #000a;
+}
+
+html {
+    background-color: var(--bg);
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+
+footer {
+    display: flex;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 45px;
+    padding-top: 5px;
+    background: #000;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid #666;;
+}
+
+footer a,
+footer span {
+    height: min-content;
+    cursor: pointer;
+}
+
+footer a svg,
+footer span svg {
+    stroke: var(--color2);
+    transition: stroke 0.2s;
+}
+
+footer a:hover svg,
+footer span:hover svg,
+footer span:active svg,
+footer span:focus svg {
+    stroke: var(--color);
+}
+
+footer .current svg {
+    stroke: var(--color-accent);
+}
+
+footer .home {
+    display: block;
+    width: 50px;
+    height: 50px;
+    background-image: url("../icons/singing_cat.jpg");
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translateY(-2px);
+    margin: 0 -5px;
+}
+
+footer .home:after,
+footer .home:before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+    transition: clip-path 1s linear;
+}
+
+footer .home:before {
+    background-image: url("../icons/logo.svg");
+}
+
+footer .home:after {
+    background-image: url("../icons/usdx.svg");
+}
+
+footer .home.tapped:before {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+footer .home.tapped.usdx:after {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 60px;
+    padding: 8px;
+    background: var(--bg-header);
+    box-sizing: border-box;
+}
+
+header a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    height: 100%;
+    color: var(--color);
+    text-decoration: none;
+    font-size: 20px;
+}
+
+header a img {
+    display: inline-block;
+    height: 100%;
+}
+
+header .console {
+    display: flex;
+    cursor: pointer;
+}
+
+main {
+    height: 100vh;
+    padding-bottom: 51px;
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+
+#message-container {
+    position: fixed;
+    top: 20px;
+    right: 0;
+    width: 500px;
+    max-width: 100vw;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+@keyframes float-in {
+    from {
+        transform: translateX(calc(100% + 20px));
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes float-out {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(calc(100% + 20px));
+    }
+}
+
+.message-box {
+    animation-name: float-in;
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+    transform: translateX(100%);
+    font-size: 16px;
+    background-color: var(--bg-popup);
+    padding: 8px 12px;
+    color: var(--color);
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: var(--floating-shadow);
+    margin-bottom: 12px;
+    border-left: 8px solid var(--color-console-error);
+}
+
+.message-box.gone {
+    animation-name: float-out;
+}
+
+#console {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: #000c;
+    padding: 80px 20px 20px 20px;
+    display: none;
+    box-sizing: border-box;
+    justify-content: center;
+}
+
+#console.shown {
+    display: flex;
+}
+
+#console > div {
+    background-color: var(--bg-console);
+    border-radius: 16px;
+    max-width: 800px;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#console #console-content {
+    overflow-y: auto;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#console .close {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background-image: url("../icons/x.svg");
+    background-repeat: no-repeat;
+    background-size: 75%;
+    background-position: center;
+    cursor: pointer;
+}
+
+@media (max-width: 600px) {
+    #console {
+        padding: 0;
+    }
+
+    #console > div {
+        border-radius: 0;
+    }
+}
+
+#console label {
+    display: block;
+    font-family: monospace;
+    color: var(--color-console);
+}
+
+#console label.error {
+    color: var(--color-console-error);
+}
+
+#songs {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px 10px 0 16px;
+    box-sizing: border-box;
+}
+
+.song {
+    display: grid;
+    grid-template-rows: 30px 20px;
+    grid-template-columns: 50px 1fr auto;
+    grid-column-gap: 12px;
+    margin-bottom: 12px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.song .cover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    grid-row: span 2;
+    cursor: pointer;
+}
+
+.song .cover:after {
+    display: block;
+    background: #000c;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+    text-align: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.song.queued .cover:after {
+    content: "QUEUED";
+}
+
+.song.downloading .cover:after {
+    content: "LOADING";
+}
+
+.song.downloaded .cover:after {
+    content: "READY";
+}
+
+.song label {
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.song .title {
+    color: var(--color);
+    font-size: 16px;
+    line-height: 30px;
+    grid-column: span 2;
+    cursor: pointer;
+}
+
+.song .artist {
+    color: var(--color2);
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.song .stats {
+    color: var(--color2);
+    font-size: 12px;
+    float: right;
+    padding-right: 14px;
+    cursor: pointer;
+}
+
+.song .stats .star,
+.song .stats .eye {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transform: translateY(1px);
+}
+
+.song .stats .star {
+    background-image: url("../icons/star.svg");
+}
+
+.song .stats .eye {
+    background-image: url("../icons/eye.svg");
+}

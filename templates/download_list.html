@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='icons/logo.png')}}">
+    <title>Didactic Fishstick</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/common.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/download_list.css')}}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{{url_for('static', filename='js/common.js')}}"></script>
+    <script src="{{url_for('static', filename='js/download_list.js')}}"></script>
+</head>
+<body>
+<main>
+    <div id="search">
+        <form id="searchForm">
+            <h1>Search USDB</h1>
+
+            <label for="artist">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-forms" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M12 3a3 3 0 0 0 -3 3v12a3 3 0 0 0 3 3" />
+                    <path d="M6 3a3 3 0 0 1 3 3v12a3 3 0 0 1 -3 3" />
+                    <path d="M13 7h7a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-7" />
+                    <path d="M5 7h-1a1 1 0 0 0 -1 1v8a1 1 0 0 0 1 1h1" />
+                    <path d="M17 12h.01" />
+                    <path d="M13 12h.01" />
+                </svg>
+            </label>
+            <input type="text" id="artist" name="artist" placeholder="Artist">
+
+            <label for="title">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85" />
+                </svg>
+            </label>
+            <input type="text" id="title" name="title" placeholder="Title">
+
+            <label for="order">
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-sort" width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M3 9l4 -4l4 4m-4 -4v14" />
+                    <path d="M21 15l-4 4l-4 -4m4 4v-14" />
+                </svg>
+            </label>
+            <select id="order" name="order">
+                <option value="id-asc">Date - old to new</option>
+                <option value="id-desc">Date - new to old</option>
+                <option value="artist-asc">Artist - ascending</option>
+                <option value="artist-desc">Artist - descending</option>
+                <option value="title-asc">Titel - ascending</option>
+                <option value="title-desc">Titel - descending</option>
+                <option value="rating-desc" selected>Rating - high to low</option>
+                <option value="rating-asc">Rating - low to high</option>
+                <option value="views-desc">Views - hight to low</option>
+                <option value="views-asc">Views - low to high</option>
+            </select>
+
+            <span class="search" onclick="search(true)">Search</span>
+        </form>
+        <a href="/download?view=usdb">Switch to USDB</a>
+    </div>
+
+    <div id="songs"></div>
+
+</main>
+<footer>
+    <a href="/songs">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-playlist" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M14 17m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/>
+            <path d="M17 17v-13h4"/>
+            <path d="M13 5h-10"/>
+            <path d="M3 9l10 0"/>
+            <path d="M9 13h-6"/>
+        </svg>
+    </a>
+    <a class="current" href="/download">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-world-download" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M21 12a9 9 0 1 0 -9 9"/>
+            <path d="M3.6 9h16.8"/>
+            <path d="M3.6 15h8.4"/>
+            <path d="M11.578 3a17 17 0 0 0 0 18"/>
+            <path d="M12.5 3c1.719 2.755 2.5 5.876 2.5 9"/>
+            <path d="M18 14v7m-3 -3l3 3l3 -3"/>
+        </svg>
+    </a>
+    <a class="home" href="/">
+        <!--        home-->
+    </a>
+    <a href="/players">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users-group" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+            <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1"/>
+            <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+            <path d="M17 10h2a2 2 0 0 1 2 2v1"/>
+            <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0"/>
+            <path d="M3 13v-1a2 2 0 0 1 2 -2h2"/>
+        </svg>
+    </a>
+    <a href="/scores">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-medal" width="32" height="32" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ffffff" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 4v3m-4 -3v6m8 -6v6"/>
+            <path d="M12 18.5l-3 1.5l.5 -3.5l-2 -2l3 -.5l1.5 -3l1.5 3l3 .5l-2 2l.5 3.5z"/>
+        </svg>
+    </a>
+</footer>
+<div id="message-container" onclick="openConsole()"></div>
+<div id="console">
+    <div>
+        <div id="console-content">
+            {% for message in messages %}
+            <label{% if message.type == "error" %} class="error"{% endif %}>{{message.msg}}</label>
+            {% endfor %}
+        </div>
+        <span class="close" onclick="closeConsole()"></span>
+    </div>
+</div>
+</body>
+</html>

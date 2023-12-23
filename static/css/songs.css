@@ -1,0 +1,13 @@
+input[type="text"] {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 16px auto 0 auto;
+    max-width: 800px;
+    box-sizing: border-box;
+    color: var(--color);
+    background: var(--bg-input);
+    outline: none;
+    border: none;
+    font-size: 16px;
+}
