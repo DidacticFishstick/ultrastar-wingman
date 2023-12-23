@@ -22,7 +22,7 @@ Welcome to the official repository of **Ultrastar Wingman**, an enhancement tool
 #### Windows
 1. Install [Python](https://www.python.org/) on your system
 2. Download [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/)
-3. Clone the repository: `
+3. Clone the repository:
     ```shell
     git clone https://github.com/DidacticFishstick/ultrastar-wingman.git
     ```
@@ -39,7 +39,7 @@ Welcome to the official repository of **Ultrastar Wingman**, an enhancement tool
     ```shell
     brew install ffmpeg yt-dlp
     ```
-3. Clone the repository: `
+3. Clone the repository:
     ```shell
     git clone https://github.com/DidacticFishstick/ultrastar-wingman.git
     ```
@@ -48,7 +48,7 @@ Welcome to the official repository of **Ultrastar Wingman**, an enhancement tool
     ```shell
    pip install -r requirements.txt
    ```
-6. Create a `config.ini` from the example `config.ini.mac_example` and modify the settings if needed
+6. Create a `config.ini` from the example `config.ini.mac_example` and change the settings to fit your setup
 
 
 #### Linux
