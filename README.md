@@ -1,7 +1,5 @@
 # Ultrastar Wingman
 
-![Banner Image](banner.jpg)
-
 ## Introduction
 Welcome to the official repository of **Ultrastar Wingman**, an enhancement tool for the popular karaoke software **Ultrastar Deluxe**. This tool is designed to elevate your karaoke experience by adding a user-friendly interface for downloading and viewing songs from any phone on the network, and providing detailed performance statistics.
 
