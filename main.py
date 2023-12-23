@@ -204,7 +204,7 @@ def main():
     usdx.change_config(config.setup_colors)
     restart_usdx()
 
-    threading.Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 5000}).start()
+    threading.Thread(target=app.run, kwargs={"host": "0.0.0.0", "port": 8080}).start()
 
     Song.load_songs()
     server = WebSocketServer(download_queue)

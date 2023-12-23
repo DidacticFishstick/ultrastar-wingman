@@ -1,6 +1,7 @@
 import argparse
 import configparser
 import os.path
+from pathlib import Path
 
 _parser = argparse.ArgumentParser(description="Didactic Fishstick")
 _parser.add_argument("-c", "--config", help="The config file (default: ./config.ini)", default="./config.ini", required=False)
@@ -10,11 +11,11 @@ _args = _parser.parse_args()
 _config = configparser.RawConfigParser()
 _config.read(_args.config)
 
-usdx_base_path = _config.get("USDX", "base_path")
-usdx_path = os.path.join(usdx_base_path, "ultrastardx.exe")
-usdx_config_file = os.path.join(usdx_base_path, "config.ini")
-usdx_songs_dir = os.path.join(usdx_base_path, "songs")
-usdx_avatars_dir = os.path.join(usdx_base_path, "avatars")
+usdx_path = Path(_config.get("USDX", "usdx_path")).expanduser()
+usdx_config_file = Path(_config.get("USDX", "usdx_config_file")).expanduser()
+usdx_songs_dir = Path(_config.get("USDX", "usdx_songs_dir")).expanduser()
+usdx_avatars_dir = Path(_config.get("USDX", "usdx_avatars_dir")).expanduser()
+
 
 usdb_user = _config.get("USDB", "username")
 usdb_pass = _config.get("USDB", "password")

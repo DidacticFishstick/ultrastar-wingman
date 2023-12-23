@@ -1,0 +1,19 @@
+[USDB]
+; Your credentials for https://usdb.animux.de
+username = <username>
+password = <password>
+
+[USDX]
+usdx_path = /System/Volumes/Data/Applications/UltraStarDeluxe.app/Contents/MacOS/ultrastardx
+usdx_config_file = ~/Library/Application Support/UltraStarDeluxe1.3/config.ini
+usdx_avatars_dir = ~/Library/Application Support/UltraStarDeluxe1.3/avatars
+usdx_songs_dir = ~/Music/UltraStar Deluxe
+
+[SETUP]
+; available colors: blue, brown, cyan, dark_blue, flame, gray, green, green_yellow, harlequin, orange, orchid, pink, rainbow, red, sky, violet, yellow
+colors = gray,dark_blue,yellow,flame
+
+[OTHER]
+players_file = players.txt
+youtube_dl = yt-dlp
+ffmpeg = ffmpeg
