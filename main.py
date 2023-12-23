@@ -32,7 +32,7 @@ def restart_usdx():
         subprocess.call(['taskkill', '/F', '/T', '/PID', str(usdx_process.pid)])
         # usdx_process.terminate()
     logging.info("Starting USDX")
-    usdx_process = subprocess.Popen(config.usdx_path, shell=True)
+    usdx_process = subprocess.Popen(str(config.usdx_path), shell=True)
 
 
 @app.route('/')
