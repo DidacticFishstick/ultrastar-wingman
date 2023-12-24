@@ -7,7 +7,6 @@ import threading
 
 import pyautogui
 import keyboard
-import time
 
 import config
 
@@ -103,8 +102,9 @@ def change_config(colors):
     }
 
     # copy avatars into USDX directory
-    for avatar in os.listdir("./avatars"):
-        file_path = os.path.join("./avatars", avatar)
+    from main import SCRIPT_BASE_PATH
+    for avatar in os.listdir(os.path.join(SCRIPT_BASE_PATH, "./avatars")):
+        file_path = os.path.join(SCRIPT_BASE_PATH, "./avatars", avatar)
 
         # Check if it's a file and not a directory
         if os.path.isfile(file_path):

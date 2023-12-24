@@ -1,15 +1,13 @@
-import argparse
+import os
 import asyncio
 import json
 import logging
 import os.path
 import subprocess
 import threading
-from getpass import getpass
 
-import requests
 import websockets
-from flask import render_template, Flask, request, Response, send_file
+from flask import render_template, Flask, request, send_file
 
 import config
 import usdb
@@ -17,7 +15,9 @@ import usdx
 from song import Song
 from websocket_server import WebSocketServer, messages
 
-app = Flask(__name__)
+SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+
+app = Flask(__name__, static_folder=os.path.join(SCRIPT_BASE_PATH, "static"), template_folder=os.path.join(SCRIPT_BASE_PATH, "templates"))
 usdx_process = None
 download_queue = asyncio.Queue()
 event_loop = asyncio.get_event_loop()
@@ -59,9 +59,9 @@ def cover(song_id):
 @app.route('/avatars/<avatar>', methods=['GET'])
 def avatar(avatar):
     try:
-        return send_file(os.path.join("avatars", f"cat_{avatar}"), mimetype=f'image/jpg')
+        return send_file(os.path.join(SCRIPT_BASE_PATH, "avatars", f"cat_{avatar}"), mimetype=f'image/jpg')
     except FileNotFoundError:
-        return send_file(os.path.join("avatars", "cat_rainbow.jpg"), mimetype=f'image/jpg')
+        return send_file(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"), mimetype=f'image/jpg')
 
 
 @app.route('/download')
