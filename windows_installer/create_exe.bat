@@ -1,0 +1,2 @@
+pyinstaller --onefile --add-data "../avatars;./avatars" --add-data "../static;./static" --add-data "../templates;./templates" --add-data "executables;./executables" --add-data "../config.ini.windows_installation_template;./" --name=ultrastar-wingman --runtime-hook add_environment.py --icon=../static/icons/wingman.ico ../main.py
+"D:\Program Files (x86)\Inno Setup 6\Compil32.exe" /cc windows_installer.iss

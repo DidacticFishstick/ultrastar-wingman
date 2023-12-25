@@ -1,0 +1,14 @@
+[USDB]
+; Your credentials for https://usdb.animux.de
+username = <username>
+password = <password>
+
+[USDX]
+usdx_path = C:/Program Files (x86)/UltraStar Deluxe/ultrastardx.exe
+usdx_config_file = C:/Program Files (x86)/UltraStar Deluxe/config.ini
+usdx_avatars_dir = C:/Program Files (x86)/UltraStar Deluxe/avatars
+usdx_songs_dir = C:/Program Files (x86)/UltraStar Deluxe/songs
+
+[SETUP]
+; available colors: blue, brown, cyan, dark_blue, flame, gray, green, green_yellow, harlequin, orange, orchid, pink, rainbow, red, sky, violet, yellow
+colors = gray,dark_blue,yellow,flame

@@ -20,6 +20,13 @@ Welcome to the official repository of **Ultrastar Wingman**, an enhancement tool
 ### Installation
 
 #### Windows
+
+##### Installer
+1. Download and run the latest installer from the [releases](https://github.com/DidacticFishstick/ultrastar-wingman/releases)
+2. Open `C:/Users/<user>/AppData/Local/Ultrastar Wingman/config.ini` and change the settings to fit your setup (you need to run the application once to create the config file)
+3. Run the application
+
+##### Manually
 1. Install [Python](https://www.python.org/) on your system
 2. Download [yt-dlp](https://github.com/yt-dlp/yt-dlp) and [ffmpeg](https://ffmpeg.org/)
 3. Clone the repository:
