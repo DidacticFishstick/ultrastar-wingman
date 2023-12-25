@@ -8,21 +8,27 @@ from bs4 import BeautifulSoup
 session = requests.Session()
 
 
-def login(username, password):
+def login(username, password) -> bool:
+    """
+    Performs the login to usdb.animux.de
+
+    :param username: The username to use
+    :param password: The password to use
+    :return: True if the login was successful
+    """
+
     payload = {
         'user': username,
         'pass': password,
         'login': 'Login'
     }
 
-    response = session.post('https://usdb.animux.de/?link=home', data=payload)
+    session.post('https://usdb.animux.de/?link=home', data=payload)
 
-    if username in response.text:
-        logging.info("Login successful!")
+    if "You are not logged in" in session.get("https://usdb.animux.de/?link=browse").text:
+        return False
     else:
-        # TODO: better handling, inform the user with direction on how to change the settings (pop up?)
-        logging.error("Login failed!")
-        exit(-1)
+        return True
 
 
 def get_songs(artist: Optional[str] = None, title: Optional[str] = None, edition: Optional[str] = None, language: Optional[str] = None, genre: Optional[str] = None, order: str = "rating", ud: str = "desc", golden: bool = False, songcheck: bool = False, limit: int = 30, page: int = 1):

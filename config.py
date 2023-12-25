@@ -1,6 +1,5 @@
 import argparse
 import configparser
-import logging
 import os
 import shutil
 from pathlib import Path
@@ -19,20 +18,21 @@ _parser.add_argument("-c", "--config", help="The config file (default: ./config.
 
 _args = _parser.parse_args()
 
-if not os.path.isfile(_args.config):
-    if os.environ.get("IS_WINDOWS_INSTALLATION") == "true":
-        shutil.copy(os.path.join(SCRIPT_BASE_PATH, "config.ini.windows_installation_template"), _args.config)
+file_name = _args.config
 
-logging.info(f"Reading config '{_args.config}'")
+if not os.path.isfile(file_name):
+    if os.environ.get("IS_WINDOWS_INSTALLATION") == "true":
+        shutil.copy(os.path.join(SCRIPT_BASE_PATH, "config.ini.windows_installation_template"), file_name)
+
+print(f"Using config '{file_name}'")
 
 _config = configparser.RawConfigParser()
-_config.read(_args.config)
+_config.read(file_name)
 
 usdx_path = Path(_config.get("USDX", "usdx_path")).expanduser()
 usdx_config_file = Path(_config.get("USDX", "usdx_config_file")).expanduser()
 usdx_songs_dir = Path(_config.get("USDX", "usdx_songs_dir")).expanduser()
 usdx_avatars_dir = Path(_config.get("USDX", "usdx_avatars_dir")).expanduser()
-
 
 usdb_user = _config.get("USDB", "username")
 usdb_pass = _config.get("USDB", "password")
@@ -47,3 +47,9 @@ else:
     players_file = _config.get("OTHER", "players_file")
     youtube_dl = _config.get("OTHER", "youtube_dl")
     ffmpeg = _config.get("OTHER", "ffmpeg")
+
+
+def save_usdb_credentials(username, password):
+    _config['USDB'] = {'username': username, 'password': password}
+    with open(file_name, 'w') as configfile:
+        _config.write(configfile)
