@@ -1,3 +1,4 @@
+import getpass
 import os
 import asyncio
 import json
@@ -196,6 +197,7 @@ def delete_name():
                 file.write(name + '\n')
     return {"success": True}
 
+
 @app.route('/api/players/submit', methods=['POST'])
 def submit_names():
     usdx.enter_names(json.loads(request.form['names']))
@@ -203,9 +205,35 @@ def submit_names():
 
 
 def main():
-    usdb.login(config.usdb_user, config.usdb_pass)
+    username = config.usdb_user
+    password = config.usdb_pass
+    if username == "<username>" or password == "<password>":
+        username = None
+        password = None
 
-    # TODO: get the colors from config
+    while True:
+        if username is None or password is None:
+            print(f"To download songs, you need an account on https://usdb.animux.de. Create an account and enter the credentials below. You can always change these settings in the config file '{config.file_name}'.")
+            new_username = input("Username: ")
+            new_password = getpass.getpass("Password: ")
+
+            # Windows doing windows things...
+            while new_password == "\x16":
+                print("The windows cmd does not allow pasting into password fields using ctrl+V. Instead you can right click in the terminal to paste your password")
+                new_password = getpass.getpass("Password: ")
+
+            if new_username != username or new_password != password:
+                config.save_usdb_credentials(new_username, new_password)
+                username, password = new_username, new_password
+
+        if usdb.login(username, password):
+            print("Login on https://usdb.animux.de successful")
+            break
+        else:
+            print("Invalid credentials. Please try again.")
+            username = None
+            password = None
+
     usdx.change_config(config.setup_colors)
     restart_usdx()
 
