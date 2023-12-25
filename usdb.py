@@ -20,6 +20,7 @@ def login(username, password):
     if username in response.text:
         logging.info("Login successful!")
     else:
+        # TODO: better handling, inform the user with direction on how to change the settings (pop up?)
         logging.error("Login failed!")
         exit(-1)
 

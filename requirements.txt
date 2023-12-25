@@ -1,8 +1,9 @@
 websockets~=11.0.3
 flask[async]~=2.3.3
 eyed3~=0.9.7
-bs4
+bs4~=0.0.1
 keyboard~=0.13.5
 requests~=2.31.0
 beautifulsoup4~=4.12.2
 PyAutoGUI~=0.9.54
+appdirs~=1.4.4
