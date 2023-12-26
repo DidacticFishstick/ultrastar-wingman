@@ -67,51 +67,54 @@ class Song:
             subdir_path = os.path.join(config.usdx_songs_dir, subdir)
 
             if os.path.isdir(subdir_path):
-                usdb_id = None
-                if os.path.isfile(os.path.join(subdir_path, "usdb_data.json")):
-                    with open(os.path.join(subdir_path, "usdb_data.json")) as file:
-                        usdb_data = json.loads(file.read())
-                        usdb_id = usdb_data.get("id")
+                try:
+                    usdb_id = None
+                    if os.path.isfile(os.path.join(subdir_path, "usdb_data.json")):
+                        with open(os.path.join(subdir_path, "usdb_data.json")) as file:
+                            usdb_data = json.loads(file.read())
+                            usdb_id = usdb_data.get("id")
 
-                txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
+                    txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
 
-                if txt_files:
-                    for encoding in encodings:
-                        try:
-                            with open(os.path.join(subdir_path, txt_files[0]), 'r', encoding=encoding) as file:
-                                txt = file.read()
+                    if txt_files:
+                        for encoding in encodings:
+                            try:
+                                with open(os.path.join(subdir_path, txt_files[0]), 'r', encoding=encoding) as file:
+                                    txt = file.read()
 
-                                match = re.search(r'#TITLE:(.*)\n', txt)
-                                if match:
-                                    title = match.group(1)
-                                else:
-                                    logging.warning(f"No title for {subdir_path}")
-                                    continue
+                                    match = re.search(r'#TITLE:(.*)\n', txt)
+                                    if match:
+                                        title = match.group(1)
+                                    else:
+                                        logging.warning(f"No title for {subdir_path}")
+                                        continue
 
-                                match = re.search(r'#ARTIST:(.*)\n', txt)
-                                if match:
-                                    artist = match.group(1)
-                                else:
-                                    logging.warning(f"No artist for {subdir_path}")
-                                    continue
+                                    match = re.search(r'#ARTIST:(.*)\n', txt)
+                                    if match:
+                                        artist = match.group(1)
+                                    else:
+                                        logging.warning(f"No artist for {subdir_path}")
+                                        continue
 
-                                match = re.search(r'#COVER:(.*)\n', txt)
-                                cover = None
-                                if match:
-                                    cover = match.group(1)
+                                    match = re.search(r'#COVER:(.*)\n', txt)
+                                    cover = None
+                                    if match:
+                                        cover = match.group(1)
 
-                                match = re.search(r'#MP3:(.*)\n', txt)
-                                mp3 = None
-                                if match:
-                                    mp3 = match.group(1)
+                                    match = re.search(r'#MP3:(.*)\n', txt)
+                                    mp3 = None
+                                    if match:
+                                        mp3 = match.group(1)
 
-                                cls(subdir_path, title, artist, usdb_id, cover, mp3)
-                        except UnicodeDecodeError:
-                            logging.debug(f"Wrong encoding for '{os.path.join(subdir_path, txt_files[0])}': {encoding}")
+                                    cls(subdir_path, title, artist, usdb_id, cover, mp3)
+                            except UnicodeDecodeError:
+                                logging.debug(f"Wrong encoding for '{os.path.join(subdir_path, txt_files[0])}': {encoding}")
+                            else:
+                                break
                         else:
-                            break
-                    else:
-                        logging.error(f"Could not read '{os.path.join(subdir_path, txt_files[0])}': unknown encoding")
+                            logging.error(f"Could not read '{os.path.join(subdir_path, txt_files[0])}': unknown encoding")
+                except:
+                    logging.exception(f"Could not process song in '{subdir_path}'")
 
     @classmethod
     async def download(cls, id):
