@@ -45,6 +45,24 @@ class Song:
 
     @classmethod
     def load_songs(cls):
+        encodings = [
+            "ISO-8859-1",
+            "UTF-8",
+            "Windows-1252",
+            "UTF-16",
+            "ASCII",
+            "GBK",
+            "Shift JIS",
+            "Big5",
+            "UTF-32",
+            "CP1251",
+            "EUC-KR",
+            "ISO-8859-15",
+            "ISO-8859-2",
+            "KOI8-R",
+            "EUC-JP"
+        ]
+
         for subdir in os.listdir(config.usdx_songs_dir):
             subdir_path = os.path.join(config.usdx_songs_dir, subdir)
 
@@ -58,34 +76,42 @@ class Song:
                 txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
 
                 if txt_files:
-                    with open(os.path.join(subdir_path, txt_files[0]), 'r') as file:
-                        txt = file.read()
+                    for encoding in encodings:
+                        try:
+                            with open(os.path.join(subdir_path, txt_files[0]), 'r', encoding=encoding) as file:
+                                txt = file.read()
 
-                        match = re.search(r'#TITLE:(.*)\n', txt)
-                        if match:
-                            title = match.group(1)
+                                match = re.search(r'#TITLE:(.*)\n', txt)
+                                if match:
+                                    title = match.group(1)
+                                else:
+                                    logging.warning(f"No title for {subdir_path}")
+                                    continue
+
+                                match = re.search(r'#ARTIST:(.*)\n', txt)
+                                if match:
+                                    artist = match.group(1)
+                                else:
+                                    logging.warning(f"No artist for {subdir_path}")
+                                    continue
+
+                                match = re.search(r'#COVER:(.*)\n', txt)
+                                cover = None
+                                if match:
+                                    cover = match.group(1)
+
+                                match = re.search(r'#MP3:(.*)\n', txt)
+                                mp3 = None
+                                if match:
+                                    mp3 = match.group(1)
+
+                                cls(subdir_path, title, artist, usdb_id, cover, mp3)
+                        except UnicodeDecodeError:
+                            logging.debug(f"Wrong encoding for '{os.path.join(subdir_path, txt_files[0])}': {encoding}")
                         else:
-                            logging.warning(f"No title for {subdir_path}")
-                            continue
-
-                        match = re.search(r'#ARTIST:(.*)\n', txt)
-                        if match:
-                            artist = match.group(1)
-                        else:
-                            logging.warning(f"No artist for {subdir_path}")
-                            continue
-
-                        match = re.search(r'#COVER:(.*)\n', txt)
-                        cover = None
-                        if match:
-                            cover = match.group(1)
-
-                        match = re.search(r'#MP3:(.*)\n', txt)
-                        mp3 = None
-                        if match:
-                            mp3 = match.group(1)
-
-                        cls(subdir_path, title, artist, usdb_id, cover, mp3)
+                            break
+                    else:
+                        logging.error(f"Could not read '{os.path.join(subdir_path, txt_files[0])}': unknown encoding")
 
     @classmethod
     async def download(cls, id):
