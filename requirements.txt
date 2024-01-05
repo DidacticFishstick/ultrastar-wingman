@@ -7,3 +7,4 @@ requests~=2.31.0
 beautifulsoup4~=4.12.2
 PyAutoGUI~=0.9.54
 appdirs~=1.4.4
+chardet~=5.2.0
