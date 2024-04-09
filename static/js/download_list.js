@@ -20,9 +20,8 @@ function search(reset = false) {
     if (isLoading) return;
     isLoading = true;
 
-    // Simulate a REST request with jQuery AJAX
     $.ajax({
-        url: `/api/usdb/get_songs`, // Replace with your API endpoint
+        url: `/api/usdb/songs`,
         type: 'GET',
         data: {
             artist: artist,
@@ -70,6 +69,7 @@ function search(reset = false) {
 $(document).ready(function () {
     // Infinite scrolling functionality
     $("main").scroll(function () {
+        // TODO: does not work on large screens
         if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
             search(); // Load new songs
         }

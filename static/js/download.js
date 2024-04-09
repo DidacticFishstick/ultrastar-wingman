@@ -28,20 +28,20 @@ function onIframeLoad(e) {
 
     if (link === "list") {
         $.ajax({
-            url: '/api/usdb_ids',
+            url: '/api/usdb/ids',
             method: 'GET',
             success: function (response) {
                 console.log(response)
 
                 // language=JavaScript
                 iframe.contentWindow.eval(
-                    `let downloaded_ids = ${JSON.stringify(response)};` +
+                    `let downloaded_ids = ${JSON.stringify(response.ids)};` +
                     "for (const tr of document.querySelectorAll('#tablebg > tbody:nth-child(1) > tr:nth-child(3) > td.row1 > table tr.list_head')) {" +
                     "    let td = document.createElement('td');" +
                     "    tr.prepend(td);" +
                     "};" +
                     "for (const tr of document.querySelectorAll('#tablebg > tbody:nth-child(1) > tr:nth-child(3) > td.row1 > table tr:not(.list_head)')) {" +
-                    "    let id = parseInt(tr.children[0].getAttribute('onclick').match(/\\((\\d+)\\)/)[1], 10);" +
+                    "    let id = tr.children[0].getAttribute('onclick').match(/\\((\\d+)\\)/)[1];" +
                     "    let td = document.createElement('td');" +
                     "    td.style.fontWeight = 'bold';" +
                     "    td.style.display = 'flex';" +

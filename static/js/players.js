@@ -38,7 +38,7 @@ $(function () {
     function getPlayers() {
         $.getJSON('/api/players', function (data) {
             $('#players').empty();
-            $.each(data, function (key, value) {
+            $.each(data.players, function (key, value) {
                 addPlayer(value)
             });
         });
@@ -50,8 +50,12 @@ $(function () {
 
             if (!name) return;
 
-            $.post('/api/players', {name: name}, function (response) {
-                if (response.success) {
+            $.ajax({
+                type: "POST",
+                url: '/api/players',
+                data: JSON.stringify({name: name}),
+                contentType: "application/json",
+                success: function (response) {
                     addPlayer(name)
                     $('#name-input').val('');
                 }
@@ -64,8 +68,12 @@ $(function () {
 
         if (!name) return;
 
-        $.post('/api/players', {name: name}, function (response) {
-            if (response.success) {
+        $.ajax({
+            type: "POST",
+            url: '/api/players',
+            data: JSON.stringify({name: name}),
+            contentType: "application/json",
+            success: function (response) {
                 addPlayer(name)
                 $('#name-input').val('');
             }
@@ -73,10 +81,17 @@ $(function () {
     });
 
     window.deleteName = function (name, element) {
-        $.post('/api/players/delete', {name: name}, function (response) {
-            if (response.success) {
-                console.log(element)
-                element.remove();
+        $.ajax({
+            url: '/api/players/?name=' + encodeURIComponent(name),
+            type: 'DELETE',
+            success: function (response) {
+                if (response.success) {
+                    console.log(element);
+                    element.remove();
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error deleting player:", error);
             }
         });
     }
@@ -95,7 +110,12 @@ $(function () {
                 names.push(name);
             });
 
-            $.post('/api/players/submit', {names: JSON.stringify(names)}, function (response) {});
+            $.ajax({
+                type: "POST",
+                url: '/api/players/submit',
+                data: JSON.stringify({players: names}),
+                contentType: "application/json"
+            });
         }
     });
 

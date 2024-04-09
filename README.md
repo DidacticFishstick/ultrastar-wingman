@@ -124,6 +124,11 @@ This section is not needed when using the Windows installer.
 | `youtube_dl`   | The path to the `yt-dlp` executable used for downloading videos          |
 | `ffmpeg`       | The path to the `ffmpeg` executable, used for multimedia processing      |
 
+## API
+
+Ultrastar Wingman provides a REST API which can do basically anything the Frontend can do.
+The exact endpoints can be found under `/docs` (e.g. `http://localhost:8080/docs`).
+
 ## Contributing
 
 We welcome contributions from the community! If you're interested in improving Ultrastar Wingman, please follow these steps:

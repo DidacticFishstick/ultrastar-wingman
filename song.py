@@ -57,7 +57,7 @@ class Song:
                 if os.path.isfile(os.path.join(subdir_path, "usdb_data.json")):
                     with open(os.path.join(subdir_path, "usdb_data.json")) as file:
                         usdb_data = json.loads(file.read())
-                        usdb_id = usdb_data.get("id")
+                        usdb_id = str(usdb_data.get("id"))
 
                 txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
 

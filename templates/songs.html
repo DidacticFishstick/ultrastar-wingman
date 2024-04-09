@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="{{url_for('static', filename='icons/logo.png')}}">
+    <link rel="icon" type="image/png" href="/static/icons/logo.png">
     <title>Ultrastar Wingman</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/common.css')}}">
-    <link rel="stylesheet" href="{{url_for('static', filename='css/songs.css')}}">
+    <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/songs.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{url_for('static', filename='js/common.js')}}"></script>
-    <script src="{{url_for('static', filename='js/songs.js')}}"></script>
+    <script src="/static/js/common.js"></script>
+    <script src="/static/js/songs.js"></script>
 </head>
 <body>
 <main>
@@ -21,7 +21,7 @@
     <div id="songs">
         {% for song in songs %}
         <div class="song">
-            <span class="cover" style="background-image: url('/song/{{ song.id }}/cover');"></span>
+            <span class="cover" style="background-image: url('/api/songs/{{ song.id }}/cover');"></span>
             <label class="title">{{ song.title }}</label>
             <label class="artist">{{ song.artist }}</label>
         </div>

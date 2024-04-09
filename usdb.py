@@ -1,14 +1,14 @@
 import logging
-import sys
 from typing import Optional
 
-import requests
+import httpx
+from enum import Enum
 from bs4 import BeautifulSoup
 
-session = requests.Session()
+session = httpx.AsyncClient()
 
 
-def login(username, password) -> bool:
+async def login(username, password) -> bool:
     """
     Performs the login to usdb.animux.de
 
@@ -23,15 +23,33 @@ def login(username, password) -> bool:
         'login': 'Login'
     }
 
-    session.post('https://usdb.animux.de/?link=home', data=payload)
+    await session.post('https://usdb.animux.de/?link=home', data=payload)
 
-    if "You are not logged in" in session.get("https://usdb.animux.de/?link=browse").text:
+    response = await session.get("https://usdb.animux.de/?link=browse")
+
+    if "You are not logged in" in response.text:
         return False
     else:
         return True
 
 
-def get_songs(artist: Optional[str] = None, title: Optional[str] = None, edition: Optional[str] = None, language: Optional[str] = None, genre: Optional[str] = None, order: str = "rating", ud: str = "desc", golden: bool = False, songcheck: bool = False, limit: int = 30, page: int = 1):
+class OrderEnum(str, Enum):
+    id = "id"  # Datum
+    artist = "artist"  # Interpret
+    title = "title"  # Titel
+    edition = "edition"  # Edition
+    rating = "rating"  # Bewertung
+    language = "language"  # Sprache
+    views = "views"  # Aufrufe
+    golden = "golden"  # Goldene Noten
+
+
+class UdEnum(str, Enum):
+    asc = "asc"  # ascending
+    desc = "desc"  # descending
+
+
+async def get_songs(artist: Optional[str] = None, title: Optional[str] = None, edition: Optional[str] = None, language: Optional[str] = None, genre: Optional[str] = None, order: OrderEnum = OrderEnum.rating, ud: UdEnum = UdEnum.desc, golden: bool = False, songcheck: bool = False, limit: int = 30, page: int = 1):
     """
     Returns a list of all songs that match the search criteria
 
@@ -65,8 +83,8 @@ def get_songs(artist: Optional[str] = None, title: Optional[str] = None, edition
         "edition": edition or "",
         "language": language or "",
         "genre": genre or "",
-        "order": order,
-        "ud": ud,
+        "order": order.value,
+        "ud": ud.value,
         "limit": str(limit),
         "start": str((int(page) - 1) * int(limit))
     }
@@ -75,7 +93,7 @@ def get_songs(artist: Optional[str] = None, title: Optional[str] = None, edition
     if songcheck:
         payload["songcheck"] = "1"
 
-    response = session.post('https://usdb.animux.de/?link=list', data=payload)
+    response = await session.post("https://usdb.animux.de/?link=list", data=payload)
 
     # Parse the HTML content
     soup = BeautifulSoup(response.text, "html.parser")
@@ -105,7 +123,7 @@ def get_songs(artist: Optional[str] = None, title: Optional[str] = None, edition
 
         # Extracting relevant information from each td and adding to a dictionary
         row_data = {
-            "id": int(tds[0].get_attribute_list("onclick")[0].split("(")[-1].rstrip(")")),
+            "id": tds[0].get_attribute_list("onclick")[0].split("(")[-1].rstrip(")"),
             "artist": tds[0].get_text(strip=True),
             "title": tds[1].get_text(strip=True),
             "edition": tds[2].get_text(strip=True),

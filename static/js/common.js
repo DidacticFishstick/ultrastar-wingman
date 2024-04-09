@@ -11,7 +11,7 @@ window.addEventListener("DOMContentLoaded", () => {
 function restart() {
     if (confirm('Are you sure you want to restart UltraStar Deluxe? Be aware that you will be punched if you interrupt a song.')) {
         $.ajax({
-            url: '/api/restart',
+            url: '/api/usdx/restart',
             method: 'POST',
             success: function (response) {
                 console.log(response);
@@ -28,7 +28,7 @@ function restart() {
 
 function download(id) {
     $.ajax({
-        url: '/api/download',
+        url: '/api/usdb/download',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
