@@ -1,9 +1,11 @@
+import asyncio
 import logging
 import os.path
 import re
 import hashlib
 import shutil
 import threading
+from sys import platform
 
 import pyautogui
 import keyboard
@@ -28,6 +30,37 @@ colors = [
     "harlequin",
     "green_yellow"
 ]
+
+process = None
+
+
+async def start():
+    global process
+    try:
+        process = await asyncio.create_subprocess_exec(
+            str(config.usdx_path),
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        logging.info(f"USDX started")
+    except:
+        logging.exception("Failed to start USDX")
+
+
+async def kill():
+    global process
+    try:
+        if process:
+            # Kill the executable
+            process.kill()
+            logging.info(f"USDX killed")
+    except:
+        logging.exception("Failed to kill USDX")
+
+
+async def restart():
+    await kill()
+    await start()
 
 
 def calculate_md5(file_path):
@@ -62,7 +95,9 @@ def replace_in_config(file_path, replace):
     with open(file_path, "w") as file:
         file.write(content)
 
+
 _enter_names_lock = threading.Lock()
+
 
 def enter_names(players):
     with _enter_names_lock:

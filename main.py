@@ -3,9 +3,6 @@ import os
 import asyncio
 import logging
 import os.path
-import platform
-import signal
-import subprocess
 from contextlib import asynccontextmanager
 
 import uvicorn
@@ -40,24 +37,9 @@ app = FastAPI(
 app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
 
-usdx_process = None
 download_queue = asyncio.Queue()
 event_loop = asyncio.get_event_loop()
 php_session_id = None
-
-
-def restart_usdx():
-    global usdx_process
-    if usdx_process is not None:
-        logging.info("Stopping USDX")
-
-        if platform.system() == "Windows":
-            subprocess.call(['taskkill', '/F', '/T', '/PID', str(usdx_process.pid)])
-        else:
-            os.kill(usdx_process.pid, signal.SIGKILL)
-
-    logging.info("Starting USDX")
-    usdx_process = subprocess.Popen(str(config.usdx_path))
 
 
 @app.get('/', tags=["Website"], response_class=HTMLResponse)
@@ -98,7 +80,7 @@ async def players(request: Request):
 
 @app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe")
 async def api_usdx_restart():
-    restart_usdx()
+    await usdx.restart()
     return {"success": True}
 
 
@@ -317,7 +299,7 @@ async def main():
 
     # configure and start usdx
     usdx.change_config(config.setup_colors)
-    restart_usdx()
+    await usdx.start()
 
     # start the server
     server_config = uvicorn.Config(app="main:app", host="0.0.0.0", port=8080, log_level="info")
