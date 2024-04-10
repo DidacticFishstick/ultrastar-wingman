@@ -1,4 +1,3 @@
-import getpass
 import os
 import asyncio
 import logging
@@ -75,7 +74,7 @@ async def scores(request: Request):
 
 @app.get('/players', tags=["Website"], response_class=HTMLResponse)
 async def players(request: Request):
-    return templates.TemplateResponse('players.html', {"request": request, "messages": messages, "colors": config.setup_colors})
+    return templates.TemplateResponse('players.html', {"request": request, "colors": config.setup_colors})  # , "messages": messages})
 
 
 @app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe")
@@ -264,37 +263,10 @@ async def ws_endpoint(websocket: WebSocket):
 
 
 async def main():
-    username = config.usdb_user
-    password = config.usdb_pass
-    if username == "<username>" or password == "<password>":
-        username = None
-        password = None
+    # login to usdb.animux.de
+    await usdb.login()
 
-    while True:
-        if username is None or password is None:
-            print(f"To download songs, you need an account on https://usdb.animux.de. Create an account and enter the credentials below. You can always change these settings in the config file '{config.file_name}'.")
-            new_username = input("Username: ")
-            new_password = getpass.getpass("Password: ")
-
-            # Windows doing windows things...
-            while new_password == "\x16":
-                print("The windows cmd does not allow pasting into password fields using ctrl+V. Instead you can right click in the terminal to paste your password")
-                new_password = getpass.getpass("Password: ")
-
-            if new_username != username or new_password != password:
-                config.save_usdb_credentials(new_username, new_password)
-                username, password = new_username, new_password
-
-        if await usdb.login(username, password):
-            print(f"Login as {username} on https://usdb.animux.de successful")
-            break
-        else:
-            print("Invalid credentials. Please try again.")
-            username = None
-            password = None
-
-    usdx.change_config(config.setup_colors)
-
+    # load all downloaded songs
     Song.load_songs()
 
     # configure and start usdx
@@ -304,7 +276,6 @@ async def main():
     # start the server
     server_config = uvicorn.Config(app="main:app", host="0.0.0.0", port=8080, log_level="info")
     server = uvicorn.Server(server_config)
-
     await server.serve()
 
 

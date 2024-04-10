@@ -1,17 +1,19 @@
 import asyncio
+import getpass
 import logging
 import httpx
 from typing import Optional
 from enum import Enum
 from bs4 import BeautifulSoup
 
+import config
 import ws
 from song import Song
 
 session = httpx.AsyncClient()
 
 
-async def login(username, password) -> bool:
+async def login_request(username, password) -> bool:
     """
     Performs the login to usdb.animux.de
 
@@ -34,6 +36,38 @@ async def login(username, password) -> bool:
         return False
     else:
         return True
+
+
+async def login():
+    username = config.usdb_user
+    password = config.usdb_pass
+    if username == "<username>" or password == "<password>":
+        username = None
+        password = None
+
+    while True:
+        if username is None or password is None:
+            print(f"To download songs, you need an account on https://usdb.animux.de. Create an account and enter the credentials below. You can always change these settings in the config file '{config.file_name}'.")
+            new_username = input("Username: ")
+            new_password = getpass.getpass("Password: ")
+
+            # Windows doing windows things...
+            while new_password == "\x16":
+                print("The windows cmd does not allow pasting into password fields using ctrl+V. Why would anyone need that?")
+                print("Instead you can right click in the terminal to paste your password")
+                new_password = getpass.getpass("Password: ")
+
+            if new_username != username or new_password != password:
+                config.save_usdb_credentials(new_username, new_password)
+                username, password = new_username, new_password
+
+        if await login_request(username, password):
+            print(f"Login as {username} on https://usdb.animux.de successful")
+            break
+        else:
+            print("Invalid credentials. Please try again.")
+            username = None
+            password = None
 
 
 class OrderEnum(str, Enum):
