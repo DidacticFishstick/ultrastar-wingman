@@ -36,6 +36,7 @@ usdx_avatars_dir = Path(_config.get("USDX", "usdx_avatars_dir")).expanduser()
 
 usdb_user = _config.get("USDB", "username")
 usdb_pass = _config.get("USDB", "password")
+usdb_downloader_count = int(_config.get("USDB", "downloader_count", fallback=4))
 
 setup_colors = _config.get("SETUP", "colors").split(",")
 

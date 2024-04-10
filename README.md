@@ -86,10 +86,11 @@ If the application was installed using the Windows installer, you can find the c
 This section contains credentials for accessing https://usdb.animux.de.
 You will need to create an account to be able to download songs.
 
-| Key        | Description                              |
-|------------|------------------------------------------|
-| `username` | Your username for https://usdb.animux.de |
-| `password` | Your password for https://usdb.animux.de |
+| Key                | Description                              |
+|--------------------|------------------------------------------|
+| `username`         | Your username for https://usdb.animux.de |
+| `password`         | Your password for https://usdb.animux.de |
+| `downloader_count` | Maximum number of parallel downloads     |
 
 ### USDX Section
 
@@ -126,7 +127,7 @@ This section is not needed when using the Windows installer.
 
 ## API
 
-Ultrastar Wingman provides a REST API which can do basically anything the Frontend can do.
+Ultrastar Wingman provides a REST API which can do most of what the Frontend can do.
 The exact endpoints can be found under `/docs` (e.g. `http://localhost:8080/docs`).
 
 ## Contributing

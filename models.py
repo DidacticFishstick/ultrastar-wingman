@@ -20,7 +20,7 @@ class Song(BaseModel):
     downloaded: bool
     edition: str
     golden: bool
-    id: int
+    id: str
     language: str
     rating: float
     title: str

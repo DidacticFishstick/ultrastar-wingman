@@ -2,6 +2,7 @@
 ; Your credentials for https://usdb.animux.de
 username = <username>
 password = <password>
+downloader_count = 4
 
 [USDX]
 usdx_path = /System/Volumes/Data/Applications/UltraStarDeluxe.app/Contents/MacOS/ultrastardx

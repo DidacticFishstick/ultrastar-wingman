@@ -1,9 +1,12 @@
+import asyncio
 import logging
-from typing import Optional
-
 import httpx
+from typing import Optional
 from enum import Enum
 from bs4 import BeautifulSoup
+
+import ws
+from song import Song
 
 session = httpx.AsyncClient()
 
@@ -142,3 +145,26 @@ async def get_songs(artist: Optional[str] = None, title: Optional[str] = None, e
     result["songs"] = data
 
     return result
+
+
+async def download_queue_consumer(queue: asyncio.Queue):
+    """
+    A consumer that downloads songs from the queue
+
+    :param queue: The queue to download songs from
+    """
+
+    logging.info("Starting download queue consumer")
+
+    while True:
+        usdb_id = await queue.get()
+
+        try:
+            song = await Song.download(usdb_id)
+        except Exception as e:
+            logging.exception(f"Failed to download song {usdb_id}")
+            await ws.broadcast_download_failed(usdb_id, str(e))
+        else:
+            await ws.broadcast_download_complete(song)
+
+        queue.task_done()

@@ -2,6 +2,7 @@
 ; Your credentials for https://usdb.animux.de
 username = <username>
 password = <password>
+downloader_count = 4
 
 [USDX]
 usdx_path = C:/Program Files (x86)/UltraStar Deluxe/ultrastardx.exe

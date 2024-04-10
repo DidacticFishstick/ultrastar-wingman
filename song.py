@@ -10,11 +10,13 @@ import chardet
 from typing import Optional, List
 
 import eyed3
+import httpx
 import requests
 from bs4 import BeautifulSoup
 
 import config
 import usdb
+import ws
 
 
 class DownloadException(Exception):
@@ -107,9 +109,11 @@ class Song:
                 logging.exception(f"Could not process song in '{subdir_path}'")
 
     @classmethod
-    async def download(cls, id):
-        response = usdb.session.post(f"https://usdb.animux.de/index.php?link=gettxt&id={id}", headers={"Cookie": cls.php_session_id}, data={"wd": "1"})
-        response.raise_for_status()
+    async def download(cls, id) -> 'Song':
+        response = await usdb.session.post(f"https://usdb.animux.de/index.php?link=gettxt&id={id}", data={"wd": "1"})
+
+        if not 200 <= response.status_code < 300:
+            raise httpx.HTTPStatusError(f"failed to get txt for {id} ", response=response, request=response.request)
 
         soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -121,7 +125,6 @@ class Song:
         else:
             raise DownloadException(f"txt for {id} not found on usdb.animux.de. Are you logged in?")
 
-        # TODO: get only the id, load everything here
         match = re.search(r'#TITLE:(.*)\n', txt)
         if match:
             title = match.group(1)
@@ -139,6 +142,8 @@ class Song:
             video = match.group(1)
         else:
             raise DownloadException("missing video")
+
+        await ws.broadcast_download_started(id, title, artist)
 
         if id is None:
             sanitized_name = cls.create_valid_dir_name(f"{artist} - {title}")
@@ -201,11 +206,6 @@ class Song:
             if process.returncode != 0:
                 raise DownloadException(f"youtube-dl failed with code {process.returncode}, stdout: {stdout.decode()}, stderr: {stderr.decode()}")
 
-            # try:
-            #     subprocess.run([config.youtube_dl, "-o", "video.mp4", "--format", "mp4", url], cwd=tempdir, check=True)
-            # except Exception as e:
-            #     raise DownloadException(f"youtube-dl failed: {e}")
-
             process = await asyncio.create_subprocess_exec(
                 config.ffmpeg, "-i", "video.mp4", "-vn", "-acodec", "libmp3lame", "-ac", "2", "-ab", "160k", "-ar", "48000", "song.mp3",
                 stdout=asyncio.subprocess.PIPE,
@@ -216,11 +216,6 @@ class Song:
 
             if process.returncode != 0:
                 raise DownloadException(f"ffmpeg failed with code {process.returncode}, stdout: {stdout.decode()}, stderr: {stderr.decode()}")
-
-            # try:
-            #     subprocess.run([config.ffmpeg, "-i", "video.mp4", "-vn", "-acodec", "libmp3lame", "-ac", "2", "-ab", "160k", "-ar", "48000", "song.mp3"], cwd=tempdir, check=True)
-            # except Exception as e:
-            #     raise DownloadException(f"ffmpeg failed: {e}")
 
             os.makedirs(directory)
 

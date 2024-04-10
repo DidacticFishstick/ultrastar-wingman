@@ -6,9 +6,11 @@ import os.path
 import platform
 import signal
 import subprocess
+from contextlib import asynccontextmanager
+
 import uvicorn
 from typing import Optional
-from fastapi import FastAPI, Request, HTTPException, Query, Form, status, Response
+from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -17,14 +19,23 @@ import config
 import models
 import usdb
 import usdx
+import ws
 from song import Song
-from websocket_server import WebSocketServer, messages
 
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # start consumers for the download queue
+    download_consumers = [asyncio.create_task(usdb.download_queue_consumer(download_queue)) for _ in range(config.usdb_downloader_count)]
+    yield
+
 
 app = FastAPI(
     title="UltraStar Wingman",
     version="1.1.0",
+    lifespan=lifespan
 )
 app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
@@ -51,12 +62,12 @@ def restart_usdx():
 
 @app.get('/', tags=["Website"], response_class=HTMLResponse)
 async def index(request: Request):
-    return templates.TemplateResponse('index.html', {"request": request, "messages": messages})
+    return templates.TemplateResponse('index.html', {"request": request})  # , "messages": messages})
 
 
 @app.get('/songs', tags=["Website"], response_class=HTMLResponse)
 async def songs(request: Request):
-    return templates.TemplateResponse('songs.html', {"request": request, "songs": Song.song_list(), "messages": messages})
+    return templates.TemplateResponse('songs.html', {"request": request, "songs": Song.song_list()})  # , "messages": messages})
 
 
 @app.get('/avatars/{avatar}', tags=["Website"])
@@ -70,14 +81,14 @@ async def avatar(avatar):
 @app.get('/download', tags=["Website"], response_class=HTMLResponse)
 async def download(request: Request, view: str = None):
     if view == "usdb":
-        return templates.TemplateResponse('download.html', {"request": request, "messages": messages})
+        return templates.TemplateResponse('download.html', {"request": request})  # , "messages": messages})
     else:
-        return templates.TemplateResponse('download_list.html', {"request": request, "messages": messages})
+        return templates.TemplateResponse('download_list.html', {"request": request})  # , "messages": messages})
 
 
 @app.get('/scores', tags=["Website"], response_class=HTMLResponse)
 async def scores(request: Request):
-    return templates.TemplateResponse('scores.html', {"request": request, "messages": messages})
+    return templates.TemplateResponse('scores.html', {"request": request})  # , "messages": messages})
 
 
 @app.get('/players', tags=["Website"], response_class=HTMLResponse)
@@ -97,9 +108,10 @@ async def api_usdb_ids():
 
 
 @app.post('/api/usdb/download', response_model=models.BasicResponse, tags=["USDB"], summary="Downloads the song with the given USDB ID")
-async def api_usdb_download(usdb_id: models.UsdbId):
-    # TODO: fix queue
-    asyncio.run_coroutine_threadsafe(download_queue.put(usdb_id.id), event_loop)
+async def api_usdb_download(usdb_id_model: models.UsdbId):
+    await download_queue.put(usdb_id_model.id)
+
+    await ws.broadcast_download_queued(usdb_id_model.id)
 
     return {"success": True}
 
@@ -257,6 +269,18 @@ async def api_players_submit(submit_request: models.PlayerList):
     return {"success": True}
 
 
+@app.websocket("/ws")
+async def ws_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    ws.ws_connections.add(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            logging.info(f"Received message from websocket: {data}")
+    except WebSocketDisconnect:
+        ws.ws_connections.remove(websocket)
+
+
 async def main():
     username = config.usdb_user
     password = config.usdb_pass
@@ -280,7 +304,7 @@ async def main():
                 username, password = new_username, new_password
 
         if await usdb.login(username, password):
-            print("Login on https://usdb.animux.de successful")
+            print(f"Login as {username} on https://usdb.animux.de successful")
             break
         else:
             print("Invalid credentials. Please try again.")
@@ -291,20 +315,11 @@ async def main():
 
     Song.load_songs()
 
+    # configure and start usdx
+    usdx.change_config(config.setup_colors)
     restart_usdx()
 
-    # TODO: websocket stuff (migrate to FastAPI)
-    # server = WebSocketServer(download_queue)
-    #
-    # start_server = websockets.serve(server.handler, "0.0.0.0", 5678)
-    #
-    # asyncio.get_event_loop().run_until_complete(start_server)
-    #
-    # for i in range(8):
-    #     asyncio.get_event_loop().create_task(server.download_queue_consumer(i))
-    #
-    # asyncio.get_event_loop().run_forever()
-
+    # start the server
     server_config = uvicorn.Config(app="main:app", host="0.0.0.0", port=8080, log_level="info")
     server = uvicorn.Server(server_config)
 
