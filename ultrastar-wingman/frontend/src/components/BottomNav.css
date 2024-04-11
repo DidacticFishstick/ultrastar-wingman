@@ -1,0 +1,38 @@
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 0 calc(max(10px, env(safe-area-inset-bottom))) 0;
+    background-color: var(--footer-bg);
+}
+
+.bottom-nav > div {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.bottom-nav a {
+    text-decoration: none;
+    color: var(--highlight-blue-light);
+    text-align: center;
+    transition: 0.1s color;
+}
+
+.bottom-nav a:hover,
+.bottom-nav .active { /* Apply same style for hover and active state */
+    color: var(--highlight-pink-light);
+}
+
+.bottom-nav svg {
+    display: block;
+    margin: auto;
+    font-size: 24px; /* Adjust size of icons */
+}
+
+.bottom-nav span {
+    display: block;
+    font-size: 12px;
+}
