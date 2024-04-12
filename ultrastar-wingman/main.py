@@ -33,8 +33,8 @@ app = FastAPI(
     version="1.1.0",
     lifespan=lifespan
 )
-app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
-templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
+# app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
+# templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
 
 download_queue = asyncio.Queue()
 event_loop = asyncio.get_event_loop()
@@ -97,7 +97,7 @@ async def api_usdb_download(usdb_id_model: models.UsdbId):
     return {"success": True}
 
 
-@app.api_route('/usdb/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.api_route('/usdb/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE'], include_in_schema=False)
 async def proxy(request: Request, path: Optional[str] = ''):
     # Prepare the URL by replacing the incoming request's URL part
     # with the target URL's base, keeping the path and query parameters.
