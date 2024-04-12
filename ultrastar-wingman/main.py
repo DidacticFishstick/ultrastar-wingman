@@ -33,12 +33,30 @@ app = FastAPI(
     version="1.1.0",
     lifespan=lifespan
 )
-app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
-templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
+# app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
+# templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
 
 download_queue = asyncio.Queue()
 event_loop = asyncio.get_event_loop()
 php_session_id = None
+
+
+@app.get('/openapi_no_anyOf.json', include_in_schema=False)
+async def api_usdb_ids():
+    """
+    This should not be necessary but https://www.npmjs.com/package/@openapitools/openapi-generator-cli has a problem
+    with generating code for models with a type set to anyOf. Therefor this endpoint will remove those anyOf sections.
+
+    Currently only removes anyOf from the ValidationError (components.schemas.ValidationError.properties.loc.items.anyOf)
+    """
+
+    openapi = app.openapi()
+
+    openapi["components"]["schemas"]["ValidationError"]["properties"]["loc"]["items"] = {
+        "type": "string"
+    }
+
+    return openapi
 
 
 @app.get('/', tags=["Website"], response_class=HTMLResponse)
@@ -97,7 +115,7 @@ async def api_usdb_download(usdb_id_model: models.UsdbId):
     return {"success": True}
 
 
-@app.api_route('/usdb/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE'])
+@app.api_route('/usdb/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE'], include_in_schema=False)
 async def proxy(request: Request, path: Optional[str] = ''):
     # Prepare the URL by replacing the incoming request's URL part
     # with the target URL's base, keeping the path and query parameters.
@@ -127,11 +145,11 @@ async def proxy(request: Request, path: Optional[str] = ''):
 
 @app.get('/api/usdb/songs', response_model=models.SongsResponse, tags=["USDB"], summary="Search Songs", response_description="A list of songs matching the criteria")
 async def api_usdb_songs(
-        artist: Optional[str] = Query(None, description="Filter songs by the artist's name."),
-        title: Optional[str] = Query(None, description="Filter songs by title."),
-        edition: Optional[str] = Query(None, description="Filter by the song's edition."),
-        language: Optional[str] = Query(None, description="Filter songs by language."),
-        genre: Optional[str] = Query(None, description="Filter songs by genre."),
+        artist: str = Query(None, nullable=True, description="Filter songs by the artist's name."),
+        title: str = Query(None, nullable=True, description="Filter songs by title."),
+        edition: str = Query(None, nullable=True, description="Filter by the song's edition."),
+        language: str = Query(None, nullable=True, description="Filter songs by language."),
+        genre: str = Query(None, nullable=True, description="Filter songs by genre."),
         order: usdb.OrderEnum = Query(usdb.OrderEnum.rating, description="Sort the result by this order criteria."),
         ud: usdb.UdEnum = Query(usdb.UdEnum.desc, description="Sort order: ascending (asc) or descending (desc)."),
         golden: bool = False,
