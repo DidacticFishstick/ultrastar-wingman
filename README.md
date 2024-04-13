@@ -8,7 +8,7 @@ Welcome to the official repository of **Ultrastar Wingman**, an enhancement tool
 
 ## Features
 
-- **Remote Song Management**: Download and view songs directly from any phone or device connected to the network.
+- **Remote SongListItem Management**: Download and view songs directly from any phone or device connected to the network.
 - **Performance Statistics**: Track your karaoke performance with insightful statistics.
 - **User-Friendly Interface**: A sleek and intuitive interface for an enhanced user experience.
 - **Cross-Platform Compatibility**: Designed to work seamlessly with various devices.

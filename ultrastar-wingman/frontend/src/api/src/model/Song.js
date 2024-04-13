@@ -22,19 +22,16 @@ class Song {
     /**
      * Constructs a new <code>Song</code>.
      * @alias module:model/Song
-     * @param artist {String} 
-     * @param downloaded {Boolean} 
-     * @param edition {String} 
-     * @param golden {Boolean} 
-     * @param id {String} 
-     * @param language {String} 
-     * @param rating {Number} 
-     * @param title {String} 
-     * @param views {Number} 
+     * @param directory {String} The directory of the song.
+     * @param title {String} The title of the song.
+     * @param artist {String} The artist of the song.
+     * @param usdbId {String} The USDB ID of the song.
+     * @param id {String} The universal ID of the song.
+     * @param duration {Number} The duration of the song in seconds.
      */
-    constructor(artist, downloaded, edition, golden, id, language, rating, title, views) { 
+    constructor(directory, title, artist, usdbId, id, duration) { 
         
-        Song.initialize(this, artist, downloaded, edition, golden, id, language, rating, title, views);
+        Song.initialize(this, directory, title, artist, usdbId, id, duration);
     }
 
     /**
@@ -42,16 +39,13 @@ class Song {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, artist, downloaded, edition, golden, id, language, rating, title, views) { 
-        obj['artist'] = artist;
-        obj['downloaded'] = downloaded;
-        obj['edition'] = edition;
-        obj['golden'] = golden;
-        obj['id'] = id;
-        obj['language'] = language;
-        obj['rating'] = rating;
+    static initialize(obj, directory, title, artist, usdbId, id, duration) { 
+        obj['directory'] = directory;
         obj['title'] = title;
-        obj['views'] = views;
+        obj['artist'] = artist;
+        obj['usdb_id'] = usdbId;
+        obj['id'] = id;
+        obj['duration'] = duration;
     }
 
     /**
@@ -65,32 +59,23 @@ class Song {
         if (data) {
             obj = obj || new Song();
 
-            if (data.hasOwnProperty('artist')) {
-                obj['artist'] = ApiClient.convertToType(data['artist'], 'String');
-            }
-            if (data.hasOwnProperty('downloaded')) {
-                obj['downloaded'] = ApiClient.convertToType(data['downloaded'], 'Boolean');
-            }
-            if (data.hasOwnProperty('edition')) {
-                obj['edition'] = ApiClient.convertToType(data['edition'], 'String');
-            }
-            if (data.hasOwnProperty('golden')) {
-                obj['golden'] = ApiClient.convertToType(data['golden'], 'Boolean');
-            }
-            if (data.hasOwnProperty('id')) {
-                obj['id'] = ApiClient.convertToType(data['id'], 'String');
-            }
-            if (data.hasOwnProperty('language')) {
-                obj['language'] = ApiClient.convertToType(data['language'], 'String');
-            }
-            if (data.hasOwnProperty('rating')) {
-                obj['rating'] = ApiClient.convertToType(data['rating'], 'Number');
+            if (data.hasOwnProperty('directory')) {
+                obj['directory'] = ApiClient.convertToType(data['directory'], 'String');
             }
             if (data.hasOwnProperty('title')) {
                 obj['title'] = ApiClient.convertToType(data['title'], 'String');
             }
-            if (data.hasOwnProperty('views')) {
-                obj['views'] = ApiClient.convertToType(data['views'], 'Number');
+            if (data.hasOwnProperty('artist')) {
+                obj['artist'] = ApiClient.convertToType(data['artist'], 'String');
+            }
+            if (data.hasOwnProperty('usdb_id')) {
+                obj['usdb_id'] = ApiClient.convertToType(data['usdb_id'], 'String');
+            }
+            if (data.hasOwnProperty('id')) {
+                obj['id'] = ApiClient.convertToType(data['id'], 'String');
+            }
+            if (data.hasOwnProperty('duration')) {
+                obj['duration'] = ApiClient.convertToType(data['duration'], 'Number');
             }
         }
         return obj;
@@ -109,24 +94,24 @@ class Song {
             }
         }
         // ensure the json data is a string
-        if (data['artist'] && !(typeof data['artist'] === 'string' || data['artist'] instanceof String)) {
-            throw new Error("Expected the field `artist` to be a primitive type in the JSON string but got " + data['artist']);
-        }
-        // ensure the json data is a string
-        if (data['edition'] && !(typeof data['edition'] === 'string' || data['edition'] instanceof String)) {
-            throw new Error("Expected the field `edition` to be a primitive type in the JSON string but got " + data['edition']);
-        }
-        // ensure the json data is a string
-        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
-            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
-        }
-        // ensure the json data is a string
-        if (data['language'] && !(typeof data['language'] === 'string' || data['language'] instanceof String)) {
-            throw new Error("Expected the field `language` to be a primitive type in the JSON string but got " + data['language']);
+        if (data['directory'] && !(typeof data['directory'] === 'string' || data['directory'] instanceof String)) {
+            throw new Error("Expected the field `directory` to be a primitive type in the JSON string but got " + data['directory']);
         }
         // ensure the json data is a string
         if (data['title'] && !(typeof data['title'] === 'string' || data['title'] instanceof String)) {
             throw new Error("Expected the field `title` to be a primitive type in the JSON string but got " + data['title']);
+        }
+        // ensure the json data is a string
+        if (data['artist'] && !(typeof data['artist'] === 'string' || data['artist'] instanceof String)) {
+            throw new Error("Expected the field `artist` to be a primitive type in the JSON string but got " + data['artist']);
+        }
+        // ensure the json data is a string
+        if (data['usdb_id'] && !(typeof data['usdb_id'] === 'string' || data['usdb_id'] instanceof String)) {
+            throw new Error("Expected the field `usdb_id` to be a primitive type in the JSON string but got " + data['usdb_id']);
+        }
+        // ensure the json data is a string
+        if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
+            throw new Error("Expected the field `id` to be a primitive type in the JSON string but got " + data['id']);
         }
 
         return true;
@@ -135,52 +120,43 @@ class Song {
 
 }
 
-Song.RequiredProperties = ["artist", "downloaded", "edition", "golden", "id", "language", "rating", "title", "views"];
+Song.RequiredProperties = ["directory", "title", "artist", "usdb_id", "id", "duration"];
 
 /**
- * @member {String} artist
+ * The directory of the song.
+ * @member {String} directory
  */
-Song.prototype['artist'] = undefined;
+Song.prototype['directory'] = undefined;
 
 /**
- * @member {Boolean} downloaded
- */
-Song.prototype['downloaded'] = undefined;
-
-/**
- * @member {String} edition
- */
-Song.prototype['edition'] = undefined;
-
-/**
- * @member {Boolean} golden
- */
-Song.prototype['golden'] = undefined;
-
-/**
- * @member {String} id
- */
-Song.prototype['id'] = undefined;
-
-/**
- * @member {String} language
- */
-Song.prototype['language'] = undefined;
-
-/**
- * @member {Number} rating
- */
-Song.prototype['rating'] = undefined;
-
-/**
+ * The title of the song.
  * @member {String} title
  */
 Song.prototype['title'] = undefined;
 
 /**
- * @member {Number} views
+ * The artist of the song.
+ * @member {String} artist
  */
-Song.prototype['views'] = undefined;
+Song.prototype['artist'] = undefined;
+
+/**
+ * The USDB ID of the song.
+ * @member {String} usdb_id
+ */
+Song.prototype['usdb_id'] = undefined;
+
+/**
+ * The universal ID of the song.
+ * @member {String} id
+ */
+Song.prototype['id'] = undefined;
+
+/**
+ * The duration of the song in seconds.
+ * @member {Number} duration
+ */
+Song.prototype['duration'] = undefined;
 
 
 

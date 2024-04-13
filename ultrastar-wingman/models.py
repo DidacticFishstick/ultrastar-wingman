@@ -16,6 +16,19 @@ class UsdbIdsList(BaseModel):
 
 
 class Song(BaseModel):
+    directory: str = Field(description="The directory of the song.")
+    title: str = Field(description="The title of the song.")
+    artist: str = Field(description="The artist of the song.")
+    usdb_id: str = Field(nullable=True, description="The USDB ID of the song.")
+    id: str = Field(description="The universal ID of the song.")
+    duration: float = Field(description="The duration of the song in seconds.")
+
+
+class SongsResponse(BaseModel):
+    songs: List[Song]
+
+
+class USDBSong(BaseModel):
     artist: str
     downloaded: bool
     edition: str
@@ -32,12 +45,14 @@ class Paging(BaseModel):
     pages: int
 
 
-class SongsResponse(BaseModel):
+class USDBSongsResponse(BaseModel):
     paging: Paging
-    songs: List[Song]
+    songs: List[USDBSong]
+
 
 class PlayerCreation(BaseModel):
     name: str = Field(None, description="The player name.")
+
 
 class PlayerList(BaseModel):
     players: List[str] = Field(None, example=["Alice", "Bob", "Charlie"], description="List of player names.")

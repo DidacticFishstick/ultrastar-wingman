@@ -12,7 +12,6 @@
  */
 
 import ApiClient from '../ApiClient';
-import Paging from './Paging';
 import Song from './Song';
 
 /**
@@ -24,12 +23,11 @@ class SongsResponse {
     /**
      * Constructs a new <code>SongsResponse</code>.
      * @alias module:model/SongsResponse
-     * @param paging {module:model/Paging} 
      * @param songs {Array.<module:model/Song>} 
      */
-    constructor(paging, songs) { 
+    constructor(songs) { 
         
-        SongsResponse.initialize(this, paging, songs);
+        SongsResponse.initialize(this, songs);
     }
 
     /**
@@ -37,8 +35,7 @@ class SongsResponse {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, paging, songs) { 
-        obj['paging'] = paging;
+    static initialize(obj, songs) { 
         obj['songs'] = songs;
     }
 
@@ -53,9 +50,6 @@ class SongsResponse {
         if (data) {
             obj = obj || new SongsResponse();
 
-            if (data.hasOwnProperty('paging')) {
-                obj['paging'] = Paging.constructFromObject(data['paging']);
-            }
             if (data.hasOwnProperty('songs')) {
                 obj['songs'] = ApiClient.convertToType(data['songs'], [Song]);
             }
@@ -75,10 +69,6 @@ class SongsResponse {
                 throw new Error("The required field `" + property + "` is not found in the JSON data: " + JSON.stringify(data));
             }
         }
-        // validate the optional field `paging`
-        if (data['paging']) { // data not null
-          Paging.validateJSON(data['paging']);
-        }
         if (data['songs']) { // data not null
             // ensure the json data is an array
             if (!Array.isArray(data['songs'])) {
@@ -96,12 +86,7 @@ class SongsResponse {
 
 }
 
-SongsResponse.RequiredProperties = ["paging", "songs"];
-
-/**
- * @member {module:model/Paging} paging
- */
-SongsResponse.prototype['paging'] = undefined;
+SongsResponse.RequiredProperties = ["songs"];
 
 /**
  * @member {Array.<module:model/Song>} songs

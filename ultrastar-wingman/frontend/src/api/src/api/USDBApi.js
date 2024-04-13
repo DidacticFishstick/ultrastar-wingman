@@ -16,7 +16,7 @@ import ApiClient from "../ApiClient";
 import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
 import OrderEnum from '../model/OrderEnum';
-import SongsResponse from '../model/SongsResponse';
+import USDBSongsResponse from '../model/USDBSongsResponse';
 import UdEnum from '../model/UdEnum';
 import UsdbId from '../model/UsdbId';
 import UsdbIdsList from '../model/UsdbIdsList';
@@ -121,7 +121,7 @@ export default class USDBApi {
      * Callback function to receive the result of the apiUsdbSongsApiUsdbSongsGet operation.
      * @callback module:api/USDBApi~apiUsdbSongsApiUsdbSongsGetCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/SongsResponse} data The data returned by the service call.
+     * @param {module:model/USDBSongsResponse} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
@@ -140,7 +140,7 @@ export default class USDBApi {
      * @param {Number} [limit = 30)] The number of songs to return per page.
      * @param {Number} [page = 1)] Page number for pagination.
      * @param {module:api/USDBApi~apiUsdbSongsApiUsdbSongsGetCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/SongsResponse}
+     * data is of type: {@link module:model/USDBSongsResponse}
      */
     apiUsdbSongsApiUsdbSongsGet(opts, callback) {
       opts = opts || {};
@@ -169,7 +169,7 @@ export default class USDBApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = SongsResponse;
+      let returnType = USDBSongsResponse;
       return this.apiClient.callApi(
         '/api/usdb/songs', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,

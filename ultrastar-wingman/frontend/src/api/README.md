@@ -125,7 +125,8 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 *UltraStarWingman.PlayersApi* | [**apiPlayersSubmitApiPlayersSubmitPost**](docs/PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
 *UltraStarWingman.PlayersApi* | [**deleteNameApiPlayersDelete**](docs/PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players/ | Delete a Player
-*UltraStarWingman.SongsApi* | [**coverApiSongsSongIdCoverGet**](docs/SongsApi.md#coverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Cover
+*UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
+*UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
 *UltraStarWingman.USDBApi* | [**apiUsdbDownloadApiUsdbDownloadPost**](docs/USDBApi.md#apiUsdbDownloadApiUsdbDownloadPost) | **POST** /api/usdb/download | Downloads the song with the given USDB ID
 *UltraStarWingman.USDBApi* | [**apiUsdbIdsApiUsdbIdsGet**](docs/USDBApi.md#apiUsdbIdsApiUsdbIdsGet) | **GET** /api/usdb/ids | Gets the list of all downloaded USDB IDs
 *UltraStarWingman.USDBApi* | [**apiUsdbSongsApiUsdbSongsGet**](docs/USDBApi.md#apiUsdbSongsApiUsdbSongsGet) | **GET** /api/usdb/songs | Search Songs
@@ -146,8 +147,10 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.Paging](docs/Paging.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
  - [UltraStarWingman.PlayerList](docs/PlayerList.md)
- - [UltraStarWingman.Song](docs/Song.md)
+ - [UltraStarWingman.SongListItem](docs/Song.md)
  - [UltraStarWingman.SongsResponse](docs/SongsResponse.md)
+ - [UltraStarWingman.USDBSong](docs/USDBSong.md)
+ - [UltraStarWingman.USDBSongsResponse](docs/USDBSongsResponse.md)
  - [UltraStarWingman.UdEnum](docs/UdEnum.md)
  - [UltraStarWingman.UsdbId](docs/UsdbId.md)
  - [UltraStarWingman.UsdbIdsList](docs/UsdbIdsList.md)

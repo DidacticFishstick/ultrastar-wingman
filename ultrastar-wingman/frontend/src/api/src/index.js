@@ -21,6 +21,8 @@ import PlayerCreation from './model/PlayerCreation';
 import PlayerList from './model/PlayerList';
 import Song from './model/Song';
 import SongsResponse from './model/SongsResponse';
+import USDBSong from './model/USDBSong';
+import USDBSongsResponse from './model/USDBSongsResponse';
 import UdEnum from './model/UdEnum';
 import UsdbId from './model/UsdbId';
 import UsdbIdsList from './model/UsdbIdsList';
@@ -117,6 +119,18 @@ export {
      * @property {module:model/SongsResponse}
      */
     SongsResponse,
+
+    /**
+     * The USDBSong model constructor.
+     * @property {module:model/USDBSong}
+     */
+    USDBSong,
+
+    /**
+     * The USDBSongsResponse model constructor.
+     * @property {module:model/USDBSongsResponse}
+     */
+    USDBSongsResponse,
 
     /**
      * The UdEnum model constructor.

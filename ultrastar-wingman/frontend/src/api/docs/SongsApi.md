@@ -4,15 +4,16 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**coverApiSongsSongIdCoverGet**](SongsApi.md#coverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Cover
+[**apiCoverApiSongsSongIdCoverGet**](SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
+[**apiSongsApiSongsGet**](SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
 
 
 
-## coverApiSongsSongIdCoverGet
+## apiCoverApiSongsSongIdCoverGet
 
-> Object coverApiSongsSongIdCoverGet(songId)
+> Object apiCoverApiSongsSongIdCoverGet(songId)
 
-Cover
+Api Cover
 
 ### Example
 
@@ -21,7 +22,7 @@ import UltraStarWingman from 'ultra_star_wingman';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
-apiInstance.coverApiSongsSongIdCoverGet(songId, (error, data, response) => {
+apiInstance.apiCoverApiSongsSongIdCoverGet(songId, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -40,6 +41,45 @@ Name | Type | Description  | Notes
 ### Return type
 
 **Object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiSongsApiSongsGet
+
+> SongsResponse apiSongsApiSongsGet()
+
+Retrieve all downloaded songs
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+
+let apiInstance = new UltraStarWingman.SongsApi();
+apiInstance.apiSongsApiSongsGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**SongsResponse**](SongsResponse.md)
 
 ### Authorization
 

@@ -143,7 +143,7 @@ async def proxy(request: Request, path: Optional[str] = ''):
     return Response(content=response.content, status_code=response.status_code, headers=forwarded_response_headers)
 
 
-@app.get('/api/usdb/songs', response_model=models.SongsResponse, tags=["USDB"], summary="Search Songs", response_description="A list of songs matching the criteria")
+@app.get('/api/usdb/songs', response_model=models.USDBSongsResponse, tags=["USDB"], summary="Search Songs", response_description="A list of songs matching the criteria")
 async def api_usdb_songs(
         artist: str = Query(None, nullable=True, description="Filter songs by the artist's name."),
         title: str = Query(None, nullable=True, description="Filter songs by title."),
@@ -177,8 +177,13 @@ async def api_usdb_songs(
     return songs
 
 
+@app.get('/api/songs', response_model=models.SongsResponse, summary="Retrieve all downloaded songs", response_description="A list of songs", tags=["Songs"])
+async def api_songs():
+    return {"songs": Song.song_list()}
+
+
 @app.get('/api/songs/{song_id}/cover', tags=["Songs"])
-async def cover(song_id):
+async def api_cover(song_id):
     song = Song.get_song_by_id(song_id)
 
     if song.cover_path:

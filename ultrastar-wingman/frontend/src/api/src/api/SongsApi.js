@@ -14,6 +14,7 @@
 
 import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
+import SongsResponse from '../model/SongsResponse';
 
 /**
 * Songs service.
@@ -35,24 +36,24 @@ export default class SongsApi {
 
 
     /**
-     * Callback function to receive the result of the coverApiSongsSongIdCoverGet operation.
-     * @callback module:api/SongsApi~coverApiSongsSongIdCoverGetCallback
+     * Callback function to receive the result of the apiCoverApiSongsSongIdCoverGet operation.
+     * @callback module:api/SongsApi~apiCoverApiSongsSongIdCoverGetCallback
      * @param {String} error Error message, if any.
      * @param {Object} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Cover
+     * Api Cover
      * @param {Object} songId 
-     * @param {module:api/SongsApi~coverApiSongsSongIdCoverGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * @param {module:api/SongsApi~apiCoverApiSongsSongIdCoverGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Object}
      */
-    coverApiSongsSongIdCoverGet(songId, callback) {
+    apiCoverApiSongsSongIdCoverGet(songId, callback) {
       let postBody = null;
       // verify the required parameter 'songId' is set
       if (songId === undefined || songId === null) {
-        throw new Error("Missing the required parameter 'songId' when calling coverApiSongsSongIdCoverGet");
+        throw new Error("Missing the required parameter 'songId' when calling apiCoverApiSongsSongIdCoverGet");
       }
 
       let pathParams = {
@@ -71,6 +72,42 @@ export default class SongsApi {
       let returnType = Object;
       return this.apiClient.callApi(
         '/api/songs/{song_id}/cover', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiSongsApiSongsGet operation.
+     * @callback module:api/SongsApi~apiSongsApiSongsGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SongsResponse} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Retrieve all downloaded songs
+     * @param {module:api/SongsApi~apiSongsApiSongsGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SongsResponse}
+     */
+    apiSongsApiSongsGet(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = SongsResponse;
+      return this.apiClient.callApi(
+        '/api/songs', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

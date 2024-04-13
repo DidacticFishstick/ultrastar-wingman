@@ -23,7 +23,7 @@ class DownloadException(Exception):
     pass
 
 
-class Song:
+class SongListItem:
     songs = {}
     usdb_ids = set()
     php_session_id = None
@@ -109,7 +109,7 @@ class Song:
                 logging.exception(f"Could not process song in '{subdir_path}'")
 
     @classmethod
-    async def download(cls, id) -> 'Song':
+    async def download(cls, id) -> 'SongListItem':
         response = await usdb.session.post(f"https://usdb.animux.de/index.php?link=gettxt&id={id}", data={"wd": "1"})
 
         if not 200 <= response.status_code < 300:
@@ -231,7 +231,7 @@ class Song:
         return [s.to_json() for s in cls.songs.values()]
 
     @classmethod
-    def get_song_by_id(cls, id) -> 'Song':
+    def get_song_by_id(cls, id) -> 'SongListItem':
         return cls.songs.get(str(id))
 
     @staticmethod
@@ -277,8 +277,8 @@ class Song:
 
     def __repr__(self):
         if self.usdb_id is not None:
-            return f"[Song '{self.title} - {self.artist}' ({self.usdb_id})]"
-        return f"[Song '{self.title} - {self.artist}']"
+            return f"[SongListItem '{self.title} - {self.artist}' ({self.usdb_id})]"
+        return f"[SongListItem '{self.title} - {self.artist}']"
 
     def to_json(self):
         return {

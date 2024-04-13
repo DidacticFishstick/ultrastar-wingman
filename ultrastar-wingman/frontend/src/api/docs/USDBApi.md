@@ -94,7 +94,7 @@ No authorization required
 
 ## apiUsdbSongsApiUsdbSongsGet
 
-> SongsResponse apiUsdbSongsApiUsdbSongsGet(opts)
+> USDBSongsResponse apiUsdbSongsApiUsdbSongsGet(opts)
 
 Search Songs
 
@@ -145,7 +145,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**SongsResponse**](SongsResponse.md)
+[**USDBSongsResponse**](USDBSongsResponse.md)
 
 ### Authorization
 
