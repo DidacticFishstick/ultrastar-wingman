@@ -78,7 +78,7 @@ function Songs() {
                     }, 50);
                 }}/>
             </div>
-            {/*{loading && <Spinner/>}*/}
+            {loading && <Spinner/>}
             {error && <h1>{error}</h1>}
             <ul className={"songs-list"}>
                 {filteredSongs.map(song => (
