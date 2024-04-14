@@ -4,6 +4,6 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**songs** | [**[SongListItem]**](Song.md) |  | 
+**songs** | [**[Song]**](Song.md) |  | 
 
 

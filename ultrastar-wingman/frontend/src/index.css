@@ -2,12 +2,15 @@
     --bg: #021720;
     --footer-bg: #162e42;
     --tile-bg: #1b3347;
+    --input-bg: #1c2832;
     --color: #fff;
     --color-dark: #ccc;
     --highlight-pink-light: #9e3b95;
     --highlight-pink-dark: #6d2d90;
     --highlight-blue-light: #4b92cd;
     --highlight-blue-dark: #292d71;
+    --border-radius: 16px;
+    --border-radius-small: 8px;
 }
 
 body {

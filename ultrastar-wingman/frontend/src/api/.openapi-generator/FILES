@@ -9,7 +9,7 @@ docs/Paging.md
 docs/PlayerCreation.md
 docs/PlayerList.md
 docs/PlayersApi.md
-docs/SongListItem.md
+docs/Song.md
 docs/SongsApi.md
 docs/SongsResponse.md
 docs/USDBApi.md
@@ -37,7 +37,7 @@ src/model/OrderEnum.js
 src/model/Paging.js
 src/model/PlayerCreation.js
 src/model/PlayerList.js
-src/model/SongListItem.js
+src/model/Song.js
 src/model/SongsResponse.js
 src/model/USDBSong.js
 src/model/USDBSongsResponse.js
@@ -45,5 +45,3 @@ src/model/UdEnum.js
 src/model/UsdbId.js
 src/model/UsdbIdsList.js
 src/model/ValidationError.js
-test/model/USDBSong.spec.js
-test/model/USDBSongsResponse.spec.js

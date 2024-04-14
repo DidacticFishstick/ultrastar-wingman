@@ -147,7 +147,7 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.Paging](docs/Paging.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
  - [UltraStarWingman.PlayerList](docs/PlayerList.md)
- - [UltraStarWingman.SongListItem](docs/Song.md)
+ - [UltraStarWingman.Song](docs/Song.md)
  - [UltraStarWingman.SongsResponse](docs/SongsResponse.md)
  - [UltraStarWingman.USDBSong](docs/USDBSong.md)
  - [UltraStarWingman.USDBSongsResponse](docs/USDBSongsResponse.md)

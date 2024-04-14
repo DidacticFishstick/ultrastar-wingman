@@ -7,9 +7,13 @@
     padding: 16px;
 }
 
+.tile-container.slim {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+}
+
 .tile {
     background-color: var(--tile-bg);
-    border-radius: 16px;
+    border-radius: var(--border-radius);
     transition: 0.2s transform, 0.1s color;
 }
 
@@ -17,7 +21,11 @@
     grid-column: 1 / -1; /* Makes the tile span all columns */
 }
 
-.tile.clickable:hover {
+.tile.clickable {
+    cursor: pointer;
+}
+
+.tile.clickable:active {
     transform: scale(1.05);
     color: var(--highlight-blue-light);
 }
@@ -29,7 +37,6 @@
     align-items: center;
     bottom: 0;
     padding: 20px 10px;
-    cursor: pointer;
     font-size: 3em;
 }
 

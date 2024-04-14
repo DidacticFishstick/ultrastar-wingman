@@ -1,0 +1,53 @@
+.songs-search {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -1px;/*Small bleed above search bar when scrolling on mobile -> +1 padding -1 margin to hide*/
+    background: var(--bg);
+    padding: 17px 16px 16px 16px;
+}
+
+.songs-search > div {
+    position: relative;
+}
+
+.songs-search input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 40px;
+    border-radius: var(--border-radius-small);
+    outline: none;
+    font-size: 1.2em;
+    background: var(--input-bg);
+    color: var(--color);
+}
+
+.songs-search input::placeholder {
+    color: var(--color-dark);
+    opacity: 1; /* Firefox */
+}
+
+.songs-search input::-ms-input-placeholder { /* Edge 12-18 */
+    color: var(--color-dark);
+}
+
+.songs-search span {
+    position: absolute;
+    height: 100%;
+    width: 40px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    color: var(--color-dark);
+}
+
+.songs-search span.cancel {
+    right: 0;
+}
+
+.songs-list ul {
+    padding: 0 16px;
+    margin: 0;
+}

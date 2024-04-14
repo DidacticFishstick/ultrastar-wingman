@@ -1,4 +1,4 @@
-# UltraStarWingman.SongListItem
+# UltraStarWingman.Song
 
 ## Properties
 
