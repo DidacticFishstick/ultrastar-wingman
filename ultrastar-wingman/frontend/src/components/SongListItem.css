@@ -39,7 +39,7 @@ ul.songs-list {
 }
 
 .song-list-item .artist {
-    font-size: 0.61803em;
+    font-size: 0.8em;
     color: var(--color-dark);
 }
 

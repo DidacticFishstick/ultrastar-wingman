@@ -96,7 +96,6 @@ function UsdbList() {
             </p>
             <p>
                 Ultrastar Wingman proxies usdb.animux.de to enable every client to browse and download songs without the need for individual accounts.
-                It also adds a download button to the default USDB site when accessed through Ultrastar Wingman.
             </p>
             <NavLink className={"usdb-link"} to="/usdb">Switch to the default USDB view</NavLink>
             <h2>Search USDB</h2>
@@ -125,8 +124,8 @@ function UsdbList() {
             {loading && songs.length === 0 && <div className={"top-spinner"}>
                 <Spinner/>
             </div>}
-            {error && <h1>{error}</h1>}
             <UsdbSearchResults songs={songs}/>
+            {error && <h1>{error}</h1>}
             {loading && songs.length !== 0 && <div className={"bottom-spinner"}>
                 <Spinner/>
             </div>}
