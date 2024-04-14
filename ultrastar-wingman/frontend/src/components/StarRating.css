@@ -1,0 +1,8 @@
+.star-rating {
+    color: var(--highlight-blue-light);
+    margin-right: 4px;
+}
+
+.star-rating svg {
+    margin-bottom: -0.12em;
+}

@@ -17,6 +17,7 @@ ul.songs-list {
     height: 48px;
     background-size: cover;
     background-position: center;
+    background-color: #000;
 }
 
 .song-list-item .details {
@@ -27,6 +28,14 @@ ul.songs-list {
 .song-list-item .title {
     font-size: 1em;
     color: var(--color);
+}
+
+.song-list-item .title .mark {
+    color: var(--highlight-pink-light);
+}
+
+.song-list-item .title .mark svg {
+    margin-bottom: -0.12em;
 }
 
 .song-list-item .artist {

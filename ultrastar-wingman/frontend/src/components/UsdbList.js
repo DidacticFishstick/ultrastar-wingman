@@ -7,6 +7,7 @@ import {TbArrowsSort} from "react-icons/tb";
 import './UsdbList.css';
 import Spinner from "./Spinner";
 import Input from "./Input";
+import Button from "./Button";
 import {NavLink} from "react-router-dom";
 import {USDBApi} from "../api/src";
 
@@ -34,18 +35,13 @@ function UsdbList() {
             setLoading(true);
             setError(null);
 
-            console.log(order);
-            console.log(order.split("-")[0]);
-            console.log(order.split("-")[1]);
-
-            // TODO: parameters
-            // TODO: onscroll paging
+            // TODO: use callback
             const response = await api.apiUsdbSongsApiUsdbSongsGet({
                 artist: artist,
                 title: title,
                 order: order.split("-")[0],
                 ud: order.split("-")[1],
-                page: currentPage
+                page: new_fetch ? 1 : currentPage + 1
             });
 
             const xhr = response.xhr;
@@ -89,7 +85,7 @@ function UsdbList() {
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [currentPage, hasMore]); // Dependencies ensure fetchData is called appropriately
+    }, [currentPage, hasMore]);
 
 
     return (
@@ -103,6 +99,7 @@ function UsdbList() {
                 Ultrastar Wingman proxies usdb.animux.de to enable every client to browse and download songs without the need for individual accounts.
                 It also adds a download button to the default USDB site when accessed through Ultrastar Wingman.
             </p>
+            <NavLink className={"usdb-link"} to="/usdb">Switch to the default USDB view</NavLink>
             <h2>Search USDB</h2>
             <div ref={inputBoxRef} className={"usdb-search"}>
                 <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle}/>
@@ -124,9 +121,7 @@ function UsdbList() {
                         <option value="views-asc">Views - low to high</option>
                     </select>
                 </div>
-                <button onClick={() => fetchSongs(true)}>Search</button>
-
-                <NavLink to="/usdb">switch to the default USDB view</NavLink>
+                <Button text={"Search"} onClick={() => fetchSongs(true)}/>
             </div>
             {loading && songs.length === 0 && <div className={"top-spinner"}>
                 <Spinner/>

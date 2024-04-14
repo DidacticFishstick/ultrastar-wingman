@@ -1,3 +1,10 @@
+.usdb-list .usdb-link {
+    display: block;
+    margin: 0 auto;
+    width: max-content;
+    color: var(--color) !important;
+}
+
 .usdb-list .usdb-search {
     position: -webkit-sticky;
     position: sticky;
@@ -6,7 +13,8 @@
     padding-bottom: 16px;
 }
 
-.usdb-list .usdb-search .input-field {
+.usdb-list .usdb-search .input-field,
+.usdb-list .usdb-search .button {
     margin-top: 16px;
 }
 
@@ -18,4 +26,8 @@
     left: 0;
     z-index: 200;
     margin: 0 auto;
+}
+
+.usdb-list h2 {
+    margin-top: 32px;
 }

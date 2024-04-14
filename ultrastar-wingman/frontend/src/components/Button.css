@@ -1,0 +1,23 @@
+.button {
+    display: block;
+    padding: 4px 40px;
+    width: max-content;
+    margin: 0 auto;
+    border-radius: var(--border-radius-small);
+    outline: none;
+    font-size: 1em;
+    background: var(--input-bg);
+    color: var(--color);
+    border: 1px solid var(--input-border-color);
+    cursor: pointer;
+}
+
+.button:focus {
+    border: 1px solid var(--highlight-blue-light);
+}
+
+.input-field input::placeholder,
+.input-field select::placeholder {
+    color: var(--color-dark);
+    opacity: 1; /* Firefox */
+}
