@@ -22,30 +22,18 @@ function Songs() {
 
     useEffect(() => {
         const fetchSongs = async () => {
-            try {
-                setLoading(true);
-                setError(null);
+            setLoading(true);
+            setError(null);
 
-                const response = await api.apiSongsApiSongsGet();
-
-                const xhr = response.xhr;
-
-                if (xhr.status >= 200 && xhr.status < 300) {
-
-                    xhr.onload = () => {
-                        const data = JSON.parse(xhr.response);
-
-                        setSongs(data.songs);
-                    };
+            api.apiSongsApiSongsGet((error, data, response) => {
+                if (error) {
+                    console.error(error, response.text);
+                    setError(error + " - " + response.text);
                 } else {
-                    throw new Error('Failed to fetch songs with status: ' + xhr.status);
+                    setSongs(data.songs);
+                    setLoading(false);
                 }
-            } catch (err) {
-                console.error(err);
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+            });
         };
 
         fetchSongs();

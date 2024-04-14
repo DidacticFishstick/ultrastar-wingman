@@ -30,51 +30,39 @@ function UsdbList() {
     const fetchSongs = async (new_fetch) => {
         if (!new_fetch && !hasMore) return;
 
-        try {
-            if (new_fetch) setSongs([]);
-            setLoading(true);
-            setError(null);
+        if (new_fetch) setSongs([]);
+        setLoading(true);
+        setError(null);
 
-            // TODO: use callback
-            const response = await api.apiUsdbSongsApiUsdbSongsGet({
-                artist: artist,
-                title: title,
-                order: order.split("-")[0],
-                ud: order.split("-")[1],
-                page: new_fetch ? 1 : currentPage + 1
-            });
-
-            const xhr = response.xhr;
-
-            if (xhr.status >= 200 && xhr.status < 300) {
-
-                xhr.onload = () => {
-                    const data = JSON.parse(xhr.response);
-
-                    if (new_fetch) {
-                        setSongs(data.songs);
-                        setCurrentPage(1);
-                        setHasMore(data.paging.current < data.paging.pages);
-
-                        // wait a little before scrolling, to make sure the content has loaded
-                        setTimeout(() => {
-                            inputBoxRef.current.scrollIntoView({behavior: "smooth", block: "start"})
-                        }, 50);
-                    } else {
-                        setSongs(prevSongs => [...prevSongs, ...data.songs]);
-                        setCurrentPage(data.paging.current);
-                        setHasMore(data.paging.current < data.paging.pages);
-                    }
-                };
+        api.apiUsdbSongsApiUsdbSongsGet({
+            artist: artist,
+            title: title,
+            order: order.split("-")[0],
+            ud: order.split("-")[1],
+            page: new_fetch ? 1 : currentPage + 1
+        }, (error, data, response) => {
+            if (error) {
+                console.error(error, response.text);
+                setError(error + " - " + response.text);
             } else {
-                throw new Error('Failed to fetch songs with status: ' + xhr.status);
+                if (new_fetch) {
+                    setSongs(data.songs);
+                    setCurrentPage(1);
+                    setHasMore(data.paging.current < data.paging.pages);
+
+                    // wait a little before scrolling, to make sure the content has loaded
+                    setTimeout(() => {
+                        inputBoxRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+                    }, 50);
+                } else {
+                    setSongs(prevSongs => [...prevSongs, ...data.songs]);
+                    setCurrentPage(data.paging.current);
+                    setHasMore(data.paging.current < data.paging.pages);
+                }
+
+                setLoading(false);
             }
-        } catch (err) {
-            console.error(err);
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
+        });
     };
 
     useEffect(() => {
