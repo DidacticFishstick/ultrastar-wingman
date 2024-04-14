@@ -54,7 +54,7 @@ function UsdbList() {
                     if (new_fetch) {
                         setSongs(data.songs);
                         setCurrentPage(1);
-                        setHasMore(currentPage < data.paging.pages);
+                        setHasMore(data.paging.current < data.paging.pages);
 
                         // wait a little before scrolling, to make sure the content has loaded
                         setTimeout(() => {
@@ -62,8 +62,8 @@ function UsdbList() {
                         }, 50);
                     } else {
                         setSongs(prevSongs => [...prevSongs, ...data.songs]);
-                        setCurrentPage(currentPage + 1);
-                        setHasMore(currentPage < data.paging.pages);
+                        setCurrentPage(data.paging.current);
+                        setHasMore(data.paging.current < data.paging.pages);
                     }
                 };
             } else {
@@ -85,8 +85,7 @@ function UsdbList() {
 
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, [currentPage, hasMore]);
-
+    }, [currentPage, hasMore, artist, title, order]);
 
     return (
         <div className={"usdb-list"}>
