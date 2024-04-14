@@ -5,6 +5,7 @@ import httpx
 from typing import Optional
 from enum import Enum
 from bs4 import BeautifulSoup
+from fastapi import HTTPException
 
 import config
 import ws
@@ -132,6 +133,10 @@ async def get_songs(artist: Optional[str] = None, title: Optional[str] = None, e
 
     response = await session.post("https://usdb.animux.de/?link=list", data=payload)
 
+    if "You are not logged in." in response.text:
+        logging.error("No longer logged in to usdb.animux.de")
+        raise HTTPException(status_code=403, detail="Not logged in to usdb.animux.de")
+
     # Parse the HTML content
     soup = BeautifulSoup(response.text, "html.parser")
 
@@ -146,6 +151,7 @@ async def get_songs(artist: Optional[str] = None, title: Optional[str] = None, e
         result["paging"]["pages"] = int(current.get_text()[1:-1])
 
     # TODO: get total number of songs
+    # TODO: 403 if not logged into USDB
 
     # Extract table rows
     rows = soup.select('.row1 table tr:not(.list_head)')
