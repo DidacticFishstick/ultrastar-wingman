@@ -6,9 +6,7 @@ import {SongsApi} from "../api/src";
 import SongListItem from "./SongListItem";
 import SongDetailsModal from "./SongDetailsModal";
 import './Songs.css';
-import {VscSettings} from "react-icons/vsc";
 import Tile from "./Tile";
-import {TfiReload} from "react-icons/tfi";
 
 function Songs() {
     const [songs, setSongs] = useState([]);
@@ -55,18 +53,12 @@ function Songs() {
     return (
         <div className="songs-list">
             <h2>Download New Songs</h2>
-            <div className="tile-container slim">
-                <Tile className={"icon-and-text clickable"}>
-                    <VscSettings/>
-                    <label>Settings</label>
+            <div className="download-options tile-container slim">
+                <Tile className={"usdb clickable"}>
+                    <label>USDB</label>
                 </Tile>
-                <Tile className={"icon-and-text clickable"}>
-                    <TfiReload/>
-                    <label>Restart USDX</label>
-                </Tile>
-                <Tile className={"icon-and-text clickable"}>
-                    <TfiReload/>
-                    <label>Restart USDX</label>
+                <Tile className={"ultrasinger clickable"}>
+                    <label>UltraSinger</label>
                 </Tile>
             </div>
             <h2>Downloaded Songs</h2>

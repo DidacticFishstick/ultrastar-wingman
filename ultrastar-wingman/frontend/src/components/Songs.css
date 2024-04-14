@@ -47,6 +47,38 @@
     right: 0;
 }
 
+.songs-list .download-options .tile {
+    position: relative;
+    height: 120px;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.songs-list .download-options .tile.usdb {
+    /*TODO: icon that has more pixels than I can count on one hand*/
+    background-size: 50%;
+    background-image: url("https://usdb.animux.de/images/browser_icon.ico");
+}
+
+.songs-list .download-options .tile.ultrasinger {
+    background-image: url("https://repository-images.githubusercontent.com/594208922/4befe3da-a448-4cbc-b6ef-93899119071b");
+}
+
+.songs-list .download-options .tile label {
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 4px;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 12px, rgba(0, 0, 0, 0) 64px);
+    color: var(--color);
+    width: 100%;
+    height: 80px;
+    cursor: pointer;
+}
+
 .songs-list ul {
     padding: 0 16px;
     margin: 0;
