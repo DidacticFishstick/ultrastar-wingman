@@ -10,17 +10,21 @@
     }
 }
 
-h1, h2 {
+h1, h2, p {
     color: var(--color);
 }
 
 h1 {
     font-size: 1.5em;
-    margin: 32px 16px;
+    margin: 32px 16px 16px 16px;
+    text-align: center;
 }
-
 
 h2 {
     font-size: 1em;
     margin: 16px 16px 0 16px;
+}
+
+p {
+    margin: 16px 16px;
 }

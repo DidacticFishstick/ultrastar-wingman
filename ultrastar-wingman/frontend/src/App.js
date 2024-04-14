@@ -3,6 +3,7 @@ import {ApiClient} from "./api/src";
 import BottomNav from './components/BottomNav';
 import Home from './components/Home';
 import Songs from './components/Songs';
+import UsdbList from './components/UsdbList';
 import './App.css';
 
 
@@ -16,6 +17,7 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home/>}/>
                     <Route path="/songs" element={<Songs/>}/>
+                    <Route path="/usdbList" element={<UsdbList/>}/>
                 </Routes>
                 <BottomNav/>
             </BrowserRouter>

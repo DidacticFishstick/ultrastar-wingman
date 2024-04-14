@@ -1,53 +1,4 @@
-.songs-search {
-    position: -webkit-sticky;
-    position: sticky;
-    top: -1px;/*Small bleed above search bar when scrolling on mobile -> +1 padding -1 margin to hide*/
-    background: var(--bg);
-    padding: 17px 16px 16px 16px;
-}
-
-.songs-search > div {
-    position: relative;
-}
-
-.songs-search input {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 8px 40px;
-    border-radius: var(--border-radius-small);
-    outline: none;
-    font-size: 1.2em;
-    background: var(--input-bg);
-    color: var(--color);
-}
-
-.songs-search input::placeholder {
-    color: var(--color-dark);
-    opacity: 1; /* Firefox */
-}
-
-.songs-search input::-ms-input-placeholder { /* Edge 12-18 */
-    color: var(--color-dark);
-}
-
-.songs-search span {
-    position: absolute;
-    height: 100%;
-    width: 40px;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2em;
-    color: var(--color-dark);
-}
-
-.songs-search span.cancel {
-    right: 0;
-}
-
-.songs-list .download-options .tile {
+.songs-page .download-options .tile {
     position: relative;
     height: 120px;
     background-position: center;
@@ -55,17 +6,17 @@
     background-repeat: no-repeat;
 }
 
-.songs-list .download-options .tile.usdb {
+.songs-page .download-options .tile.usdb {
     /*TODO: icon that has more pixels than I can count on one hand*/
     background-size: 50%;
     background-image: url("https://usdb.animux.de/images/browser_icon.ico");
 }
 
-.songs-list .download-options .tile.ultrasinger {
+.songs-page .download-options .tile.ultra-singer {
     background-image: url("https://repository-images.githubusercontent.com/594208922/4befe3da-a448-4cbc-b6ef-93899119071b");
 }
 
-.songs-list .download-options .tile label {
+.songs-page .download-options .tile label {
     display: flex;
     justify-content: center;
     align-items: end;
@@ -79,7 +30,14 @@
     cursor: pointer;
 }
 
-.songs-list ul {
-    padding: 0 16px;
-    margin: 0;
+.songs-search {
+    position: -webkit-sticky;
+    position: sticky;
+    top: -1px; /*Small bleed above search bar when scrolling on mobile -> +1 padding -1 margin to hide*/
+    background: var(--bg);
+    padding: 17px 0 16px 0;
+}
+
+.songs-search > div {
+    position: relative;
 }

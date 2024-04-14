@@ -1,0 +1,11 @@
+.usdb-list .usdb-search {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding-bottom: 16px;
+}
+
+.usdb-list .usdb-search .input-field {
+    margin-top: 16px;
+}

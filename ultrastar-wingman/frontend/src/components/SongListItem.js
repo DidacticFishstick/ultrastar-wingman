@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import './SongListItem.css';
 
-function SongListItem({song, onClick}) {
+function SongListItem({song, onClick, coverUrl}) {
 
     return (
         <li key={song.id} className="song-list-item" onClick={onClick}>
-            <div className="cover" style={{backgroundImage: `url('/api/songs/${song.id}/cover')`}}>
+            <div className="cover" style={{backgroundImage: `url('${coverUrl}')`}}>
             </div>
             <div className="details">
                 <div className="title">{song.title}</div>

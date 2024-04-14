@@ -1,33 +1,50 @@
 // Songs.js
 import React, {useState, useEffect, useRef} from 'react';
-import {FaSearch} from "react-icons/fa";
-import {GiCancel} from "react-icons/gi";
+import {NavLink} from 'react-router-dom';
 import {SongsApi} from "../api/src";
 import SongListItem from "./SongListItem";
 import SongDetailsModal from "./SongDetailsModal";
 import './Songs.css';
 import Tile from "./Tile";
+import Spinner from "./Spinner";
+import Input from "./Input";
+import {FaSearch} from "react-icons/fa";
 
 function Songs() {
     const [songs, setSongs] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSong, setSelectedSong] = useState(null);
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
     const api = new SongsApi();
 
     useEffect(() => {
         const fetchSongs = async () => {
-            const response = await api.apiSongsApiSongsGet();
-            const xhr = response.xhr;
+            try {
+                setLoading(true);
+                setError(null);
 
-            if (xhr.status >= 200 && xhr.status < 300) {
+                const response = await api.apiSongsApiSongsGet();
 
-                xhr.onload = () => {
-                    const data = JSON.parse(xhr.response);
+                const xhr = response.xhr;
 
-                    setSongs(data.songs);
-                };
-            } else {
-                console.log('Failed to fetch songs with status: ' + xhr.status);
+                if (xhr.status >= 200 && xhr.status < 300) {
+
+                    xhr.onload = () => {
+                        const data = JSON.parse(xhr.response);
+
+                        setSongs(data.songs);
+                    };
+                } else {
+                    throw new Error('Failed to fetch songs with status: ' + xhr.status);
+                }
+            } catch (err) {
+                console.error(err);
+                setError(err.message);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -51,42 +68,33 @@ function Songs() {
     const inputRef = useRef();
 
     return (
-        <div className="songs-list">
-            <h2>Download New Songs</h2>
+        <div className="songs-page">
+            <h2>Get New Songs</h2>
             <div className="download-options tile-container slim">
-                <Tile className={"usdb clickable"}>
-                    <label>USDB</label>
-                </Tile>
-                <Tile className={"ultrasinger clickable"}>
-                    <label>UltraSinger</label>
-                </Tile>
+                <NavLink to="/UsdbList">
+                    <Tile className={"usdb clickable"}>
+                        <label>USDB</label>
+                    </Tile>
+                </NavLink>
+                <NavLink to="/ultraSinger">
+                    <Tile className={"ultra-singer clickable"}>
+                        <label>UltraSinger</label>
+                    </Tile>
+                </NavLink>
             </div>
             <h2>Downloaded Songs</h2>
-            <div className="songs-search">
-                <div>
-                    {/*TODO: scroll on focus does not work on mobile*/}
-                    <span className={"search"}>
-                        <FaSearch/>
-                    </span>
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        placeholder="Search downloaded songs"
-                        value={searchTerm}
-                        onChange={e => setSearchTerm(e.target.value)}
-                        onFocus={() => inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})}
-                    />
-                    {searchTerm && <span className={"cancel"} onClick={() => {
-                        inputRef.current.value = '';
-                        setSearchTerm('');
-                    }}>
-                        <GiCancel/>
-                    </span>}
-                </div>
+            <div ref={inputRef} className="songs-search">
+                <Input type="text" placeholder="Search downloaded songs" icon={<FaSearch/>} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onFocus={() => {
+                    setTimeout(() => {
+                        inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+                    }, 50);
+                }}/>
             </div>
-            <ul>
+            {loading && <Spinner/>}
+            {error && <h1>{error}</h1>}
+            <ul className={"songs-list"}>
                 {filteredSongs.map(song => (
-                    <SongListItem song={song} onClick={() => handleSongClick(song)}/>
+                    <SongListItem song={song} coverUrl={`/api/songs/${song.id}/cover`} onClick={() => handleSongClick(song)}/>
                 ))}
             </ul>
             {selectedSong && <SongDetailsModal song={selectedSong} onClose={closeModal}/>}
