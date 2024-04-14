@@ -46,16 +46,11 @@
     justify-content: center;
     font-size: 1.2em;
     color: var(--color-dark);
-    pointer-events: none;
 }
 
 .input-field span.cancel {
     right: 0;
     cursor: pointer;
-}
-
-.input-field span.cancel svg {
-    pointer-events: all;
 }
 
 .input-field span.cancel:hover {

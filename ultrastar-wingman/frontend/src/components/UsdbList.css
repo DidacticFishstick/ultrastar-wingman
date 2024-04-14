@@ -11,9 +11,13 @@
     top: 0;
     background: var(--bg);
     padding-bottom: 16px;
+    margin-top: 16px;
 }
 
-.usdb-list .usdb-search .input-field,
+.usdb-list .usdb-search .input-field {
+    margin-top: 8px;
+}
+
 .usdb-list .usdb-search .button {
     margin-top: 16px;
 }

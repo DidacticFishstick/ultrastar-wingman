@@ -88,8 +88,8 @@ function UsdbList() {
             <NavLink className={"usdb-link"} to="/usdb">Switch to the default USDB view</NavLink>
             <h2>Search USDB</h2>
             <div ref={inputBoxRef} className={"usdb-search"}>
-                <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle}/>
-                <Input type="text" placeholder="Artist" icon={<IoPerson/>} searchTerm={artist} setSearchTerm={setArtist}/>
+                <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle} onEnter={() => fetchSongs(true)}/>
+                <Input type="text" placeholder="Artist" icon={<IoPerson/>} searchTerm={artist} setSearchTerm={setArtist} onEnter={() => fetchSongs(true)}/>
                 <div className={"input-field"}>
                     <span className={"search"}>
                         <TbArrowsSort/>
