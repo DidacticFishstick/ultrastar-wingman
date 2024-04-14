@@ -15,7 +15,7 @@ function Spinner() {
         size={150}
         aria-label="Loading Spinner"
         data-testid="loader"
-        speedMultiplier={0.8}
+        // speedMultiplier={0.8}
     />
 }
 

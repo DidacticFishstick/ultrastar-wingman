@@ -3,7 +3,11 @@
     margin: 0 16px;
 }
 
-.input-field input {
+.input-field input,
+.input-field select {
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
     display: block;
     width: 100%;
     box-sizing: border-box;
@@ -16,16 +20,19 @@
     border: 1px solid var(--input-border-color);
 }
 
-.input-field input:focus {
+.input-field input:focus,
+.input-field select:focus {
     border: 1px solid var(--highlight-blue-light);
 }
 
-.input-field input::placeholder {
+.input-field input::placeholder,
+.input-field select::placeholder {
     color: var(--color-dark);
     opacity: 1; /* Firefox */
 }
 
-.input-field input::-ms-input-placeholder { /* Edge 12-18 */
+.input-field input::-ms-input-placeholder, /* Edge 12-18 */
+.input-field select::-ms-input-placeholder { /* Edge 12-18 */
     color: var(--color-dark);
 }
 

@@ -9,3 +9,13 @@
 .usdb-list .usdb-search .input-field {
     margin-top: 16px;
 }
+
+.usdb-list .bottom-spinner {
+    width: 100%;
+    /*max-width: 1200px;*/
+    position: fixed;
+    bottom: calc(50px + max(10px, env(safe-area-inset-bottom)));
+    left: 0;
+    z-index: 200;
+    margin: 0 auto;
+}

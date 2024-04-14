@@ -1,8 +1,9 @@
 // UsdbList.js
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UsdbSearchResults from './UsdbSearchResults';
 import {PiTextTBold} from "react-icons/pi";
 import {IoPerson} from "react-icons/io5";
+import {TbArrowsSort} from "react-icons/tb";
 import './UsdbList.css';
 import Spinner from "./Spinner";
 import Input from "./Input";
@@ -12,9 +13,11 @@ import {USDBApi} from "../api/src";
 function UsdbList() {
     const [title, setTitle] = useState('');
     const [artist, setArtist] = useState('');
-    const [order, setOrder] = useState('ascending');
+    const [order, setOrder] = useState('rating-desc');
     const [songs, setSongs] = useState([]);
-    const [showInfo, setShowInfo] = useState(true);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -23,14 +26,27 @@ function UsdbList() {
 
     const api = new USDBApi();
 
-    const fetchSongs = async () => {
+    const fetchSongs = async (new_fetch) => {
+        if (!new_fetch && !hasMore) return;
+
         try {
+            if (new_fetch) setSongs([]);
             setLoading(true);
             setError(null);
 
+            console.log(order);
+            console.log(order.split("-")[0]);
+            console.log(order.split("-")[1]);
+
             // TODO: parameters
             // TODO: onscroll paging
-            const response = await api.apiUsdbSongsApiUsdbSongsGet();
+            const response = await api.apiUsdbSongsApiUsdbSongsGet({
+                artist: artist,
+                title: title,
+                order: order.split("-")[0],
+                ud: order.split("-")[1],
+                page: currentPage
+            });
 
             const xhr = response.xhr;
 
@@ -39,12 +55,20 @@ function UsdbList() {
                 xhr.onload = () => {
                     const data = JSON.parse(xhr.response);
 
-                    setSongs(data.songs);
+                    if (new_fetch) {
+                        setSongs(data.songs);
+                        setCurrentPage(1);
+                        setHasMore(currentPage < data.paging.pages);
 
-                    // wait a little before scrolling, to make sure the content has loaded
-                    setTimeout(() => {
-                        inputBoxRef.current.scrollIntoView({behavior: "smooth", block: "start"})
-                    }, 50);
+                        // wait a little before scrolling, to make sure the content has loaded
+                        setTimeout(() => {
+                            inputBoxRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+                        }, 50);
+                    } else {
+                        setSongs(prevSongs => [...prevSongs, ...data.songs]);
+                        setCurrentPage(currentPage + 1);
+                        setHasMore(currentPage < data.paging.pages);
+                    }
                 };
             } else {
                 throw new Error('Failed to fetch songs with status: ' + xhr.status);
@@ -56,6 +80,17 @@ function UsdbList() {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+            fetchSongs(false);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, [currentPage, hasMore]); // Dependencies ensure fetchData is called appropriately
+
 
     return (
         <div className={"usdb-list"}>
@@ -72,17 +107,35 @@ function UsdbList() {
             <div ref={inputBoxRef} className={"usdb-search"}>
                 <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle}/>
                 <Input type="text" placeholder="Artist" icon={<IoPerson/>} searchTerm={artist} setSearchTerm={setArtist}/>
-                <select value={order} onChange={(e) => setOrder(e.target.value)}>
-                    <option value="ascending">Ascending</option>
-                    <option value="descending">Descending</option>
-                </select>
-                <button onClick={fetchSongs}>Search</button>
+                <div className={"input-field"}>
+                    <span className={"search"}>
+                        <TbArrowsSort/>
+                    </span>
+                    <select value={order} onChange={(e) => setOrder(e.target.value)}>
+                        <option value="id-asc">Date - old to new</option>
+                        <option value="id-desc">Date - new to old</option>
+                        <option value="artist-asc">Artist - ascending</option>
+                        <option value="artist-desc">Artist - descending</option>
+                        <option value="title-asc">Titel - ascending</option>
+                        <option value="title-desc">Titel - descending</option>
+                        <option value="rating-desc">Rating - high to low</option>
+                        <option value="rating-asc">Rating - low to high</option>
+                        <option value="views-desc">Views - high to low</option>
+                        <option value="views-asc">Views - low to high</option>
+                    </select>
+                </div>
+                <button onClick={() => fetchSongs(true)}>Search</button>
 
                 <NavLink to="/usdb">switch to the default USDB view</NavLink>
             </div>
-            {loading && <Spinner/>}
+            {loading && songs.length === 0 && <div className={"top-spinner"}>
+                <Spinner/>
+            </div>}
             {error && <h1>{error}</h1>}
             <UsdbSearchResults songs={songs}/>
+            {loading && songs.length !== 0 && <div className={"bottom-spinner"}>
+                <Spinner/>
+            </div>}
         </div>
     );
 }
