@@ -4,9 +4,9 @@ import React from 'react';
 import SongListItem from "./SongListItem";
 
 const UsdbSearchResults = ({ songs }) => {
-    if (songs.length === 0) {
-        return <p>No songs found.</p>;
-    }
+    // if (songs.length === 0) {
+    //     return <p>No songs found.</p>;
+    // }
 
     return (
         <ul className={"songs-list"}>

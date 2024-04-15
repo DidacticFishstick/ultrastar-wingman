@@ -56,3 +56,25 @@
 .input-field span.cancel:hover {
     color: var(--highlight-blue-light);
 }
+
+.combined-input {
+    margin: 0 16px;
+    border-radius: var(--border-radius-small);
+    overflow: hidden;
+    border: 1px solid var(--input-border-color);
+}
+
+.combined-input .input-field {
+    margin: 0 0;
+}
+
+.combined-input .input-field input,
+.combined-input .input-field select {
+    border-radius: 0;
+    border: none;
+}
+
+.combined-input .input-field:not(:nth-child(1)) input,
+.combined-input .input-field:not(:nth-child(1)) select {
+    border-top: 1px solid var(--input-border-color);
+}

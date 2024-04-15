@@ -72,7 +72,7 @@ function Songs() {
             </div>
             <h2>Downloaded Songs</h2>
             <div ref={inputRef} className="songs-search">
-                <Input type="text" placeholder="Search downloaded songs" icon={<FaSearch/>} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onFocus={() => {
+                <Input type="text" placeholder="Search downloaded songs" icon={<FaSearch/>} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onEnter={() => {}} onFocus={() => {
                     setTimeout(() => {
                         inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})
                     }, 50);

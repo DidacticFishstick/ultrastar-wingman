@@ -22,7 +22,7 @@ ul.songs-list {
 
 .song-list-item .details {
     display: grid;
-    gap: 5px;
+    gap: 4px;
 }
 
 .song-list-item .title {

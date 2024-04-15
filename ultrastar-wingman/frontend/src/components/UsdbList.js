@@ -88,24 +88,26 @@ function UsdbList() {
             <NavLink className={"usdb-link"} to="/usdb">Switch to the default USDB view</NavLink>
             <h2>Search USDB</h2>
             <div ref={inputBoxRef} className={"usdb-search"}>
-                <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle} onEnter={() => fetchSongs(true)}/>
-                <Input type="text" placeholder="Artist" icon={<IoPerson/>} searchTerm={artist} setSearchTerm={setArtist} onEnter={() => fetchSongs(true)}/>
-                <div className={"input-field"}>
+                <div className={"combined-input"}>
+                    <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle} onEnter={() => fetchSongs(true)}/>
+                    <Input type="text" placeholder="Artist" icon={<IoPerson/>} searchTerm={artist} setSearchTerm={setArtist} onEnter={() => fetchSongs(true)}/>
+                    <div className={"input-field"}>
                     <span className={"search"}>
                         <TbArrowsSort/>
                     </span>
-                    <select value={order} onChange={(e) => setOrder(e.target.value)}>
-                        <option value="id-asc">Date - old to new</option>
-                        <option value="id-desc">Date - new to old</option>
-                        <option value="artist-asc">Artist - ascending</option>
-                        <option value="artist-desc">Artist - descending</option>
-                        <option value="title-asc">Titel - ascending</option>
-                        <option value="title-desc">Titel - descending</option>
-                        <option value="rating-desc">Rating - high to low</option>
-                        <option value="rating-asc">Rating - low to high</option>
-                        <option value="views-desc">Views - high to low</option>
-                        <option value="views-asc">Views - low to high</option>
-                    </select>
+                        <select value={order} onChange={(e) => setOrder(e.target.value)}>
+                            <option value="id-asc">Date - old to new</option>
+                            <option value="id-desc">Date - new to old</option>
+                            <option value="artist-asc">Artist - ascending</option>
+                            <option value="artist-desc">Artist - descending</option>
+                            <option value="title-asc">Titel - ascending</option>
+                            <option value="title-desc">Titel - descending</option>
+                            <option value="rating-desc">Rating - high to low</option>
+                            <option value="rating-asc">Rating - low to high</option>
+                            <option value="views-desc">Views - high to low</option>
+                            <option value="views-asc">Views - low to high</option>
+                        </select>
+                    </div>
                 </div>
                 <Button text={"Search"} onClick={() => fetchSongs(true)}/>
             </div>
