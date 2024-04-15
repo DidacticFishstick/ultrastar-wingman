@@ -4,13 +4,23 @@ import SongListItem from "./SongListItem";
 import {HiDownload} from "react-icons/hi";
 import {PulseLoader} from "react-spinners";
 import {FaCheck} from "react-icons/fa";
+import {USDBApi} from "../api/src";
 import './UsdbSearchResults.css';
 
-const download = (song) => {
-    console.log("download!!!")
-};
-
 const UsdbSearchResults = ({songs}) => {
+    const api = new USDBApi();
+
+    // TODO: set button to downloaded triggered by ws
+
+    const download = async (song, button) => {
+        api.apiUsdbDownloadApiUsdbDownloadPost(JSON.stringify({id: song.id}), (error, data, response) => {
+            if (error) {
+                console.error(error, response.text);
+                button.removeClass("downloading");
+            }
+        });
+    };
+
     return (
         <ul className={"songs-list usdb-list"}>
             {songs.map((song, index) => (
@@ -37,9 +47,10 @@ const UsdbSearchResults = ({songs}) => {
                         </div>
                     }
                     onButton={(e) => {
-                        e.currentTarget.classList.add("downloading");
+                        if (e.currentTarget.classList.contains("downloading") || e.currentTarget.classList.contains("downloaded")) return;
 
-                        download(song);
+                        e.currentTarget.classList.add("downloading");
+                        download(song, e.currentTarget);
                     }}
                 />
             ))}

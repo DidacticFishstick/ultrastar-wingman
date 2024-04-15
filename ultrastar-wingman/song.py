@@ -190,6 +190,10 @@ class Song:
             if process.returncode != 0:
                 raise DownloadException(f"cover download failed with code {process.returncode}, stdout: {stdout.decode()}, stderr: {stderr.decode()}")
 
+            # print(tempdir)
+            # import time
+            # time.sleep(200)
+
             # try:
             #     subprocess.run(["curl", "-o", "cover.jpg", f"https://usdb.animux.de/data/cover/{id}.jpg"], cwd=tempdir, check=True)
             # except Exception as e:
