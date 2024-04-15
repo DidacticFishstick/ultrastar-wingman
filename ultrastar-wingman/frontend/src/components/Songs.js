@@ -1,5 +1,7 @@
 // Songs.js
 import React, {useState, useEffect, useRef} from 'react';
+import {FaSearch} from "react-icons/fa";
+import { BsThreeDots } from "react-icons/bs";
 import {NavLink} from 'react-router-dom';
 import {SongsApi} from "../api/src";
 import SongListItem from "./SongListItem";
@@ -8,7 +10,6 @@ import './Songs.css';
 import Tile from "./Tile";
 import Spinner from "./Spinner";
 import Input from "./Input";
-import {FaSearch} from "react-icons/fa";
 
 function Songs() {
     const [songs, setSongs] = useState([]);
@@ -82,7 +83,7 @@ function Songs() {
             {error && <h1>{error}</h1>}
             <ul className={"songs-list"}>
                 {filteredSongs.map(song => (
-                    <SongListItem song={song} coverUrl={`/api/songs/${song.id}/cover`} onClick={() => handleSongClick(song)}/>
+                    <SongListItem song={song} coverUrl={`/api/songs/${song.id}/cover`} onClick={() => handleSongClick(song)} button={<BsThreeDots/>} onButton={() => handleSongClick(song)}/>
                 ))}
             </ul>
             {selectedSong && <SongDetailsModal song={selectedSong} onClose={closeModal}/>}

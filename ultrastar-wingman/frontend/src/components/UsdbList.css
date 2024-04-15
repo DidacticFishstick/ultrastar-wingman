@@ -12,6 +12,7 @@
     background: var(--bg);
     padding-bottom: 16px;
     margin-top: 16px;
+    z-index: 200;
 }
 
 .usdb-list .usdb-search .button {

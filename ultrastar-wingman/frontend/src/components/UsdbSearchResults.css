@@ -1,0 +1,30 @@
+.usdb-list .song-list-item .song-button {
+    background-color: var(--input-bg);
+}
+
+.usdb-list .song-list-item .downloading,
+.usdb-list .song-list-item .downloaded {
+    background-color: transparent;
+}
+
+.usdb-list .song-list-item .downloading .download-button,
+.usdb-list .song-list-item .downloaded .download-button {
+    display: none;
+}
+
+.usdb-list .song-list-item .downloading-button,
+.usdb-list .song-list-item .downloaded-button {
+    display: none;
+}
+
+.usdb-list .song-list-item .downloading .downloading-button {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.usdb-list .song-list-item .downloaded .downloaded-button {
+    color: var(--highlight-pink-light);
+    display: block !important;
+}

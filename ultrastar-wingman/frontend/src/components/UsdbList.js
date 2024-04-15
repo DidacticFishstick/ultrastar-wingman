@@ -4,12 +4,12 @@ import UsdbSearchResults from './UsdbSearchResults';
 import {PiTextTBold} from "react-icons/pi";
 import {IoPerson} from "react-icons/io5";
 import {TbArrowsSort} from "react-icons/tb";
-import './UsdbList.css';
+import {NavLink} from "react-router-dom";
+import {USDBApi} from "../api/src";
 import Spinner from "./Spinner";
 import Input from "./Input";
 import Button from "./Button";
-import {NavLink} from "react-router-dom";
-import {USDBApi} from "../api/src";
+import './UsdbList.css';
 
 function UsdbList() {
     const [title, setTitle] = useState('');
