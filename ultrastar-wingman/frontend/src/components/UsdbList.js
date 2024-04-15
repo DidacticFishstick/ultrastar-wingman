@@ -29,6 +29,7 @@ function UsdbList() {
 
     const fetchSongs = async (new_fetch) => {
         if (!new_fetch && !hasMore) return;
+        if (loading) return;
 
         if (new_fetch) setSongs([]);
         setLoading(true);
@@ -67,7 +68,8 @@ function UsdbList() {
 
     useEffect(() => {
         const handleScroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+            // small threshold due to some problems on pc
+            if (Math.abs(window.innerHeight + document.documentElement.scrollTop - document.documentElement.offsetHeight) > 1) return;
             fetchSongs(false);
         };
 
