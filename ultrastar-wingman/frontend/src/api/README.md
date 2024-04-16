@@ -126,6 +126,7 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.PlayersApi* | [**apiPlayersSubmitApiPlayersSubmitPost**](docs/PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
 *UltraStarWingman.PlayersApi* | [**deleteNameApiPlayersDelete**](docs/PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players/ | Delete a Player
 *UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
+*UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
 *UltraStarWingman.USDBApi* | [**apiUsdbDownloadApiUsdbDownloadPost**](docs/USDBApi.md#apiUsdbDownloadApiUsdbDownloadPost) | **POST** /api/usdb/download | Downloads the song with the given USDB ID
 *UltraStarWingman.USDBApi* | [**apiUsdbIdsApiUsdbIdsGet**](docs/USDBApi.md#apiUsdbIdsApiUsdbIdsGet) | **GET** /api/usdb/ids | Gets the list of all downloaded USDB IDs

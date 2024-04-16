@@ -1,5 +1,5 @@
 // UsdbSearchResults.js
-import React, {useState} from 'react';
+import React from 'react';
 import SongListItem from "./SongListItem";
 import {HiDownload} from "react-icons/hi";
 import {PulseLoader} from "react-spinners";

@@ -5,6 +5,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**apiCoverApiSongsSongIdCoverGet**](SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
+[**apiMp3ApiSongsSongIdMp3Get**](SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 [**apiSongsApiSongsGet**](SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
 
 
@@ -23,6 +24,49 @@ import UltraStarWingman from 'ultra_star_wingman';
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
 apiInstance.apiCoverApiSongsSongIdCoverGet(songId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **songId** | [**Object**](.md)|  | 
+
+### Return type
+
+**Object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiMp3ApiSongsSongIdMp3Get
+
+> Object apiMp3ApiSongsSongIdMp3Get(songId)
+
+Api Mp3
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+
+let apiInstance = new UltraStarWingman.SongsApi();
+let songId = null; // Object | 
+apiInstance.apiMp3ApiSongsSongIdMp3Get(songId, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {

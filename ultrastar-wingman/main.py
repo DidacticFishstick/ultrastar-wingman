@@ -188,11 +188,20 @@ async def api_cover(song_id):
     song = Song.get_song_by_id(song_id)
 
     if song.cover_path:
-        # return send_file(song.cover_path, mimetype=f'image/{song.cover_path.rsplit(".", 1)[-1].lower()}')
         return FileResponse(song.cover_path)
     else:
         # TODO: default cover
         raise HTTPException(status_code=404, detail="Song not found")
+
+
+@app.get('/api/songs/{song_id}/mp3', tags=["Songs"])
+async def api_mp3(song_id):
+    song = Song.get_song_by_id(song_id)
+
+    if song.mp3:
+        return FileResponse(os.path.join(song.directory, song.mp3))
+    else:
+        raise HTTPException(status_code=404, detail="mp3 not found")
 
 
 @app.get('/api/players', response_model=models.PlayerList, summary="Retrieve Players", response_description="A list of unique player names", tags=["Players"])
