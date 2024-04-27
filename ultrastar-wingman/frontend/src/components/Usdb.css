@@ -1,0 +1,7 @@
+iframe#usdb {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 50px - max(10px, env(safe-area-inset-bottom)));
+    border: none;
+}

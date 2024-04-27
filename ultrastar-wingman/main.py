@@ -116,31 +116,38 @@ async def api_usdb_download(usdb_id_model: models.UsdbId):
     return {"success": True}
 
 
-@app.api_route('/usdb/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE'], include_in_schema=False)
+# TODO: Does not work using localhost right now!?
+@app.api_route('/proxy/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'], include_in_schema=False)
 async def proxy(request: Request, path: Optional[str] = ''):
-    # Prepare the URL by replacing the incoming request's URL part
-    # with the target URL's base, keeping the path and query parameters.
-    target_url = str(request.url).replace(f"{request.url.scheme}://{request.url.netloc}/usdb/", "https://usdb.animux.de/")
+    # Define the base URL for the proxied requests
+    base_url = "https://usdb.animux.de"
 
-    # Prepare headers, removing or modifying problematic ones
-    forwarded_headers = {key: value for key, value in request.headers.items() if key.lower() not in ['host', 'content-length', 'content-encoding']}
+    # Collect incoming request data
+    request_method = request.method
+    request_body = await request.body()
+    request_query_params = request.query_params
+    request_headers = dict(request.headers)
 
-    # Assemble request parameters to forward, including method, url, and headers.
-    # The body will be streamed directly from the request to the target service.
-    request_params = {
-        "method": request.method,
-        "url": target_url,
-        "headers": forwarded_headers,
-        "content": await request.body(),
-    }
+    print(request_headers)
 
-    # Forward the request to the target service asynchronously
-    response = await usdb.session.request(**request_params)
+    # Ensure we don't accidentally forward Host headers as it could cause issues
+    request_headers.pop("host", None)
 
-    # Remove 'content-encoding' and 'content-length' from response headers to avoid conflicts
+    # Construct the full URL
+    url = f"{base_url}/{path}"
+
+    # Forward the request to the target API
+    response = await usdb.session.request(
+        method=request_method,
+        url=url,
+        content=request_body,
+        params=request_query_params,
+        headers=request_headers,
+        cookies=request.cookies,
+    )
+
     forwarded_response_headers = {key: value for key, value in response.headers.items() if key.lower() not in ['content-encoding', 'content-length']}
 
-    # Return the proxied response content, status code, and headers back to the client
     return Response(content=response.content, status_code=response.status_code, headers=forwarded_response_headers)
 
 

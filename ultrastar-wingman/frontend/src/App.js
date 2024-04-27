@@ -4,6 +4,7 @@ import BottomNav from './components/BottomNav';
 import Home from './components/Home';
 import Songs from './components/Songs';
 import UsdbList from './components/UsdbList';
+import Usdb from "./components/Usdb";
 import './App.css';
 
 
@@ -18,6 +19,7 @@ function App() {
                     <Route path="/" element={<Home/>}/>
                     <Route path="/songs" element={<Songs/>}/>
                     <Route path="/usdbList" element={<UsdbList/>}/>
+                    <Route path="/usdb" element={<Usdb/>}/>
                 </Routes>
                 <BottomNav/>
             </BrowserRouter>
