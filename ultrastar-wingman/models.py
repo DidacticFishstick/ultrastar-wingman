@@ -61,3 +61,27 @@ class PlayerConfig(BaseModel):
 
 class PlayerList(BaseModel):
     players: List[str] = Field(None, example=["Alice", "Bob", "Charlie"], description="List of player names.")
+
+
+class Score(BaseModel):
+    usdx_id: int = Field(None, description="The id internally used by UltraStar Deluxe")
+    artist: str = Field(None, description="The artist of the song.")
+    title: str = Field(None, description="The title of the song.")
+    difficulty: int = Field(None, description="The difficulty of the song.")
+    player: str = Field(None, description="The player name.")
+    score: int = Field(None, description="The score of the performance.")
+    date: int = Field(None, description="The date of the performance.")
+
+
+class ScoresModel(BaseModel):
+    scores: List[Score] = Field(None, description="List of scores.")
+
+
+class SessionModel(BaseModel):
+    id: int = Field(None, description="The session ID.")
+    start_time: int = Field(None, description="The start time of the session.")
+    end_time: int = Field(None, nullable=True, description="The end time of the session.")
+
+
+class SessionsListModel(BaseModel):
+    sessions: List[SessionModel] = Field(None, description="List of sessions.")

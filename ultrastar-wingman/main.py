@@ -18,6 +18,8 @@ import usdb
 import usdx
 import ws
 from song import Song
+import scores
+from scores import Session
 
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -60,40 +62,13 @@ async def api_usdb_ids():
     return openapi
 
 
-@app.get('/', tags=["Website"], response_class=HTMLResponse)
-async def index(request: Request):
-    return templates.TemplateResponse('index.html', {"request": request})  # , "messages": messages})
-
-
-@app.get('/songs', tags=["Website"], response_class=HTMLResponse)
-async def songs(request: Request):
-    return templates.TemplateResponse('songs.html', {"request": request, "songs": Song.song_list()})  # , "messages": messages})
-
-
+# TODO: remove?
 @app.get('/avatars/{avatar}', tags=["Website"])
 async def avatar(avatar):
     try:
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", f"cat_{avatar}"))
     except FileNotFoundError:
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
-
-
-@app.get('/download', tags=["Website"], response_class=HTMLResponse)
-async def download(request: Request, view: str = None):
-    if view == "usdb":
-        return templates.TemplateResponse('download.html', {"request": request})  # , "messages": messages})
-    else:
-        return templates.TemplateResponse('download_list.html', {"request": request})  # , "messages": messages})
-
-
-@app.get('/scores', tags=["Website"], response_class=HTMLResponse)
-async def scores(request: Request):
-    return templates.TemplateResponse('scores.html', {"request": request})  # , "messages": messages})
-
-
-@app.get('/players', tags=["Website"], response_class=HTMLResponse)
-async def players(request: Request):
-    return templates.TemplateResponse('players.html', {"request": request, "colors": config.setup_colors})  # , "messages": messages})
 
 
 @app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe")
@@ -296,6 +271,34 @@ async def api_players_submit(submit_request: models.PlayerList):
     return {"success": True}
 
 
+@app.get('/api/sessions', response_model=models.SessionsListModel, status_code=status.HTTP_200_OK, summary="Get all sessions", response_description="The sessions", tags=["Scores"])
+async def api_sessions_get():
+    """
+    Gets all the sessions.
+    """
+
+    return {
+        "sessions": scores.get_sessions()
+    }
+
+
+@app.get('/api/scores', response_model=models.ScoresModel, status_code=status.HTTP_200_OK, summary="Get session scores", response_description="The scores", tags=["Scores"])
+@app.get('/api/scores/{session_id}', response_model=models.ScoresModel, status_code=status.HTTP_200_OK, summary="Get session scores", response_description="The scores", tags=["Scores"])
+async def api_scores_get(session_id: Optional[int] = None):
+    """
+    Gets all the data for the specified session id.
+    """
+
+    data = scores.get_session_data(session_id)
+
+    if data is None:
+        raise HTTPException(status_code=404, detail="Session does not exist")
+
+    return {
+        "scores": data
+    }
+
+
 @app.websocket("/ws")
 async def ws_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -311,6 +314,9 @@ async def ws_endpoint(websocket: WebSocket):
 async def main():
     # login to usdb.animux.de
     await usdb.login()
+
+    # load all session
+    scores.init_sessions()
 
     # load all downloaded songs
     Song.load_songs()

@@ -98,12 +98,14 @@ This section is for configuring paths related to UltraStar Deluxe.
 
 If you are using a standard installation of UltraStar Deluxe, you probably don't need to change these.
 
-| Key                | Description                                              |
-|--------------------|----------------------------------------------------------|
-| `usdx_path`        | The path to the UltraStar Deluxe executable              |
-| `usdx_config_file` | The path to the configuration file of UltraStar Deluxe   |
-| `usdx_avatars_dir` | The directory path where UltraStar Deluxe stores avatars |
-| `usdx_songs_dir`   | The directory path where UltraStar Deluxe stores songs   |
+| Key                 | Description                                                                                     |
+|---------------------|-------------------------------------------------------------------------------------------------|
+| `usdx_base_path`    | The base path to the UltraStar Deluxe installation                                              |
+| `usdx_path`         | The path to the UltraStar Deluxe executable (default: `<usdx_base_path>/ultrastardx.exe`)       |
+| `usdx_config_file`  | The path to the configuration file of UltraStar Deluxe (default: `<usdx_base_path>/config.ini`) |
+| `usdx_avatars_dir`  | The directory path where UltraStar Deluxe stores avatars (default: `<usdx_base_path>/avatars`)  |
+| `usdx_songs_dir`    | The directory path where UltraStar Deluxe stores songs (default: `<usdx_base_path>/songs`)      |
+| `usdx_ultrastar_db` | The path to the Ultrastar.db file (default: `<usdx_base_path>/Ultrastar.db`)                    |
 
 ### SETUP Section
 

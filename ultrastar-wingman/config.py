@@ -29,10 +29,32 @@ print(f"Using config '{file_name}'")
 _config = configparser.RawConfigParser()
 _config.read(file_name)
 
-usdx_path = Path(_config.get("USDX", "usdx_path")).expanduser()
-usdx_config_file = Path(_config.get("USDX", "usdx_config_file")).expanduser()
-usdx_songs_dir = Path(_config.get("USDX", "usdx_songs_dir")).expanduser()
-usdx_avatars_dir = Path(_config.get("USDX", "usdx_avatars_dir")).expanduser()
+usdx_base_path = Path(_config.get("USDX", "usdx_base_path", fallback=None)).expanduser()
+
+if _usdx_path_raw := _config.get("USDX", "usdx_path", fallback=None):
+    usdx_path = Path(_usdx_path_raw).expanduser()
+else:
+    usdx_path = usdx_base_path / "ultrastardx.exe"
+
+if _usdx_config_file_raw := _config.get("USDX", "usdx_config_file", fallback=None):
+    usdx_config_file = Path(_usdx_config_file_raw).expanduser()
+else:
+    usdx_config_file = usdx_base_path / "config.ini"
+
+if _usdx_songs_dir_raw := _config.get("USDX", "usdx_songs_dir", fallback=None):
+    usdx_songs_dir = Path(_usdx_songs_dir_raw).expanduser()
+else:
+    usdx_songs_dir = usdx_base_path / "songs"
+
+if _usdx_avatars_dir_raw := _config.get("USDX", "usdx_avatars_dir", fallback=None):
+    usdx_avatars_dir = Path(_usdx_avatars_dir_raw).expanduser()
+else:
+    usdx_avatars_dir = usdx_base_path / "avatars"
+
+if _usdx_ultrastar_db_raw := _config.get("USDX", "usdx_ultrastar_db", fallback=None):
+    usdx_ultrastar_db = Path(_usdx_ultrastar_db_raw).expanduser()
+else:
+    usdx_ultrastar_db = usdx_base_path / "Ultrastar.db"
 
 usdb_user = _config.get("USDB", "username")
 usdb_pass = _config.get("USDB", "password")
