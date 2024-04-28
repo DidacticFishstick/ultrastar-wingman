@@ -289,7 +289,7 @@ class Song:
             "directory": self.directory,
             "title": self.title,
             "artist": self.artist,
-            "usdb_id": self.usdb_id,
+            "usdb_id": self.usdb_id or "",
             "id": self.id,
             "duration": self.duration
         }
