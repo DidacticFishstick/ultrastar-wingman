@@ -7,7 +7,7 @@ Method | HTTP request | Description
 [**apiPlayersAddApiPlayersPost**](PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 [**apiPlayersApiPlayersGet**](PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 [**apiPlayersSubmitApiPlayersSubmitPost**](PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
-[**deleteNameApiPlayersDelete**](PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players/ | Delete a Player
+[**deleteNameApiPlayersDelete**](PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 
 
 
@@ -58,11 +58,11 @@ No authorization required
 
 ## apiPlayersApiPlayersGet
 
-> PlayerList apiPlayersApiPlayersGet()
+> PlayerConfig apiPlayersApiPlayersGet()
 
 Retrieve Players
 
-Retrieves a list of all unique player names.
+Retrieves a list of all unique player names and the available colors.
 
 ### Example
 
@@ -85,7 +85,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**PlayerList**](PlayerList.md)
+[**PlayerConfig**](PlayerConfig.md)
 
 ### Authorization
 

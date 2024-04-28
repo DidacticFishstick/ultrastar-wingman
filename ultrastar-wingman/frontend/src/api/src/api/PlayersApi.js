@@ -15,6 +15,7 @@
 import ApiClient from "../ApiClient";
 import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
+import PlayerConfig from '../model/PlayerConfig';
 import PlayerCreation from '../model/PlayerCreation';
 import PlayerList from '../model/PlayerList';
 
@@ -83,15 +84,15 @@ export default class PlayersApi {
      * Callback function to receive the result of the apiPlayersApiPlayersGet operation.
      * @callback module:api/PlayersApi~apiPlayersApiPlayersGetCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/PlayerList} data The data returned by the service call.
+     * @param {module:model/PlayerConfig} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
      * Retrieve Players
-     * Retrieves a list of all unique player names.
+     * Retrieves a list of all unique player names and the available colors.
      * @param {module:api/PlayersApi~apiPlayersApiPlayersGetCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/PlayerList}
+     * data is of type: {@link module:model/PlayerConfig}
      */
     apiPlayersApiPlayersGet(callback) {
       let postBody = null;
@@ -108,7 +109,7 @@ export default class PlayersApi {
       let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = PlayerList;
+      let returnType = PlayerConfig;
       return this.apiClient.callApi(
         '/api/players', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -195,7 +196,7 @@ export default class PlayersApi {
       let accepts = ['application/json'];
       let returnType = BasicResponse;
       return this.apiClient.callApi(
-        '/api/players/', 'DELETE',
+        '/api/players', 'DELETE',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

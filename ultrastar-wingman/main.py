@@ -211,18 +211,24 @@ async def api_mp3(song_id):
         raise HTTPException(status_code=404, detail="mp3 not found")
 
 
-@app.get('/api/players', response_model=models.PlayerList, summary="Retrieve Players", response_description="A list of unique player names", tags=["Players"])
+@app.get('/api/players', response_model=models.PlayerConfig, summary="Retrieve Players", response_description="A list of unique player names", tags=["Players"])
 async def api_players():
     """
-    Retrieves a list of all unique player names.
+    Retrieves a list of all unique player names and the available colors.
     """
 
     try:
         with open(config.players_file, 'r') as file:
             names = file.read().splitlines()
-        return {"players": sorted(set(names))}
+        return {
+            "players": sorted(set(names)),
+            "colors": config.setup_colors
+        }
     except FileNotFoundError:
-        return {"players": []}
+        return {
+            "players": [],
+            "colors": config.setup_colors
+        }
 
 
 @app.post('/api/players', response_model=models.PlayerList, status_code=status.HTTP_201_CREATED, summary="Add a New Player", response_description="Confirmation of player addition", tags=["Players"])
@@ -245,7 +251,7 @@ async def api_players_add(player_data: models.PlayerCreation):
         raise HTTPException(status_code=500, detail="Failed to write to file") from e
 
 
-@app.delete('/api/players/', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
+@app.delete('/api/players', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
 async def delete_name(name: str = Query(..., description="The name of the player to delete.")):
     """
     Deletes a player name from the list.

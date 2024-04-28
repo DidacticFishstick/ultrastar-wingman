@@ -54,5 +54,10 @@ class PlayerCreation(BaseModel):
     name: str = Field(None, description="The player name.")
 
 
+class PlayerConfig(BaseModel):
+    colors: List[str] = Field(None, description="The available colors")
+    players: List[str] = Field(None, example=["Alice", "Bob", "Charlie"], description="List of player names.")
+
+
 class PlayerList(BaseModel):
     players: List[str] = Field(None, example=["Alice", "Bob", "Charlie"], description="List of player names.")

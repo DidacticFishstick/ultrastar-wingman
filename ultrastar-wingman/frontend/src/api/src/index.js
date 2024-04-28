@@ -17,6 +17,7 @@ import BasicResponse from './model/BasicResponse';
 import HTTPValidationError from './model/HTTPValidationError';
 import OrderEnum from './model/OrderEnum';
 import Paging from './model/Paging';
+import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
 import PlayerList from './model/PlayerList';
 import Song from './model/Song';
@@ -95,6 +96,12 @@ export {
      * @property {module:model/Paging}
      */
     Paging,
+
+    /**
+     * The PlayerConfig model constructor.
+     * @property {module:model/PlayerConfig}
+     */
+    PlayerConfig,
 
     /**
      * The PlayerCreation model constructor.

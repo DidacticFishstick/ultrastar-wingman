@@ -1,0 +1,39 @@
+.colors .color {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0px, rgba(0, 0, 0, 0.1) 96px);
+    box-sizing: border-box;
+    height: 96px;
+    cursor: pointer;
+}
+
+.colors .color h2 {
+    margin: 8px 16px;
+}
+
+.colors .color select {
+    background: transparent;
+    border: none;
+    outline: none;
+    appearance: none;
+    font-size: 1.2em;
+    color: var(--color);
+    font-weight: bold;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    box-sizing: border-box;
+    padding: 100px 16px 8px 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.colors .color select option {
+    background: var(--input-bg);
+}
+
+.colors .color select.empty {
+    color: var(--color-darker);
+}

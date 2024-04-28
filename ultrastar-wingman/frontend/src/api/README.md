@@ -124,7 +124,7 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.PlayersApi* | [**apiPlayersAddApiPlayersPost**](docs/PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 *UltraStarWingman.PlayersApi* | [**apiPlayersSubmitApiPlayersSubmitPost**](docs/PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
-*UltraStarWingman.PlayersApi* | [**deleteNameApiPlayersDelete**](docs/PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players/ | Delete a Player
+*UltraStarWingman.PlayersApi* | [**deleteNameApiPlayersDelete**](docs/PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 *UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
 *UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
@@ -146,6 +146,7 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.HTTPValidationError](docs/HTTPValidationError.md)
  - [UltraStarWingman.OrderEnum](docs/OrderEnum.md)
  - [UltraStarWingman.Paging](docs/Paging.md)
+ - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
  - [UltraStarWingman.PlayerList](docs/PlayerList.md)
  - [UltraStarWingman.Song](docs/Song.md)

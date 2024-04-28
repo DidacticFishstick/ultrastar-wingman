@@ -6,6 +6,7 @@ docs/BasicResponse.md
 docs/HTTPValidationError.md
 docs/OrderEnum.md
 docs/Paging.md
+docs/PlayerConfig.md
 docs/PlayerCreation.md
 docs/PlayerList.md
 docs/PlayersApi.md
@@ -35,6 +36,7 @@ src/model/BasicResponse.js
 src/model/HTTPValidationError.js
 src/model/OrderEnum.js
 src/model/Paging.js
+src/model/PlayerConfig.js
 src/model/PlayerCreation.js
 src/model/PlayerList.js
 src/model/Song.js
@@ -45,3 +47,4 @@ src/model/UdEnum.js
 src/model/UsdbId.js
 src/model/UsdbIdsList.js
 src/model/ValidationError.js
+test/model/PlayerConfig.spec.js

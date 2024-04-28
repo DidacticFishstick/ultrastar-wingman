@@ -74,6 +74,10 @@
     border: none;
 }
 
+.combined-input .input-field select {
+    cursor: pointer;
+}
+
 .combined-input .input-field:not(:nth-child(1)) input,
 .combined-input .input-field:not(:nth-child(1)) select {
     border-top: 1px solid var(--input-border-color);
