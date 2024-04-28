@@ -125,6 +125,9 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 *UltraStarWingman.PlayersApi* | [**apiPlayersSubmitApiPlayersSubmitPost**](docs/PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
 *UltraStarWingman.PlayersApi* | [**deleteNameApiPlayersDelete**](docs/PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players | Delete a Player
+*UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresGet**](docs/ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
+*UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresSessionIdGet**](docs/ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
+*UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
 *UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
 *UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
@@ -133,11 +136,6 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.USDBApi* | [**apiUsdbSongsApiUsdbSongsGet**](docs/USDBApi.md#apiUsdbSongsApiUsdbSongsGet) | **GET** /api/usdb/songs | Search Songs
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxRestartApiUsdxRestartPost**](docs/UltraStarDeluxeApi.md#apiUsdxRestartApiUsdxRestartPost) | **POST** /api/usdx/restart | Restarts UltraStar Deluxe
 *UltraStarWingman.WebsiteApi* | [**avatarAvatarsAvatarGet**](docs/WebsiteApi.md#avatarAvatarsAvatarGet) | **GET** /avatars/{avatar} | Avatar
-*UltraStarWingman.WebsiteApi* | [**downloadDownloadGet**](docs/WebsiteApi.md#downloadDownloadGet) | **GET** /download | Download
-*UltraStarWingman.WebsiteApi* | [**indexGet**](docs/WebsiteApi.md#indexGet) | **GET** / | Index
-*UltraStarWingman.WebsiteApi* | [**playersPlayersGet**](docs/WebsiteApi.md#playersPlayersGet) | **GET** /players | Players
-*UltraStarWingman.WebsiteApi* | [**scoresScoresGet**](docs/WebsiteApi.md#scoresScoresGet) | **GET** /scores | Scores
-*UltraStarWingman.WebsiteApi* | [**songsSongsGet**](docs/WebsiteApi.md#songsSongsGet) | **GET** /songs | Songs
 
 
 ## Documentation for Models
@@ -149,6 +147,10 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
  - [UltraStarWingman.PlayerList](docs/PlayerList.md)
+ - [UltraStarWingman.Score](docs/Score.md)
+ - [UltraStarWingman.ScoresModel](docs/ScoresModel.md)
+ - [UltraStarWingman.SessionModel](docs/SessionModel.md)
+ - [UltraStarWingman.SessionsListModel](docs/SessionsListModel.md)
  - [UltraStarWingman.Song](docs/Song.md)
  - [UltraStarWingman.SongsResponse](docs/SongsResponse.md)
  - [UltraStarWingman.USDBSong](docs/USDBSong.md)

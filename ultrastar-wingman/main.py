@@ -284,7 +284,7 @@ async def api_sessions_get():
 
 @app.get('/api/scores', response_model=models.ScoresModel, status_code=status.HTTP_200_OK, summary="Get session scores", response_description="The scores", tags=["Scores"])
 @app.get('/api/scores/{session_id}', response_model=models.ScoresModel, status_code=status.HTTP_200_OK, summary="Get session scores", response_description="The scores", tags=["Scores"])
-async def api_scores_get(session_id: Optional[int] = None):
+async def api_scores_get(session_id: int = None):
     """
     Gets all the data for the specified session id.
     """
@@ -294,9 +294,7 @@ async def api_scores_get(session_id: Optional[int] = None):
     if data is None:
         raise HTTPException(status_code=404, detail="Session does not exist")
 
-    return {
-        "scores": data
-    }
+    return data
 
 
 @app.websocket("/ws")

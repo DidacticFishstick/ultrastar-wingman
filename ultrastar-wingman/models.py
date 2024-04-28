@@ -73,15 +73,16 @@ class Score(BaseModel):
     date: int = Field(None, description="The date of the performance.")
 
 
-class ScoresModel(BaseModel):
-    scores: List[Score] = Field(None, description="List of scores.")
-
-
 class SessionModel(BaseModel):
     id: int = Field(None, description="The session ID.")
     start_time: int = Field(None, description="The start time of the session.")
-    end_time: int = Field(None, nullable=True, description="The end time of the session.")
+    end_time: int = Field(None, description="The end time of the session.")
 
 
 class SessionsListModel(BaseModel):
     sessions: List[SessionModel] = Field(None, description="List of sessions.")
+
+
+class ScoresModel(BaseModel):
+    session: SessionModel = Field(None, description="The session this data is for.")
+    scores: List[Score] = Field(None, description="List of scores.")

@@ -47,19 +47,19 @@ class Session:
 
             for (date,) in rows:
                 if not sessions:
-                    sessions.append(Session(start_date=date))
+                    sessions.append(Session(session_id=len(sessions), start_date=date))
 
                 # consider it a new session if more than 6 hours passed
                 if last_date != -1 and date - last_date > 6 * 60 * 60:
                     sessions[-1].end_date = last_date
-                    sessions.append(Session(start_date=date))
+                    sessions.append(Session(session_id=len(sessions), start_date=date))
 
                 last_date = date
 
             if time.time() - last_date > 6 * 60 * 60:
                 # The current session is a new session
                 sessions[-1].end_date = last_date
-                sessions.append(Session(start_date=round(time.time())))
+                sessions.append(Session(session_id=len(sessions), start_date=round(time.time())))
 
             cls.sessions = sessions
             cls.current_session = sessions[-1]
@@ -68,7 +68,7 @@ class Session:
             # Close the cursor and connection to so the SQLite library can clean up
             cursor.close()
 
-    def __init__(self, start_date: int, end_date: Optional[int] = None):
+    def __init__(self, session_id: int, start_date: int, end_date: Optional[int] = None):
         """
         Initialize the sessions with the start and end dates
 
@@ -76,6 +76,7 @@ class Session:
         :param end_date: The end date
         """
 
+        self.id = session_id
         self.start_date = start_date
         self.end_date = end_date
 
@@ -123,6 +124,18 @@ class Session:
             # Close the cursor and connection to so the SQLite library can clean up
             cursor.close()
 
+    def to_json(self) -> dict:
+        """
+        Convert the sessions to a JSON object
+        :return: The json data
+        """
+
+        return {
+            "id": self.id,
+            "start_time": self.start_date,
+            "end_time": self.end_date or -1
+        }
+
 
 def get_session_data(session_id: Optional[int] = None) -> Optional[dict]:
     """
@@ -139,7 +152,10 @@ def get_session_data(session_id: Optional[int] = None) -> Optional[dict]:
             return None
         session = Session.sessions[session_id]
 
-    return session.get_scores()
+    return {
+        "session": session.to_json(),
+        "scores": session.get_scores()
+    }
 
 
 def init_sessions():
@@ -147,10 +163,4 @@ def init_sessions():
 
 
 def get_sessions():
-    return [
-        {
-            "id": i,
-            "start_time": session.start_date,
-            "end_time": session.end_date or -1
-        } for i, session in enumerate(Session.sessions)
-    ]
+    return [session.to_json() for session in Session.sessions]

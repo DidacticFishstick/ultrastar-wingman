@@ -20,6 +20,10 @@ import Paging from './model/Paging';
 import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
 import PlayerList from './model/PlayerList';
+import Score from './model/Score';
+import ScoresModel from './model/ScoresModel';
+import SessionModel from './model/SessionModel';
+import SessionsListModel from './model/SessionsListModel';
 import Song from './model/Song';
 import SongsResponse from './model/SongsResponse';
 import USDBSong from './model/USDBSong';
@@ -29,6 +33,7 @@ import UsdbId from './model/UsdbId';
 import UsdbIdsList from './model/UsdbIdsList';
 import ValidationError from './model/ValidationError';
 import PlayersApi from './api/PlayersApi';
+import ScoresApi from './api/ScoresApi';
 import SongsApi from './api/SongsApi';
 import USDBApi from './api/USDBApi';
 import UltraStarDeluxeApi from './api/UltraStarDeluxeApi';
@@ -116,6 +121,30 @@ export {
     PlayerList,
 
     /**
+     * The Score model constructor.
+     * @property {module:model/Score}
+     */
+    Score,
+
+    /**
+     * The ScoresModel model constructor.
+     * @property {module:model/ScoresModel}
+     */
+    ScoresModel,
+
+    /**
+     * The SessionModel model constructor.
+     * @property {module:model/SessionModel}
+     */
+    SessionModel,
+
+    /**
+     * The SessionsListModel model constructor.
+     * @property {module:model/SessionsListModel}
+     */
+    SessionsListModel,
+
+    /**
      * The Song model constructor.
      * @property {module:model/Song}
      */
@@ -168,6 +197,12 @@ export {
     * @property {module:api/PlayersApi}
     */
     PlayersApi,
+
+    /**
+    * The ScoresApi service constructor.
+    * @property {module:api/ScoresApi}
+    */
+    ScoresApi,
 
     /**
     * The SongsApi service constructor.
