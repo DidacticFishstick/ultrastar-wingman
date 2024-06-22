@@ -1,0 +1,11 @@
+.scores-page h1 select {
+    background: transparent;
+    color: inherit;
+    border: none;
+    outline: none;
+    font: inherit;
+}
+
+.scores-page h1 option {
+    background: var(--input-bg);
+}

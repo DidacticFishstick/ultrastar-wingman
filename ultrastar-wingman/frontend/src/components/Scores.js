@@ -59,32 +59,35 @@ function Scores() {
 
     return (
         <div className="scores-page">
-            <select value={currentSession.id} onChange={(e) => {
-                setLoading(true)
-                setCurrentSession(sessions[parseInt(e.currentTarget.value)]);
+            <h1>
+                <select value={currentSession.id} onChange={(e) => {
+                    setLoading(true)
+                    setCurrentSession(sessions[parseInt(e.currentTarget.value)]);
 
-                api.apiScoresGetApiScoresSessionIdGet(parseInt(e.currentTarget.value), (error, data, response) => {
-                    if (error) {
-                        console.error(error, response.text);
-                    } else {
-                        setCurrentSession(data.session);
-                        setScores(data.scores);
-                        setLoading(false);
-                    }
-                });
-            }}>
-                {sessions.map((session, index) => {
-                    return <option value={session.id}>{(new Date(session.start_time * 1000)).toLocaleDateString()}</option>
-                })}
-            </select>
+                    api.apiScoresGetApiScoresSessionIdGet(parseInt(e.currentTarget.value), (error, data, response) => {
+                        if (error) {
+                            console.error(error, response.text);
+                        } else {
+                            setCurrentSession(data.session);
+                            setScores(data.scores);
+                            setLoading(false);
+                        }
+                    });
+                }}>
+                    {sessions.map((session, index) => {
+                        return <option value={session.id}>{(new Date(session.start_time * 1000)).toISOString().substring(0, 10)}</option>
+                    })}
+                </select>
+            </h1>
 
             {loading && <Spinner/>}
 
-
-            <Tile>
-                <h1>Player Score Distribution</h1>
-                <Boxplot rawData={scores}/>
-            </Tile>
+            <div className="tile-container">
+                <Tile className={"boxplot"} span={true}>
+                    <h1>Score Distribution</h1>
+                    <Boxplot rawData={scores}/>
+                </Tile>
+            </div>
 
             <h1>By Song</h1>
 

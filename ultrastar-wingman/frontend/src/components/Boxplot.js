@@ -47,8 +47,6 @@ const percentile = (arr, p) => {
 function Boxplot({rawData}) {
     const data = processDataForBoxplots(rawData);
 
-    console.log(data);
-
     const option = {
         title: {
             show: false
@@ -57,8 +55,6 @@ function Boxplot({rawData}) {
             trigger: 'axis',
             confine: true,
             formatter: function (param) {
-                console.log(param);
-                console.log(data[param.dataIndex]);
                 return [
                     '<b>' + param[0].name + '</b>',
                     'Max: ' + param[0].data[5],
@@ -79,6 +75,11 @@ function Boxplot({rawData}) {
             type: 'category',
             data: data.map(item => item.name),
         },
+        grid: {
+            top: 0,
+            bottom: 64,
+            left: 80
+        },
         color: ['#4b92cd', '#9e3b95'],
         series: [
             {
@@ -92,7 +93,7 @@ function Boxplot({rawData}) {
         ]
     };
 
-    return <ReactECharts option={option} style={{height: 480}}/>;
+    return <ReactECharts option={option} style={{height: 30 * data.length + 64}}/>;
 }
 
 export default Boxplot;

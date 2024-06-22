@@ -163,7 +163,7 @@ class Song:
                     "id": id
                 }))
 
-            with open(os.path.join(tempdir, f"{sanitized_name}.txt"), "w+") as file:
+            with open(os.path.join(tempdir, f"{sanitized_name}.txt"), "w+", encoding='utf-8') as file:
                 file.writelines("#VIDEO:video.mp4\n")
                 file.writelines("#MP3:song.mp3\n")
                 file.writelines("#COVER:cover.jpg\n")
