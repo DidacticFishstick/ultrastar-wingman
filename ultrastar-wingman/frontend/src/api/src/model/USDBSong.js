@@ -23,18 +23,21 @@ class USDBSong {
      * Constructs a new <code>USDBSong</code>.
      * @alias module:model/USDBSong
      * @param artist {String} 
+     * @param creator {String} 
      * @param downloaded {Boolean} 
      * @param edition {String} 
+     * @param genre {String} 
      * @param golden {Boolean} 
      * @param id {String} 
      * @param language {String} 
      * @param rating {Number} 
      * @param title {String} 
      * @param views {Number} 
+     * @param year {String} 
      */
-    constructor(artist, downloaded, edition, golden, id, language, rating, title, views) { 
+    constructor(artist, creator, downloaded, edition, genre, golden, id, language, rating, title, views, year) { 
         
-        USDBSong.initialize(this, artist, downloaded, edition, golden, id, language, rating, title, views);
+        USDBSong.initialize(this, artist, creator, downloaded, edition, genre, golden, id, language, rating, title, views, year);
     }
 
     /**
@@ -42,16 +45,19 @@ class USDBSong {
      * This method is used by the constructors of any subclasses, in order to implement multiple inheritance (mix-ins).
      * Only for internal use.
      */
-    static initialize(obj, artist, downloaded, edition, golden, id, language, rating, title, views) { 
+    static initialize(obj, artist, creator, downloaded, edition, genre, golden, id, language, rating, title, views, year) { 
         obj['artist'] = artist;
+        obj['creator'] = creator;
         obj['downloaded'] = downloaded;
         obj['edition'] = edition;
+        obj['genre'] = genre;
         obj['golden'] = golden;
         obj['id'] = id;
         obj['language'] = language;
         obj['rating'] = rating;
         obj['title'] = title;
         obj['views'] = views;
+        obj['year'] = year;
     }
 
     /**
@@ -68,11 +74,17 @@ class USDBSong {
             if (data.hasOwnProperty('artist')) {
                 obj['artist'] = ApiClient.convertToType(data['artist'], 'String');
             }
+            if (data.hasOwnProperty('creator')) {
+                obj['creator'] = ApiClient.convertToType(data['creator'], 'String');
+            }
             if (data.hasOwnProperty('downloaded')) {
                 obj['downloaded'] = ApiClient.convertToType(data['downloaded'], 'Boolean');
             }
             if (data.hasOwnProperty('edition')) {
                 obj['edition'] = ApiClient.convertToType(data['edition'], 'String');
+            }
+            if (data.hasOwnProperty('genre')) {
+                obj['genre'] = ApiClient.convertToType(data['genre'], 'String');
             }
             if (data.hasOwnProperty('golden')) {
                 obj['golden'] = ApiClient.convertToType(data['golden'], 'Boolean');
@@ -91,6 +103,9 @@ class USDBSong {
             }
             if (data.hasOwnProperty('views')) {
                 obj['views'] = ApiClient.convertToType(data['views'], 'Number');
+            }
+            if (data.hasOwnProperty('year')) {
+                obj['year'] = ApiClient.convertToType(data['year'], 'String');
             }
         }
         return obj;
@@ -113,8 +128,16 @@ class USDBSong {
             throw new Error("Expected the field `artist` to be a primitive type in the JSON string but got " + data['artist']);
         }
         // ensure the json data is a string
+        if (data['creator'] && !(typeof data['creator'] === 'string' || data['creator'] instanceof String)) {
+            throw new Error("Expected the field `creator` to be a primitive type in the JSON string but got " + data['creator']);
+        }
+        // ensure the json data is a string
         if (data['edition'] && !(typeof data['edition'] === 'string' || data['edition'] instanceof String)) {
             throw new Error("Expected the field `edition` to be a primitive type in the JSON string but got " + data['edition']);
+        }
+        // ensure the json data is a string
+        if (data['genre'] && !(typeof data['genre'] === 'string' || data['genre'] instanceof String)) {
+            throw new Error("Expected the field `genre` to be a primitive type in the JSON string but got " + data['genre']);
         }
         // ensure the json data is a string
         if (data['id'] && !(typeof data['id'] === 'string' || data['id'] instanceof String)) {
@@ -128,6 +151,10 @@ class USDBSong {
         if (data['title'] && !(typeof data['title'] === 'string' || data['title'] instanceof String)) {
             throw new Error("Expected the field `title` to be a primitive type in the JSON string but got " + data['title']);
         }
+        // ensure the json data is a string
+        if (data['year'] && !(typeof data['year'] === 'string' || data['year'] instanceof String)) {
+            throw new Error("Expected the field `year` to be a primitive type in the JSON string but got " + data['year']);
+        }
 
         return true;
     }
@@ -135,12 +162,17 @@ class USDBSong {
 
 }
 
-USDBSong.RequiredProperties = ["artist", "downloaded", "edition", "golden", "id", "language", "rating", "title", "views"];
+USDBSong.RequiredProperties = ["artist", "creator", "downloaded", "edition", "genre", "golden", "id", "language", "rating", "title", "views", "year"];
 
 /**
  * @member {String} artist
  */
 USDBSong.prototype['artist'] = undefined;
+
+/**
+ * @member {String} creator
+ */
+USDBSong.prototype['creator'] = undefined;
 
 /**
  * @member {Boolean} downloaded
@@ -151,6 +183,11 @@ USDBSong.prototype['downloaded'] = undefined;
  * @member {String} edition
  */
 USDBSong.prototype['edition'] = undefined;
+
+/**
+ * @member {String} genre
+ */
+USDBSong.prototype['genre'] = undefined;
 
 /**
  * @member {Boolean} golden
@@ -181,6 +218,11 @@ USDBSong.prototype['title'] = undefined;
  * @member {Number} views
  */
 USDBSong.prototype['views'] = undefined;
+
+/**
+ * @member {String} year
+ */
+USDBSong.prototype['year'] = undefined;
 
 
 
