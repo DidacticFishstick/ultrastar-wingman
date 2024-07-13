@@ -169,11 +169,14 @@ async def get_songs(artist: Optional[str] = None, title: Optional[str] = None, e
             "id": tds[0].get_attribute_list("onclick")[0].split("(")[-1].rstrip(")"),
             "artist": tds[0].get_text(strip=True),
             "title": tds[1].get_text(strip=True),
-            "edition": tds[2].get_text(strip=True),
-            "golden": tds[3].get_text(strip=True) == "Ja",
-            "language": tds[4].get_text(strip=True),
-            "rating": len(tds[5].select("img[src='images/star.png']")) + 0.5 * len(tds[5].select("img[src='images/half_star.png']")),
-            "views": int(tds[6].get_text(strip=True))
+            "genre": tds[1].get_text(strip=True),
+            "year": tds[1].get_text(strip=True),
+            "edition": tds[4].get_text(strip=True),
+            "golden": tds[5].get_text(strip=True) == "Ja",
+            "language": tds[6].get_text(strip=True),
+            "creator": tds[6].get_text(strip=True),
+            "rating": len(tds[8].select("img[src='images/star.png']")) + 0.5 * len(tds[5].select("img[src='images/half_star.png']")),
+            "views": int(tds[9].get_text(strip=True))
         }
 
         # Add the dictionary to the list

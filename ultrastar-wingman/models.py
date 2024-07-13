@@ -30,14 +30,17 @@ class SongsResponse(BaseModel):
 
 class USDBSong(BaseModel):
     artist: str
+    creator: str
     downloaded: bool
     edition: str
+    genre: str
     golden: bool
     id: str
     language: str
     rating: float
     title: str
     views: int
+    year: str
 
 
 class Paging(BaseModel):
