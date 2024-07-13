@@ -56,6 +56,9 @@ class Score {
             if (data.hasOwnProperty('title')) {
                 obj['title'] = ApiClient.convertToType(data['title'], 'String');
             }
+            if (data.hasOwnProperty('song_id')) {
+                obj['song_id'] = ApiClient.convertToType(data['song_id'], 'String');
+            }
             if (data.hasOwnProperty('difficulty')) {
                 obj['difficulty'] = ApiClient.convertToType(data['difficulty'], 'Number');
             }
@@ -87,6 +90,10 @@ class Score {
             throw new Error("Expected the field `title` to be a primitive type in the JSON string but got " + data['title']);
         }
         // ensure the json data is a string
+        if (data['song_id'] && !(typeof data['song_id'] === 'string' || data['song_id'] instanceof String)) {
+            throw new Error("Expected the field `song_id` to be a primitive type in the JSON string but got " + data['song_id']);
+        }
+        // ensure the json data is a string
         if (data['player'] && !(typeof data['player'] === 'string' || data['player'] instanceof String)) {
             throw new Error("Expected the field `player` to be a primitive type in the JSON string but got " + data['player']);
         }
@@ -116,6 +123,12 @@ Score.prototype['artist'] = undefined;
  * @member {String} title
  */
 Score.prototype['title'] = undefined;
+
+/**
+ * The id of the song (must not be the correct one as it has to be matched by title and artist :/).
+ * @member {String} song_id
+ */
+Score.prototype['song_id'] = undefined;
 
 /**
  * The difficulty of the song.

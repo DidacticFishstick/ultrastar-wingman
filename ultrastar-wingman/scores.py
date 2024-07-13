@@ -4,6 +4,7 @@ from typing import List, Optional
 import sqlite3
 
 import config
+from song import Song
 
 
 class Session:
@@ -86,7 +87,7 @@ class Session:
     def __repr__(self):
         return str(self)
 
-    def get_scores(self) -> dict:
+    def get_scores(self) -> List[dict]:
         """
         Get the scores for this session
 
@@ -117,7 +118,14 @@ class Session:
             columns = ['usdx_id', 'artist', 'title', 'difficulty', 'player', 'score', 'date']
 
             # Create a list of dictionaries, each representing a row from the query
-            json_array = [{columns[i]: value.rstrip('\u0000') if isinstance(value, str) else value for i, value in enumerate(row)} for row in rows]
+            json_array = [
+                {
+                    columns[i]: value.rstrip('\u0000') if isinstance(value, str) else value for i, value in enumerate(row)
+                } for row in rows
+            ]
+
+            for score in json_array:
+                score["song_id"] = Song.get_song_by_artist_and_title(score["artist"], score["title"]).id
 
             return json_array
         finally:

@@ -19,7 +19,6 @@ import usdx
 import ws
 from song import Song
 import scores
-from scores import Session
 
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 

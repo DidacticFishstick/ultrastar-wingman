@@ -9,3 +9,132 @@
 .scores-page h1 option {
     background: var(--input-bg);
 }
+
+.scores-page .grouped-scores .group-selection {
+    display: flex;
+    justify-content: center;
+    color: var(--color-dark);
+    padding-bottom: 16px;
+}
+
+.scores-page .grouped-scores .group-selection label {
+    margin-top: 16px;
+}
+
+.scores-page .grouped-scores .group-selection input {
+    display: none;
+}
+
+.scores-page .grouped-scores .group-selection span {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 16px 24px;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+}
+
+.scores-page .grouped-scores .group-selection input:checked + span {
+    color: var(--highlight-blue-light);
+    background: var(--highlight-blue-dark);
+    border-color: var(--highlight-blue-light);
+}
+
+.scores-page .songs-search {
+    margin: -16px 0;
+}
+
+.scores-page .songs-search .input-field {
+    margin: 0;
+}
+
+.scores-page .songs-search,
+.scores-page .grouped-songs {
+    grid-column: 1 / -1;
+}
+
+.scores-page .score-group.song .header {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+
+.scores-page .score-group.song .header .cover {
+    width: 48px;
+    height: 48px;
+    background-size: cover;
+    background-position: center;
+    background-color: #000;
+}
+
+.scores-page .score-group.song .header .details {
+    display: grid;
+    gap: 4px;
+}
+
+.scores-page .score-group.song .header .title,
+.scores-page .score-group.song .header .artist {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.scores-page .score-group.song .header .title {
+    font-size: 1em;
+    color: var(--color);
+}
+
+.scores-page .score-group.song .header .data {
+    font-size: 0.75em;
+    color: var(--color-dark);
+}
+
+.scores-page .score-group.song .header .expand {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-dark);
+    cursor: pointer;
+    border-radius: 24px;
+    font-size: 1.5em;
+    transition: transform 0.3s;
+}
+
+.scores-page .score-group.song .header.expanded .expand {
+    transform: rotate(180deg);
+}
+
+.scores-page .score-group.song table {
+    display: none;
+    /*width: 100%;*/
+    max-width: 500px;
+    margin: 16px auto;
+    color: var(--color);
+    border-collapse: collapse;
+}
+
+.scores-page .score-group.song .header.expanded + table {
+    display: table;
+}
+
+.scores-page .score-group.song table th,
+.scores-page .score-group.song table td {
+    padding: 4px 16px;
+    text-align: right;
+}
+
+.scores-page .score-group.song table th {
+    border-bottom: 1px solid var(--color-dark);
+    color: var(--highlight-blue-light);
+}
+
+.scores-page .score-group.song table th + th,
+.scores-page .score-group.song table td + td {
+    border-left: 1px solid var(--color-dark);
+    text-align: left;
+}

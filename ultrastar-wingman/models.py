@@ -70,6 +70,7 @@ class Score(BaseModel):
     usdx_id: int = Field(None, description="The id internally used by UltraStar Deluxe")
     artist: str = Field(None, description="The artist of the song.")
     title: str = Field(None, description="The title of the song.")
+    song_id: str = Field(None, description="The id of the song (must not be the correct one as it has to be matched by title and artist :/).")
     difficulty: int = Field(None, description="The difficulty of the song.")
     player: str = Field(None, description="The player name.")
     score: int = Field(None, description="The score of the performance.")

@@ -1,16 +1,28 @@
 // Scores.js
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
+import {MdExpandMore} from "react-icons/md";
 import {ScoresApi} from "../api/src";
 import Spinner from "./Spinner";
 import Boxplot from "./Boxplot";
 import './Scores.css';
 import Tile from "./Tile";
+import song from "../api/src/model/Song";
+import {FaSearch} from "react-icons/fa";
+import Input from "./Input";
 
 function Scores() {
     const [sessions, setSessions] = useState([]);
     const [currentSession, setCurrentSession] = useState([]);
     const [scores, setScores] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [scoreGroups, setScoreGroups] = useState('player');
+    const [songSearchTerm, setSongSearchTerm] = useState('');
+
+    const inputRef = useRef();
+
+    const handleScoreGroupsChange = (event) => {
+        setScoreGroups(event.target.value)
+    }
 
     const api = new ScoresApi();
 
@@ -41,11 +53,11 @@ function Scores() {
         fetchCurrentScores();
     }, []);
 
-    // TODO: component for this
     const groupedData = scores.reduce((acc, item) => {
         const key = `${item.usdx_id}-${item.title}`;
         if (!acc[key]) {
             acc[key] = {
+                song_id: item.song_id,
                 title: item.title,
                 artist: item.artist,
                 scores: []
@@ -56,6 +68,13 @@ function Scores() {
         return acc;
     }, {});
     const songData = Object.values(groupedData);
+
+    // Filter songs based on search term
+    const filteredSongData = songData.filter(song =>
+        song.title.toLowerCase().includes(songSearchTerm.toLowerCase()) ||
+        song.artist.toLowerCase().includes(songSearchTerm.toLowerCase()) ||
+        song.scores.some(score => score.player.toLowerCase().includes(songSearchTerm.toLowerCase()))
+    );
 
     return (
         <div className="scores-page">
@@ -87,20 +106,73 @@ function Scores() {
                     <h1>Score Distribution</h1>
                     <Boxplot rawData={scores}/>
                 </Tile>
-            </div>
 
-            <h1>By Song</h1>
+                <Tile className={"grouped-scores"} span>
+                    <h1>Scores</h1>
 
-            {songData.map((song, index) => (
-                <div key={index}>
-                    <h2>{song.title} by {song.artist}</h2>
-                    <ul>
-                        {song.scores.map((entry, idx) => (
-                            <li key={idx}>{entry.player}: {entry.score}</li>
-                        ))}
-                    </ul>
+                    <div className="group-selection">
+                        <label>
+                            <input
+                                type="radio"
+                                value="player"
+                                checked={scoreGroups === 'player'}
+                                onChange={handleScoreGroupsChange}
+                            />
+                            <span>by Player</span>
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                value="song"
+                                checked={scoreGroups === 'song'}
+                                onChange={handleScoreGroupsChange}
+                            />
+                            <span>by Song</span>
+                        </label>
+                    </div>
+                </Tile>
+
+                <div ref={inputRef} className="songs-search">
+                    <Input type="text" placeholder="Search Scores" icon={<FaSearch/>} searchTerm={songSearchTerm} setSearchTerm={setSongSearchTerm} onEnter={() => {}} onFocus={() => {
+                        setTimeout(() => {
+                            inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+                        }, 50);
+                    }}/>
                 </div>
-            ))}
+
+                <div className={"grouped-songs"}>
+                    {filteredSongData.map((song, index) => (
+                        <div key={index} className={"score-group song"}>
+                            <div className={'header'} onClick={(e) => {
+                                e.currentTarget.classList.toggle("expanded")
+                            }}>
+                                <div className={"cover"} style={{backgroundImage: `url('/api/songs/${song.song_id}/cover')`}}></div>
+                                <div className={'details'}>
+                                    <div className={'title'}>{song.title} by {song.artist}</div>
+                                    <div className={'data'}>{`${song.scores.length} scores | best: ${song.scores[0].player} (${song.scores[0].score})`}</div>
+                                </div>
+                                <div className={"expand"}>
+                                    <MdExpandMore/>
+                                </div>
+                            </div>
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Score</th>
+                                </tr>
+                                {song.scores.map((entry, idx) => (
+                                    <tr>
+                                        <td>{entry.player}</td>
+                                        <td>{entry.score}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
     );
 }

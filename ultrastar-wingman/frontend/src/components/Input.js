@@ -22,7 +22,6 @@ const Input = ({type, placeholder, icon, searchTerm, setSearchTerm, onFocus, onE
         }}
     />;
 
-    // Combine the passed className with the default classes
     return <div className={"input-field"}>
         {/*TODO: scroll on focus does not work on mobile*/}
         <span className={"search"}>

@@ -6,6 +6,8 @@ import re
 import shutil
 import tempfile
 import uuid
+from functools import lru_cache
+
 import chardet
 from typing import Optional, List
 
@@ -235,8 +237,29 @@ class Song:
         return [s.to_json() for s in cls.songs.values()]
 
     @classmethod
-    def get_song_by_id(cls, id) -> 'Song':
+    def get_song_by_id(cls, id) -> Optional['Song']:
         return cls.songs.get(str(id))
+
+    @classmethod
+    @lru_cache(512)
+    def get_song_by_artist_and_title(cls, artist: str, title: str) -> Optional['Song']:
+        """
+        Searches through the songs for the song with the given artist and title.
+        If multiple songs are found, returns the first one.
+        Returns None if no song was found.
+        This is needed for the scores as Ultrastar Deluxe is not bothered to save any good identifier for the scores
+
+        :param artist: The artist
+        :param title: The title
+        :return: The song or None if no song was found
+        """
+
+        print("searching for {artist} {title}".format(artist=artist, title=title))
+
+        for song in cls.songs.values():
+            if song.artist == artist and song.title == title:
+                return song
+        return None
 
     @staticmethod
     def get_mp3_length(filename):
