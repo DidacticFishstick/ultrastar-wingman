@@ -1,0 +1,103 @@
+.radio {
+    display: block;
+    position: relative;
+    padding: 4px 0;
+    margin: 0 16px 0 32px;
+    cursor: pointer;
+    width: max-content;
+}
+
+.radio input {
+    display: none;
+}
+
+.radio .text {
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--color-dark);
+    padding-left: 24px;
+    transition: color 0.2s;
+}
+
+.radio:hover .text,
+.radio input:checked ~ .text {
+    color: var(--highlight-blue-light);
+}
+
+.radio:before {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 8px;
+    width: 12px;
+    height: 12px;
+    background-color: transparent;
+    border: 1px solid var(--color-dark);
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.radio:hover:before {
+    background-color: var(--highlight-blue-dark);
+}
+
+.radio .checkmark {
+    display: inline-block;
+    position: absolute;
+    top: -1.5px;
+    left: 0.5px;
+    width: 22px;
+    height: 22px;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+}
+
+.radio input:checked ~ .checkmark {
+    display: block;
+}
+
+.radio .checkmark:before,
+.radio .checkmark:after {
+    content: "";
+    position: absolute;
+    background: var(--highlight-blue-light);
+}
+
+@keyframes checkmark_before {
+    0% {
+        width: 3px;
+        height: 0;
+        left: 12px;
+        top: 21px;
+    }
+    100% {
+        width: 3px;
+        height: 14px;
+        left: 12px;
+        top: 7px;
+    }
+}
+
+@keyframes checkmark_after {
+    0% {
+        width: 0;
+        height: 3px;
+        left: 7px;
+        top: 18px;
+    }
+    100% {
+        width: 8px;
+        height: 3px;
+        left: 7px;
+        top: 18px;
+    }
+}
+
+.radio input:checked ~ .checkmark:before {
+    animation: checkmark_before 0.2s 0.1s linear forwards;
+}
+
+.radio input:checked ~ .checkmark:after {
+    animation: checkmark_after 0.1s linear forwards;
+}

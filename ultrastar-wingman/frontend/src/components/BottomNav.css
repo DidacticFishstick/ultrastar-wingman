@@ -5,6 +5,8 @@
     width: 100%;
     padding: 10px 0 calc(max(10px, env(safe-area-inset-bottom))) 0;
     background-color: var(--footer-bg);
+    z-index: 1000;
+    box-shadow: 0 4px 16px #000a;
 }
 
 .bottom-nav > div {

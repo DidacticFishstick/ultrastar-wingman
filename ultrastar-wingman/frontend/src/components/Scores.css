@@ -4,52 +4,16 @@
     border: none;
     outline: none;
     font: inherit;
+    cursor: pointer;
 }
 
 .scores-page h1 option {
     background: var(--input-bg);
-}
-
-.scores-page .grouped-scores .group-selection {
-    display: flex;
-    justify-content: center;
-    color: var(--color-dark);
-    padding-bottom: 16px;
-}
-
-.scores-page .grouped-scores .group-selection label {
-    margin-top: 16px;
-}
-
-.scores-page .grouped-scores .group-selection input {
-    display: none;
-}
-
-.scores-page .grouped-scores .group-selection span {
     cursor: pointer;
-    font-weight: bold;
-    padding: 16px 24px;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
 }
 
-.scores-page .grouped-scores .group-selection input:checked + span {
-    color: var(--highlight-blue-light);
-    background: var(--highlight-blue-dark);
-    border-color: var(--highlight-blue-light);
-}
-
-.scores-page .songs-search {
-    margin: -16px 0;
-}
-
-.scores-page .songs-search .input-field {
-    margin: 0;
-}
-
-.scores-page .songs-search,
 .scores-page .grouped-songs {
-    grid-column: 1 / -1;
+    padding: 0 16px;
 }
 
 .scores-page .score-group.song .header {
