@@ -39,7 +39,7 @@
 }
 
 .scores-page .score-group.song .header .title,
-.scores-page .score-group.song .header .artist {
+.scores-page .score-group.song .header .data {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -53,6 +53,16 @@
 .scores-page .score-group.song .header .data {
     font-size: 0.75em;
     color: var(--color-dark);
+}
+
+.scores-page .score-group.song .header .data span {
+    margin-right: 8px;
+}
+
+.scores-page .score-group.song .header .data svg {
+    color: var(--highlight-blue-light);
+    padding-right: 2px;
+    transform: translateY(2px);
 }
 
 .scores-page .score-group.song .header .expand {
