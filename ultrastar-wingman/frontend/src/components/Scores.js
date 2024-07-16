@@ -12,6 +12,7 @@ import Tile from "./Tile";
 import RadioButton from "./RadioButton";
 import {FaSearch} from "react-icons/fa";
 import Input from "./Input";
+import Histogramm from "./Histogramm";
 
 function Scores() {
     const [sessions, setSessions] = useState([]);
@@ -220,23 +221,29 @@ function Scores() {
                                 <MdExpandMore/>
                             </div>
                         </div>
-                        <div className={"player-scores"}>
-                            {player.scores.map((score, idx) => (
-                                <div key={index} className={"score-group player-song"}>
-                                    <div className={'header'} onClick={(e) => {
-                                        e.currentTarget.classList.toggle("expanded")
-                                    }}>
-                                        <div className={"cover"} style={{backgroundImage: `url('/api/songs/${score.song_id}/cover')`}}></div>
-                                        <div className={'details'}>
-                                            <div className={'title'}>{score.artist} | {score.title}</div>
-                                            <div className={'data'}>
-                                                <PiMicrophoneStage/>
-                                                <span>{score.score}</span>
+                        <div>
+                            <h3>Score Distribution</h3>
+                            <Histogramm data={player.scores}/>
+
+                            <h3>Sung Songs</h3>
+                            <div className={"player-scores"}>
+                                {player.scores.map((score, idx) => (
+                                    <div key={index} className={"score-group player-song"}>
+                                        <div className={'header'} onClick={(e) => {
+                                            e.currentTarget.classList.toggle("expanded")
+                                        }}>
+                                            <div className={"cover"} style={{backgroundImage: `url('/api/songs/${score.song_id}/cover')`}}></div>
+                                            <div className={'details'}>
+                                                <div className={'title'}>{score.artist} | {score.title}</div>
+                                                <div className={'data'}>
+                                                    <PiMicrophoneStage/>
+                                                    <span>{score.score}</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
                         </div>
                     </div>
                 ))}

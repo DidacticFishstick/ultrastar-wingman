@@ -20,7 +20,7 @@
     display: grid;
     align-items: center;
     gap: 10px;
-    margin-bottom: 16px;
+    margin: 16px 0;
     cursor: pointer;
 }
 
@@ -132,11 +132,20 @@
     text-align: left;
 }
 
-.scores-page .score-group.player .player-scores {
+.scores-page .score-group.player .header + div {
     display: none;
     padding-left: 58px;
 }
 
-.scores-page .score-group.player .header.expanded + .player-scores {
+.scores-page .score-group.player .header.expanded + div {
     display: block;
+}
+
+.scores-page .score-group.player h3 {
+    display: block;
+    color: var(--color);
+    text-align: center;
+    font-size: 1em;
+    font-weight: bold;
+    margin: 16px 0 4px 0;
 }

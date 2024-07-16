@@ -88,6 +88,12 @@ function Boxplot({rawData}) {
                 data: data.map(d => d.value),
                 itemStyle: {
                     color: "#203f59"
+                },
+                emphasis: {
+                    itemStyle: {
+                        color: "#6d2d90",
+                        borderColor: "#9e3b95"
+                    }
                 }
             }
         ]

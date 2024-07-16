@@ -254,8 +254,6 @@ class Song:
         :return: The song or None if no song was found
         """
 
-        print("searching for {artist} {title}".format(artist=artist, title=title))
-
         for song in cls.songs.values():
             if song.artist == artist and song.title == title:
                 return song
