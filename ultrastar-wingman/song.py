@@ -330,17 +330,18 @@ class Song:
             cls.active_song = None
 
     @classmethod
-    async def _sing_song(cls, song: 'Song') -> bool:
+    async def _sing_song(cls, song: 'Song', force=False) -> bool:
         """
         Starts a new ultrastar deluxe process with the given song.
         If another song is currently active, the new song will not be started.
 
         :param song: The song to start
+        :param force: If set to True, any currently playing song will be canceled
         :return: True if the given song was started, False otherwise
         """
 
         async with cls.active_song_lock:
-            if cls.active_song is not None:
+            if not force and cls.active_song is not None:
                 # There is already a song running
                 logging.info(f"Not starting song as another one is already active")
                 return False
@@ -437,11 +438,12 @@ class Song:
         with open(os.path.join(self.directory, "wingman.json"), 'w') as file:
             json.dump(data, file, indent=4)
 
-    async def sing(self) -> bool:
+    async def sing(self, force=False) -> bool:
         """
         Starts ultrastar deluxe with the song selected
 
+        :param force: If set to True, any currently playing song will be canceled
         :return: True if the given song was started, False otherwise
         """
 
-        return await self._sing_song(self)
+        return await self._sing_song(self, force=force)

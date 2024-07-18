@@ -24,6 +24,7 @@ import Score from './model/Score';
 import ScoresModel from './model/ScoresModel';
 import SessionModel from './model/SessionModel';
 import SessionsListModel from './model/SessionsListModel';
+import SingModel from './model/SingModel';
 import Song from './model/Song';
 import SongsResponse from './model/SongsResponse';
 import USDBSong from './model/USDBSong';
@@ -143,6 +144,12 @@ export {
      * @property {module:model/SessionsListModel}
      */
     SessionsListModel,
+
+    /**
+     * The SingModel model constructor.
+     * @property {module:model/SingModel}
+     */
+    SingModel,
 
     /**
      * The Song model constructor.

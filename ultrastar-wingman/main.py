@@ -202,16 +202,16 @@ async def api_mp3(song_id):
 
 
 @app.post('/api/songs/{song_id}/sing', response_model=models.BasicResponse, tags=["Songs"], summary="Starts UltraStar Deluxe and loads the song")
-async def api_mp3(song_id):
+async def api_sing_song(song_id, sing_model: models.SingModel):
     song = Song.get_song_by_id(song_id)
 
     if song is None:
         raise HTTPException(status_code=404, detail="Song not found")
 
-    if await song.sing():
+    if await song.sing(force=sing_model.force):
         return {"success": True}
     else:
-        raise HTTPException(status_code=400, detail="Another song is already playing")
+        raise HTTPException(status_code=409, detail="Another song is already playing")
 
 
 @app.get('/api/players', response_model=models.PlayerConfig, summary="Retrieve Players", response_description="A list of unique player names", tags=["Players"])

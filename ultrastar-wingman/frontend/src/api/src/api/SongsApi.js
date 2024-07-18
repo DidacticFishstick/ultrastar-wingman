@@ -15,6 +15,7 @@
 import ApiClient from "../ApiClient";
 import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
+import SingModel from '../model/SingModel';
 import SongsResponse from '../model/SongsResponse';
 
 /**
@@ -121,8 +122,8 @@ export default class SongsApi {
     }
 
     /**
-     * Callback function to receive the result of the apiMp3ApiSongsSongIdSingPost operation.
-     * @callback module:api/SongsApi~apiMp3ApiSongsSongIdSingPostCallback
+     * Callback function to receive the result of the apiSingSongApiSongsSongIdSingPost operation.
+     * @callback module:api/SongsApi~apiSingSongApiSongsSongIdSingPostCallback
      * @param {String} error Error message, if any.
      * @param {module:model/BasicResponse} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
@@ -131,14 +132,19 @@ export default class SongsApi {
     /**
      * Starts UltraStar Deluxe and loads the song
      * @param {Object} songId 
-     * @param {module:api/SongsApi~apiMp3ApiSongsSongIdSingPostCallback} callback The callback function, accepting three arguments: error, data, response
+     * @param {module:model/SingModel} singModel 
+     * @param {module:api/SongsApi~apiSingSongApiSongsSongIdSingPostCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/BasicResponse}
      */
-    apiMp3ApiSongsSongIdSingPost(songId, callback) {
-      let postBody = null;
+    apiSingSongApiSongsSongIdSingPost(songId, singModel, callback) {
+      let postBody = singModel;
       // verify the required parameter 'songId' is set
       if (songId === undefined || songId === null) {
-        throw new Error("Missing the required parameter 'songId' when calling apiMp3ApiSongsSongIdSingPost");
+        throw new Error("Missing the required parameter 'songId' when calling apiSingSongApiSongsSongIdSingPost");
+      }
+      // verify the required parameter 'singModel' is set
+      if (singModel === undefined || singModel === null) {
+        throw new Error("Missing the required parameter 'singModel' when calling apiSingSongApiSongsSongIdSingPost");
       }
 
       let pathParams = {
@@ -152,7 +158,7 @@ export default class SongsApi {
       };
 
       let authNames = [];
-      let contentTypes = [];
+      let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = BasicResponse;
       return this.apiClient.callApi(

@@ -90,3 +90,7 @@ class SessionsListModel(BaseModel):
 class ScoresModel(BaseModel):
     session: SessionModel = Field(None, description="The session this data is for.")
     scores: List[Score] = Field(None, description="List of scores.")
+
+
+class SingModel(BaseModel):
+    force: bool = Field(False, description="Force a song change if another song is currently playing.")

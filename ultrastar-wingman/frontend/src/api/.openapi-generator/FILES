@@ -15,6 +15,7 @@ docs/ScoresApi.md
 docs/ScoresModel.md
 docs/SessionModel.md
 docs/SessionsListModel.md
+docs/SingModel.md
 docs/Song.md
 docs/SongsApi.md
 docs/SongsResponse.md
@@ -49,6 +50,7 @@ src/model/Score.js
 src/model/ScoresModel.js
 src/model/SessionModel.js
 src/model/SessionsListModel.js
+src/model/SingModel.js
 src/model/Song.js
 src/model/SongsResponse.js
 src/model/USDBSong.js

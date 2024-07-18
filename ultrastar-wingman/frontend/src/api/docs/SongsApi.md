@@ -6,7 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**apiCoverApiSongsSongIdCoverGet**](SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
 [**apiMp3ApiSongsSongIdMp3Get**](SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
-[**apiMp3ApiSongsSongIdSingPost**](SongsApi.md#apiMp3ApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
+[**apiSingSongApiSongsSongIdSingPost**](SongsApi.md#apiSingSongApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 [**apiSongsApiSongsGet**](SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
 
 
@@ -97,9 +97,9 @@ No authorization required
 - **Accept**: application/json
 
 
-## apiMp3ApiSongsSongIdSingPost
+## apiSingSongApiSongsSongIdSingPost
 
-> BasicResponse apiMp3ApiSongsSongIdSingPost(songId)
+> BasicResponse apiSingSongApiSongsSongIdSingPost(songId, singModel)
 
 Starts UltraStar Deluxe and loads the song
 
@@ -110,7 +110,8 @@ import UltraStarWingman from 'ultra_star_wingman';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
-apiInstance.apiMp3ApiSongsSongIdSingPost(songId, (error, data, response) => {
+let singModel = new UltraStarWingman.SingModel(); // SingModel | 
+apiInstance.apiSingSongApiSongsSongIdSingPost(songId, singModel, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -125,6 +126,7 @@ apiInstance.apiMp3ApiSongsSongIdSingPost(songId, (error, data, response) => {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **songId** | [**Object**](.md)|  | 
+ **singModel** | [**SingModel**](SingModel.md)|  | 
 
 ### Return type
 
@@ -136,7 +138,7 @@ No authorization required
 
 ### HTTP request headers
 
-- **Content-Type**: Not defined
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 
