@@ -51,12 +51,12 @@ async def start(params: List[str] = None, kill_previous=False):
 
     async with process_lock:
         try:
-            if not kill_previous and process:
+            if not kill_previous and (process and process.returncode is None):
                 logging.info(f"Not starting USDX as it is already running")
                 return
 
             # Kill the previous process
-            if kill_previous and process:
+            if kill_previous and (process and process.returncode is None):
                 try:
                     process.kill()
                     logging.info(f"USDX killed")
@@ -82,10 +82,9 @@ async def kill():
     global process
 
     async with process_lock:
-        if process:
+        if process and process.returncode is None:
             try:
                 process.kill()
-                process = None
                 logging.info(f"USDX killed")
             except:
                 logging.exception("Failed to kill USDX")
