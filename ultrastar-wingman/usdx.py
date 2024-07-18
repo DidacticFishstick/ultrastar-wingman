@@ -4,6 +4,7 @@ import os.path
 import re
 import hashlib
 import shutil
+import sys
 import threading
 from sys import platform
 from typing import List, Optional
@@ -36,13 +37,26 @@ process = None
 process_lock = asyncio.Lock()
 
 
-async def start(params: List[str] = None, kill_previous=False):
+async def _monitor_process(p, callback):
+    """
+    Waits for the given process to exit before calling the given callback.
+
+    :param p: The process to monitor.
+    :param callback: The callback to call.
+    """
+
+    await p.wait()
+    await callback()
+
+
+async def start(params: List[str] = None, kill_previous=False, callback=None):
     """
     Starts ultrastar wingman with an optional list of parameters.
     If ultrastar wingman is already running, the old proces will be killed first
 
     :param params: A list of parameters to pass to the ultrastar wingman.
     :param kill_previous: If the previous process should be killed (if it is still running).
+    :param callback: A callback function to call when the process ends.
     """
 
     global process
@@ -63,12 +77,19 @@ async def start(params: List[str] = None, kill_previous=False):
                 except:
                     logging.exception("Failed to kill USDX")
 
+            # start the new process
             process = await asyncio.create_subprocess_exec(
                 str(config.usdx_path),
                 *params,
-                stdout=asyncio.subprocess.PIPE,
-                stderr=asyncio.subprocess.PIPE
+                stdout=None,
+                stderr=None,
+                creationflags=(0x08000000 if sys.platform == 'win32' else 0)  # CREATE_NO_WINDOW for Windows because the process does not exit otherwise - thanks Obama!
             )
+
+            # configure callback
+            if callback is not None:
+                asyncio.create_task(_monitor_process(process, callback))
+
             logging.info(f"USDX started")
         except:
             logging.exception("Failed to start USDX")

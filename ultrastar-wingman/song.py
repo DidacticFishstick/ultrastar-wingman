@@ -20,6 +20,7 @@ from tqdm import tqdm
 import config
 import usdb
 import ws
+import usdx
 
 
 class DownloadException(Exception):
@@ -29,7 +30,8 @@ class DownloadException(Exception):
 class Song:
     songs = {}
     usdb_ids = set()
-    php_session_id = None
+    active_song_lock = asyncio.Lock()
+    active_song: Optional['Song'] = None
 
     @staticmethod
     def create_valid_dir_name(s):
@@ -316,6 +318,45 @@ class Song:
         duration = audiofile.info.time_secs
         return duration
 
+    @classmethod
+    async def _on_song_end(cls):
+        """
+        Callback to be used for the end of a song.
+        """
+
+        logging.info("Active song has ended")
+
+        async with cls.active_song_lock:
+            cls.active_song = None
+
+    @classmethod
+    async def _sing_song(cls, song: 'Song') -> bool:
+        """
+        Starts a new ultrastar deluxe process with the given song.
+        If another song is currently active, the new song will not be started.
+
+        :param song: The song to start
+        :return: True if the given song was started, False otherwise
+        """
+
+        async with cls.active_song_lock:
+            if cls.active_song is not None:
+                # There is already a song running
+                logging.info(f"Not starting song as another one is already active")
+                return False
+
+            logging.info(f"Starting song {song}")
+
+            await usdx.start(
+                params=["-SongPath", str(song.directory)],
+                kill_previous=True,
+                callback=cls._on_song_end
+            )
+
+            cls.active_song = song
+
+        return True
+
     def __init__(self,
                  directory: str,
                  title: str,
@@ -395,3 +436,12 @@ class Song:
 
         with open(os.path.join(self.directory, "wingman.json"), 'w') as file:
             json.dump(data, file, indent=4)
+
+    async def sing(self) -> bool:
+        """
+        Starts ultrastar deluxe with the song selected
+
+        :return: True if the given song was started, False otherwise
+        """
+
+        return await self._sing_song(self)

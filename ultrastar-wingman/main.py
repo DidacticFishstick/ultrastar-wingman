@@ -40,7 +40,6 @@ app = FastAPI(
 
 download_queue = asyncio.Queue()
 event_loop = asyncio.get_event_loop()
-php_session_id = None
 
 
 @app.get('/openapi_no_anyOf.json', include_in_schema=False)
@@ -102,7 +101,6 @@ async def api_usdb_download(usdb_id_model: models.UsdbId):
     return {"success": True}
 
 
-# TODO: Does not work using localhost right now!?
 @app.api_route('/proxy/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'], include_in_schema=False)
 async def proxy(request: Request, path: Optional[str] = ''):
     # Define the base URL for the proxied requests
@@ -180,6 +178,9 @@ async def api_songs():
 async def api_cover(song_id):
     song = Song.get_song_by_id(song_id)
 
+    if song is None:
+        raise HTTPException(status_code=404, detail="Song not found")
+
     if song.cover_path:
         return FileResponse(song.cover_path)
     else:
@@ -191,10 +192,26 @@ async def api_cover(song_id):
 async def api_mp3(song_id):
     song = Song.get_song_by_id(song_id)
 
+    if song is None:
+        raise HTTPException(status_code=404, detail="Song not found")
+
     if song.mp3:
         return FileResponse(os.path.join(song.directory, song.mp3))
     else:
         raise HTTPException(status_code=404, detail="mp3 not found")
+
+
+@app.post('/api/songs/{song_id}/sing', response_model=models.BasicResponse, tags=["Songs"], summary="Starts UltraStar Deluxe and loads the song")
+async def api_mp3(song_id):
+    song = Song.get_song_by_id(song_id)
+
+    if song is None:
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    if await song.sing():
+        return {"success": True}
+    else:
+        raise HTTPException(status_code=400, detail="Another song is already playing")
 
 
 @app.get('/api/players', response_model=models.PlayerConfig, summary="Retrieve Players", response_description="A list of unique player names", tags=["Players"])
@@ -330,9 +347,9 @@ async def main():
     # load all downloaded songs
     Song.load_songs()
 
-    # configure and start usdx
+    # TODO: move to the place where sing ist started
+    # configure usdx
     usdx.change_config(config.setup_colors)
-    await usdx.start()
 
     # start the server
     server_config = uvicorn.Config(app="main:app", host="0.0.0.0", port=8080, log_level="info")
