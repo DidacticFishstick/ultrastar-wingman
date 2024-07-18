@@ -130,11 +130,14 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
 *UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
 *UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
+*UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdSingPost**](docs/SongsApi.md#apiMp3ApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
 *UltraStarWingman.USDBApi* | [**apiUsdbDownloadApiUsdbDownloadPost**](docs/USDBApi.md#apiUsdbDownloadApiUsdbDownloadPost) | **POST** /api/usdb/download | Downloads the song with the given USDB ID
 *UltraStarWingman.USDBApi* | [**apiUsdbIdsApiUsdbIdsGet**](docs/USDBApi.md#apiUsdbIdsApiUsdbIdsGet) | **GET** /api/usdb/ids | Gets the list of all downloaded USDB IDs
 *UltraStarWingman.USDBApi* | [**apiUsdbSongsApiUsdbSongsGet**](docs/USDBApi.md#apiUsdbSongsApiUsdbSongsGet) | **GET** /api/usdb/songs | Search Songs
-*UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxRestartApiUsdxRestartPost**](docs/UltraStarDeluxeApi.md#apiUsdxRestartApiUsdxRestartPost) | **POST** /api/usdx/restart | Restarts UltraStar Deluxe
+*UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxKillApiUsdxKillPost**](docs/UltraStarDeluxeApi.md#apiUsdxKillApiUsdxKillPost) | **POST** /api/usdx/kill | Kills any currently running Ultrastar Deluxe process
+*UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxRestartApiUsdxRestartPost**](docs/UltraStarDeluxeApi.md#apiUsdxRestartApiUsdxRestartPost) | **POST** /api/usdx/restart | Restarts UltraStar Deluxe without any parameters
+*UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxStartApiUsdxStartPost**](docs/UltraStarDeluxeApi.md#apiUsdxStartApiUsdxStartPost) | **POST** /api/usdx/start | Starts UltraStar Deluxe without any parameters
 *UltraStarWingman.WebsiteApi* | [**avatarAvatarsAvatarGet**](docs/WebsiteApi.md#avatarAvatarsAvatarGet) | **GET** /avatars/{avatar} | Avatar
 
 
