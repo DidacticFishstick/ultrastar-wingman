@@ -5,16 +5,17 @@ import os
 import re
 import shutil
 import tempfile
+import time
 import uuid
 from functools import lru_cache
 
 import chardet
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 import eyed3
 import httpx
-import requests
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 import config
 import usdb
@@ -48,67 +49,120 @@ class Song:
 
         return s
 
+    @staticmethod
+    def get_data_from_txt(txt: str) -> Optional[Dict[str, str]]:
+        """
+        Gets the following data from a txt file:
+        - title
+        - artist
+        - cover
+        - mp3
+        and returns it as a dictionary.
+
+        :param txt: The txt file content
+        :return: The data
+        """
+
+        data = {}
+
+        for key, identifier in [
+            ("title", "TITLE"),
+            ("artist", "ARTIST"),
+            ("cover", "COVER"),
+            ("mp3", "MP3")
+        ]:
+            match = re.search(fr'#{identifier}:(.*)\n', txt)
+            if match:
+                data[key] = match.group(1)
+
+        return data
+
     @classmethod
     def load_songs(cls):
-        for subdir in os.listdir(config.usdx_songs_dir):
+        start_time = time.time()
+        for subdir in tqdm(os.listdir(config.usdx_songs_dir), desc="Loading songs"):
             subdir_path = os.path.join(config.usdx_songs_dir, subdir)
 
             if not os.path.isdir(subdir_path):
                 continue
 
             try:
-                usdb_id = None
-                if os.path.isfile(os.path.join(subdir_path, "usdb_data.json")):
-                    with open(os.path.join(subdir_path, "usdb_data.json")) as file:
-                        usdb_data = json.loads(file.read())
-                        usdb_id = str(usdb_data.get("id"))
+                # if a wingman.json exists, use the data from there
+                if cls.song_from_metadata(subdir_path):
+                    continue
 
+                # maybe get the usdb_id from the deprecated usdb_data.json if it exists
+                usdb_id = cls.load_deprecated_usdb_id(subdir_path)
+
+                # search for txt files
                 txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
 
                 if not txt_files:
                     continue
 
-                try:
-                    txt_path = os.path.join(subdir_path, txt_files[0])
+                txt_path = os.path.join(subdir_path, txt_files[0])
 
-                    with open(txt_path, 'rb') as file:
-                        encoding = chardet.detect(file.read())['encoding']
+                with open(txt_path, 'rb') as file:
+                    encoding = chardet.detect(file.read())['encoding']
 
-                    if encoding != 'utf-8':
-                        logging.warning(f"Wrong encoding. Is {encoding} instead of utf-8 for '{os.path.join(subdir_path, txt_files[0])}'")
+                # if encoding != 'utf-8':
+                #     logging.warning(f"Wrong encoding. Is {encoding} instead of utf-8 for '{os.path.join(subdir_path, txt_files[0])}'")
 
-                    with open(txt_path, 'r', encoding=encoding) as file:
-                        txt = file.read()
+                with open(txt_path, 'r', encoding=encoding) as file:
+                    txt = file.read()
 
-                        match = re.search(r'#TITLE:(.*)\n', txt)
-                        if match:
-                            title = match.group(1)
-                        else:
-                            logging.warning(f"No title for {subdir_path}")
-                            continue
+                    txt_data = cls.get_data_from_txt(txt)
 
-                        match = re.search(r'#ARTIST:(.*)\n', txt)
-                        if match:
-                            artist = match.group(1)
-                        else:
-                            logging.warning(f"No artist for {subdir_path}")
-                            continue
+                    if txt_data["title"] is None:
+                        logging.warning(f"No title for {subdir_path}")
+                        continue
+                    if txt_data["artist"] is None:
+                        logging.warning(f"No artist for {subdir_path}")
+                        continue
 
-                        match = re.search(r'#COVER:(.*)\n', txt)
-                        cover = None
-                        if match:
-                            cover = match.group(1)
-
-                        match = re.search(r'#MP3:(.*)\n', txt)
-                        mp3 = None
-                        if match:
-                            mp3 = match.group(1)
-
-                        cls(subdir_path, title, artist, usdb_id, cover, mp3)
-                except:
-                    logging.exception(f"Could not process song in '{subdir_path}'")
+                    song = cls(directory=subdir_path, usdb_id=usdb_id, **txt_data)
+                    # save the data to skip loading everything again next time
+                    song.save_metadata()
             except:
                 logging.exception(f"Could not process song in '{subdir_path}'")
+
+        logging.info(f"Finished loading all songs in {round(time.time() - start_time, 2)} seconds")
+
+    @classmethod
+    def song_from_metadata(cls, directory) -> Optional['Song']:
+        """
+        Tries to retrieve the song metadata from a wingman.json.
+        Will return the song if the data is enough.
+
+        :param directory: directory to search for metadata files
+        :return: The song if the metadata file was found and complete, None otherwise
+        """
+
+        path = os.path.join(directory, "wingman.json")
+
+        if os.path.isfile(path):
+            with open(path, "r") as file:
+                data = json.load(file)
+
+                # that check that all the required data is present
+                if all({key: (key in data) for key in ["title", "artist", "cover", "mp3"]}.values()):
+                    return cls(directory=directory, **data)
+
+    @classmethod
+    def load_deprecated_usdb_id(cls, directory) -> Optional[str]:
+        """
+        Tries to get the usdb id from the deprecated usdb_data.json
+
+        :param directory: directory to search for the file
+        :return: The id if the file was found, None otherwise
+        """
+
+        path = os.path.join(directory, "usdb_data.json")
+
+        if os.path.isfile(path):
+            with open(path, "r") as file:
+                usdb_data = json.loads(file.read())
+                return str(usdb_data.get("id"))
 
     @classmethod
     async def download(cls, id) -> 'Song':
@@ -160,11 +214,6 @@ class Song:
         logging.info(f"Saving {artist} - {title} ({id}) to {directory}")
 
         with tempfile.TemporaryDirectory() as tempdir:
-            with open(os.path.join(tempdir, f"usdb_data.json"), "w+") as file:
-                file.write(json.dumps({
-                    "id": id
-                }))
-
             with open(os.path.join(tempdir, f"{sanitized_name}.txt"), "w+", encoding='utf-8') as file:
                 file.writelines("#VIDEO:video.mp4\n")
                 file.writelines("#MP3:song.mp3\n")
@@ -230,7 +279,9 @@ class Song:
                 destination = os.path.join(directory, file_name)
                 shutil.move(source, destination)
 
-        return cls(directory, title, artist, id, "cover.jpg", "song.mp3")
+        song = cls(directory, title, artist, usdb_id=id, cover="cover.jpg", mp3="song.mp3")
+        song.save_metadata()
+        return song
 
     @classmethod
     def song_list(cls) -> List[dict]:
@@ -265,14 +316,28 @@ class Song:
         duration = audiofile.info.time_secs
         return duration
 
-    def __init__(self, directory: str, title: str, artist: str, usdb_id: Optional[str] = None, cover: Optional[str] = None, mp3: Optional[str] = None):
+    def __init__(self,
+                 directory: str,
+                 title: str,
+                 artist: str,
+                 id: Optional[str] = None,
+                 usdb_id: Optional[str] = None,
+                 cover: Optional[str] = None,
+                 mp3: Optional[str] = None,
+                 duration: Optional[float] = None,
+                 **kwargs):
         """
         Creates a new song from the information found in the directory
 
         :param directory: The directory to the song directory
         :param title: The song title
         :param artist: The artist
+        :param id: An optional global ID for the song (will be created if not given)
         :param usdb_id: An optional ID of the song on usdb.animux.de/
+        :param cover: File name for the cover image
+        :param mp3: File name for the mp3 file
+        :param duration: An optional duration of the song in seconds (will be calculated if not given)
+        :param kwargs: Additional arguments passed to the song constructor (not used currently)
         """
 
         self.directory = directory
@@ -281,14 +346,14 @@ class Song:
         self.usdb_id = usdb_id
         self.cover = cover
         self.mp3 = mp3
-        self.duration = self.get_mp3_length(os.path.join(directory, mp3))
+        self.duration = duration or self.get_mp3_length(os.path.join(directory, mp3))
 
         if cover:
             self.cover_path = os.path.join(directory, cover)
         else:
             self.cover_path = None
 
-        self.id = usdb_id or uuid.uuid4().hex
+        self.id = id or usdb_id or uuid.uuid4().hex
 
         self.songs[str(self.id)] = self
 
@@ -310,7 +375,23 @@ class Song:
             "directory": self.directory,
             "title": self.title,
             "artist": self.artist,
-            "usdb_id": self.usdb_id or "",
             "id": self.id,
+            "usdb_id": self.usdb_id or "",
             "duration": self.duration
         }
+
+    def save_metadata(self):
+        """
+        Saves the songs metadata into a json file.
+        This file is used as a cache for the song metadata to skip loading all data next time
+        """
+
+        data = self.to_json()
+
+        data.pop("directory")
+
+        data["cover"] = self.cover
+        data["mp3"] = self.mp3
+
+        with open(os.path.join(self.directory, "wingman.json"), 'w') as file:
+            json.dump(data, file, indent=4)

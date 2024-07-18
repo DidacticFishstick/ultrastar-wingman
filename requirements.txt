@@ -13,3 +13,4 @@ chardet~=5.2.0
 pydantic~=2.6.4
 requests~=2.31.0
 websockets~=11.0.3
+tqdm~=4.66.4
