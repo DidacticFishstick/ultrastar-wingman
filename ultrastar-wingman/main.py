@@ -70,9 +70,21 @@ async def avatar(avatar):
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
 
 
-@app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe")
+@app.post('/api/usdx/start', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Starts UltraStar Deluxe without any parameters")
+async def api_usdx_start():
+    await usdx.start()
+    return {"success": True}
+
+
+@app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe without any parameters")
 async def api_usdx_restart():
-    await usdx.restart()
+    await usdx.start(kill_previous=True)
+    return {"success": True}
+
+
+@app.post('/api/usdx/kill', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Kills any currently running Ultrastar Deluxe process")
+async def api_usdx_kill():
+    await usdx.kill()
     return {"success": True}
 
 

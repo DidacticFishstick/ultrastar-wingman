@@ -6,6 +6,7 @@ import hashlib
 import shutil
 import threading
 from sys import platform
+from typing import List, Optional
 
 import pyautogui
 import keyboard
@@ -32,35 +33,62 @@ colors = [
 ]
 
 process = None
+process_lock = asyncio.Lock()
 
 
-async def start():
+async def start(params: List[str] = None, kill_previous=False):
+    """
+    Starts ultrastar wingman with an optional list of parameters.
+    If ultrastar wingman is already running, the old proces will be killed first
+
+    :param params: A list of parameters to pass to the ultrastar wingman.
+    :param kill_previous: If the previous process should be killed (if it is still running).
+    """
+
     global process
-    try:
-        process = await asyncio.create_subprocess_exec(
-            str(config.usdx_path),
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.PIPE
-        )
-        logging.info(f"USDX started")
-    except:
-        logging.exception("Failed to start USDX")
+
+    params = params or []
+
+    async with process_lock:
+        try:
+            if not kill_previous and process:
+                logging.info(f"Not starting USDX as it is already running")
+                return
+
+            # Kill the previous process
+            if kill_previous and process:
+                try:
+                    process.kill()
+                    logging.info(f"USDX killed")
+                except:
+                    logging.exception("Failed to kill USDX")
+
+            process = await asyncio.create_subprocess_exec(
+                str(config.usdx_path),
+                *params,
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE
+            )
+            logging.info(f"USDX started")
+        except:
+            logging.exception("Failed to start USDX")
 
 
 async def kill():
+    """
+    Kills any processes of ultrastar deluxe that are currently running.
+    """
+
     global process
-    try:
+
+    async with process_lock:
         if process:
-            # Kill the executable
-            process.kill()
-            logging.info(f"USDX killed")
-    except:
-        logging.exception("Failed to kill USDX")
-
-
-async def restart():
-    await kill()
-    await start()
+            try:
+                process.kill()
+                process = None
+                logging.info(f"USDX killed")
+            except:
+                logging.exception("Failed to kill USDX")
 
 
 def calculate_md5(file_path):
