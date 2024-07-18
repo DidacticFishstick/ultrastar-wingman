@@ -118,6 +118,49 @@ export default class PlayersApi {
     }
 
     /**
+     * Callback function to receive the result of the apiPlayersDeleteApiPlayersDelete operation.
+     * @callback module:api/PlayersApi~apiPlayersDeleteApiPlayersDeleteCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/BasicResponse} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Delete a Player
+     * Deletes a player name from the list.  - **name**: The name of the player to delete.  This endpoint reads all player names, filters out the specified name, and rewrites the file without it. If the operation is successful, it returns a success message.
+     * @param {String} name The name of the player to delete.
+     * @param {module:api/PlayersApi~apiPlayersDeleteApiPlayersDeleteCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/BasicResponse}
+     */
+    apiPlayersDeleteApiPlayersDelete(name, callback) {
+      let postBody = null;
+      // verify the required parameter 'name' is set
+      if (name === undefined || name === null) {
+        throw new Error("Missing the required parameter 'name' when calling apiPlayersDeleteApiPlayersDelete");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+        'name': name
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = BasicResponse;
+      return this.apiClient.callApi(
+        '/api/players', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the apiPlayersSubmitApiPlayersSubmitPost operation.
      * @callback module:api/PlayersApi~apiPlayersSubmitApiPlayersSubmitPostCallback
      * @param {String} error Error message, if any.
@@ -154,49 +197,6 @@ export default class PlayersApi {
       let returnType = BasicResponse;
       return this.apiClient.callApi(
         '/api/players/submit', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the deleteNameApiPlayersDelete operation.
-     * @callback module:api/PlayersApi~deleteNameApiPlayersDeleteCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/BasicResponse} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Delete a Player
-     * Deletes a player name from the list.  - **name**: The name of the player to delete.  This endpoint reads all player names, filters out the specified name, and rewrites the file without it. If the operation is successful, it returns a success message.
-     * @param {String} name The name of the player to delete.
-     * @param {module:api/PlayersApi~deleteNameApiPlayersDeleteCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/BasicResponse}
-     */
-    deleteNameApiPlayersDelete(name, callback) {
-      let postBody = null;
-      // verify the required parameter 'name' is set
-      if (name === undefined || name === null) {
-        throw new Error("Missing the required parameter 'name' when calling deleteNameApiPlayersDelete");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-        'name': name
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = BasicResponse;
-      return this.apiClient.callApi(
-        '/api/players', 'DELETE',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

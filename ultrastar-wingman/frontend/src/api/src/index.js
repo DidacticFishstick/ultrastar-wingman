@@ -13,6 +13,7 @@
 
 
 import ApiClient from './ApiClient';
+import AddToWishListModel from './model/AddToWishListModel';
 import BasicResponse from './model/BasicResponse';
 import HTTPValidationError from './model/HTTPValidationError';
 import OrderEnum from './model/OrderEnum';
@@ -33,12 +34,15 @@ import UdEnum from './model/UdEnum';
 import UsdbId from './model/UsdbId';
 import UsdbIdsList from './model/UsdbIdsList';
 import ValidationError from './model/ValidationError';
+import WishModel from './model/WishModel';
+import WishlistModel from './model/WishlistModel';
 import PlayersApi from './api/PlayersApi';
 import ScoresApi from './api/ScoresApi';
 import SongsApi from './api/SongsApi';
 import USDBApi from './api/USDBApi';
 import UltraStarDeluxeApi from './api/UltraStarDeluxeApi';
 import WebsiteApi from './api/WebsiteApi';
+import WishlistApi from './api/WishlistApi';
 
 
 /**
@@ -78,6 +82,12 @@ export {
      * @property {module:ApiClient}
      */
     ApiClient,
+
+    /**
+     * The AddToWishListModel model constructor.
+     * @property {module:model/AddToWishListModel}
+     */
+    AddToWishListModel,
 
     /**
      * The BasicResponse model constructor.
@@ -200,6 +210,18 @@ export {
     ValidationError,
 
     /**
+     * The WishModel model constructor.
+     * @property {module:model/WishModel}
+     */
+    WishModel,
+
+    /**
+     * The WishlistModel model constructor.
+     * @property {module:model/WishlistModel}
+     */
+    WishlistModel,
+
+    /**
     * The PlayersApi service constructor.
     * @property {module:api/PlayersApi}
     */
@@ -233,5 +255,11 @@ export {
     * The WebsiteApi service constructor.
     * @property {module:api/WebsiteApi}
     */
-    WebsiteApi
+    WebsiteApi,
+
+    /**
+    * The WishlistApi service constructor.
+    * @property {module:api/WishlistApi}
+    */
+    WishlistApi
 };

@@ -2,6 +2,7 @@
 .gitignore
 .travis.yml
 README.md
+docs/AddToWishListModel.md
 docs/BasicResponse.md
 docs/HTTPValidationError.md
 docs/OrderEnum.md
@@ -28,6 +29,9 @@ docs/UsdbId.md
 docs/UsdbIdsList.md
 docs/ValidationError.md
 docs/WebsiteApi.md
+docs/WishModel.md
+docs/WishlistApi.md
+docs/WishlistModel.md
 git_push.sh
 mocha.opts
 package.json
@@ -38,7 +42,9 @@ src/api/SongsApi.js
 src/api/USDBApi.js
 src/api/UltraStarDeluxeApi.js
 src/api/WebsiteApi.js
+src/api/WishlistApi.js
 src/index.js
+src/model/AddToWishListModel.js
 src/model/BasicResponse.js
 src/model/HTTPValidationError.js
 src/model/OrderEnum.js
@@ -59,3 +65,9 @@ src/model/UdEnum.js
 src/model/UsdbId.js
 src/model/UsdbIdsList.js
 src/model/ValidationError.js
+src/model/WishModel.js
+src/model/WishlistModel.js
+test/api/WishlistApi.spec.js
+test/model/AddToWishListModel.spec.js
+test/model/WishModel.spec.js
+test/model/WishlistModel.spec.js

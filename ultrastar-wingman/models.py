@@ -94,3 +94,16 @@ class ScoresModel(BaseModel):
 
 class SingModel(BaseModel):
     force: bool = Field(False, description="Force a song change if another song is currently playing.")
+
+
+class WishModel(BaseModel):
+    count: int = Field(None, description="The number of wishes for this song.")
+    song: Song
+
+
+class WishlistModel(BaseModel):
+    wishes: List[WishModel]
+
+
+class AddToWishListModel(BaseModel):
+    song_id: str = Field(description="The universal ID of the song.")

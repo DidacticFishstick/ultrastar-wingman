@@ -123,8 +123,8 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *UltraStarWingman.PlayersApi* | [**apiPlayersAddApiPlayersPost**](docs/PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
+*UltraStarWingman.PlayersApi* | [**apiPlayersDeleteApiPlayersDelete**](docs/PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 *UltraStarWingman.PlayersApi* | [**apiPlayersSubmitApiPlayersSubmitPost**](docs/PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
-*UltraStarWingman.PlayersApi* | [**deleteNameApiPlayersDelete**](docs/PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresGet**](docs/ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresSessionIdGet**](docs/ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
@@ -139,10 +139,15 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxRestartApiUsdxRestartPost**](docs/UltraStarDeluxeApi.md#apiUsdxRestartApiUsdxRestartPost) | **POST** /api/usdx/restart | Restarts UltraStar Deluxe without any parameters
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxStartApiUsdxStartPost**](docs/UltraStarDeluxeApi.md#apiUsdxStartApiUsdxStartPost) | **POST** /api/usdx/start | Starts UltraStar Deluxe without any parameters
 *UltraStarWingman.WebsiteApi* | [**avatarAvatarsAvatarGet**](docs/WebsiteApi.md#avatarAvatarsAvatarGet) | **GET** /avatars/{avatar} | Avatar
+*UltraStarWingman.WishlistApi* | [**apiWishlistClientDeleteApiWishlistClientDelete**](docs/WishlistApi.md#apiWishlistClientDeleteApiWishlistClientDelete) | **DELETE** /api/wishlist/client | Delete a song from the wishlist
+*UltraStarWingman.WishlistApi* | [**apiWishlistClientGetApiWishlistClientGet**](docs/WishlistApi.md#apiWishlistClientGetApiWishlistClientGet) | **GET** /api/wishlist/client | Get the clients wishlist
+*UltraStarWingman.WishlistApi* | [**apiWishlistClientPostApiWishlistClientPost**](docs/WishlistApi.md#apiWishlistClientPostApiWishlistClientPost) | **POST** /api/wishlist/client | Adds the given song_id to the wishlist of the client
+*UltraStarWingman.WishlistApi* | [**apiWishlistGlobalGetApiWishlistGlobalGet**](docs/WishlistApi.md#apiWishlistGlobalGetApiWishlistGlobalGet) | **GET** /api/wishlist/global | Get the global wishlist with the wishes for all players
 
 
 ## Documentation for Models
 
+ - [UltraStarWingman.AddToWishListModel](docs/AddToWishListModel.md)
  - [UltraStarWingman.BasicResponse](docs/BasicResponse.md)
  - [UltraStarWingman.HTTPValidationError](docs/HTTPValidationError.md)
  - [UltraStarWingman.OrderEnum](docs/OrderEnum.md)
@@ -163,6 +168,8 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.UsdbId](docs/UsdbId.md)
  - [UltraStarWingman.UsdbIdsList](docs/UsdbIdsList.md)
  - [UltraStarWingman.ValidationError](docs/ValidationError.md)
+ - [UltraStarWingman.WishModel](docs/WishModel.md)
+ - [UltraStarWingman.WishlistModel](docs/WishlistModel.md)
 
 
 ## Documentation for Authorization

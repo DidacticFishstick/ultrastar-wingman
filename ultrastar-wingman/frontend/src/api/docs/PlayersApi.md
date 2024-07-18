@@ -6,8 +6,8 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**apiPlayersAddApiPlayersPost**](PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 [**apiPlayersApiPlayersGet**](PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
+[**apiPlayersDeleteApiPlayersDelete**](PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 [**apiPlayersSubmitApiPlayersSubmitPost**](PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
-[**deleteNameApiPlayersDelete**](PlayersApi.md#deleteNameApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 
 
 
@@ -97,6 +97,51 @@ No authorization required
 - **Accept**: application/json
 
 
+## apiPlayersDeleteApiPlayersDelete
+
+> BasicResponse apiPlayersDeleteApiPlayersDelete(name)
+
+Delete a Player
+
+Deletes a player name from the list.  - **name**: The name of the player to delete.  This endpoint reads all player names, filters out the specified name, and rewrites the file without it. If the operation is successful, it returns a success message.
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let name = "name_example"; // String | The name of the player to delete.
+apiInstance.apiPlayersDeleteApiPlayersDelete(name, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **name** | **String**| The name of the player to delete. | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
 ## apiPlayersSubmitApiPlayersSubmitPost
 
 > BasicResponse apiPlayersSubmitApiPlayersSubmitPost(playerList)
@@ -139,50 +184,5 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: application/json
-- **Accept**: application/json
-
-
-## deleteNameApiPlayersDelete
-
-> BasicResponse deleteNameApiPlayersDelete(name)
-
-Delete a Player
-
-Deletes a player name from the list.  - **name**: The name of the player to delete.  This endpoint reads all player names, filters out the specified name, and rewrites the file without it. If the operation is successful, it returns a success message.
-
-### Example
-
-```javascript
-import UltraStarWingman from 'ultra_star_wingman';
-
-let apiInstance = new UltraStarWingman.PlayersApi();
-let name = "name_example"; // String | The name of the player to delete.
-apiInstance.deleteNameApiPlayersDelete(name, (error, data, response) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-});
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **name** | **String**| The name of the player to delete. | 
-
-### Return type
-
-[**BasicResponse**](BasicResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: Not defined
 - **Accept**: application/json
 

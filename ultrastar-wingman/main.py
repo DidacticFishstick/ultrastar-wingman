@@ -1,3 +1,4 @@
+import json
 import os
 import asyncio
 import logging
@@ -17,8 +18,9 @@ import models
 import usdb
 import usdx
 import ws
-from song import Song
 import scores
+from song import Song
+from wishlist import Wishlist
 
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
@@ -169,6 +171,22 @@ async def api_usdb_songs(
     return songs
 
 
+def get_client_identifier(request: Request) -> str:
+    """
+    Creates an identifier for the client based its request.
+    Currently, the host is used as the client identifier.
+
+    :param request: The request object.
+    :return: The identifier
+    """
+
+    x_forwarded_for = request.headers.get("X-Forwarded-For")
+    if x_forwarded_for:
+        return x_forwarded_for.split(",")[0].strip()
+    else:
+        return request.client.host
+
+
 @app.get('/api/songs', response_model=models.SongsResponse, summary="Retrieve all downloaded songs", response_description="A list of songs", tags=["Songs"])
 async def api_songs():
     return {"songs": Song.song_list()}
@@ -255,7 +273,7 @@ async def api_players_add(player_data: models.PlayerCreation):
 
 
 @app.delete('/api/players', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
-async def delete_name(name: str = Query(..., description="The name of the player to delete.")):
+async def api_players_delete(name: str = Query(..., description="The name of the player to delete.")):
     """
     Deletes a player name from the list.
 
@@ -323,6 +341,63 @@ async def api_scores_get(session_id: int = None):
         raise HTTPException(status_code=404, detail="Session does not exist")
 
     return data
+
+
+@app.get('/api/wishlist/client', response_model=models.WishlistModel, status_code=status.HTTP_200_OK, summary="Get the clients wishlist", response_description="The songs on the wishlist", tags=["Wishlist"])
+async def api_wishlist_client_get(request: Request):
+    """
+    Gets the songs on the wishlist for the current client.
+
+    :param request: The request used to determine the client
+    """
+
+    return Wishlist.get_wishlist(get_client_identifier(request)).to_json()
+
+
+@app.post('/api/wishlist/client', response_model=models.BasicResponse, status_code=status.HTTP_201_CREATED, summary="Adds the given song_id to the wishlist of the client", response_description="Confirmation of wishlist addition", tags=["Wishlist"])
+async def api_wishlist_client_post(request: Request, add_to_wishlist: models.AddToWishListModel):
+    """
+    Adds a new player name to the list.
+
+    :param request: The request used to determine the client
+    :param add_to_wishlist: The information what to add to the wishlist
+    """
+
+    song = Song.get_song_by_id(add_to_wishlist.song_id)
+
+    if song is None:
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    wishlist = Wishlist.get_wishlist(get_client_identifier(request))
+
+    wishlist.add_song(song)
+
+    return {"success": True}
+
+
+@app.delete('/api/wishlist/client', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a song from the wishlist", response_description="Confirmation of wishlist deletion", tags=["Wishlist"])
+async def api_wishlist_client_delete(request: Request, song_id: str = Query(..., description="The id of the song to delete.")):
+    """
+    Deletes a song form the clients wishlist.
+
+    :param request: The request used to determine the client
+    :param song_id: The id of the song to delete.
+    """
+
+    wishlist = Wishlist.get_wishlist(get_client_identifier(request))
+
+    wishlist.remove_song(song_id)
+
+    return {"success": True}
+
+
+@app.get('/api/wishlist/global', response_model=models.WishlistModel, status_code=status.HTTP_200_OK, summary="Get the global wishlist with the wishes for all players", response_description="The songs on the wishlist", tags=["Wishlist"])
+async def api_wishlist_global_get():
+    """
+    Gets all the data for the specified session id.
+    """
+
+    return Wishlist.get_global_wishlist()
 
 
 @app.websocket("/ws")
