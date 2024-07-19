@@ -17,7 +17,6 @@ ul.songs-list {
     height: 48px;
     background-size: cover;
     background-position: center;
-    background-color: #000;
 }
 
 .song-list-item .details {

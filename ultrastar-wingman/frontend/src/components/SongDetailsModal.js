@@ -98,11 +98,12 @@ const SongDetailsModal = ({song, onClose}) => {
                 <img src={`/api/songs/${song.id}/cover`} height={"250px"} alt={`${song.title} cover`}/>
                 <h1>{song.title}</h1>
                 <h2>{song.artist}</h2>
+                <h3>Song Preview</h3>
                 <audio controls>
                     <source src={`/api/songs/${song.id}/mp3`} type="audio/mp3"/>
                     Your browser does not support the audio element.
                 </audio>
-                <label className={"directory"}>{song.directory}</label>
+                {/*<label className={"directory"}>{song.directory}</label>*/}
                 <div className={"controls"}>
                     <div>
                         {/*TODO: something for symetry*/}

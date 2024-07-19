@@ -202,8 +202,8 @@ async def api_cover(song_id):
     if song.cover_path:
         return FileResponse(song.cover_path)
     else:
-        # TODO: default cover
-        raise HTTPException(status_code=404, detail="Song not found")
+        # Use logo as default cover
+        return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/public/logo.png"))
 
 
 @app.get('/api/songs/{song_id}/mp3', tags=["Songs"])
