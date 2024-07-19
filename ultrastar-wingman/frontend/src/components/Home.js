@@ -6,6 +6,7 @@ import {VscSettings} from "react-icons/vsc";
 import 'react-toastify/dist/ReactToastify.css';
 import './Home.css';
 import Wishlist from "./Wishlist";
+import RandomSongSelector from "./RandomSongSelector";
 
 function Home() {
     return <div>
@@ -29,6 +30,7 @@ function Home() {
             {/*</Tile>*/}
         </div>
         <Wishlist/>
+        <RandomSongSelector/>
     </div>;
 }
 

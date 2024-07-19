@@ -192,6 +192,16 @@ async def api_songs():
     return {"songs": Song.song_list()}
 
 
+@app.get('/api/songs/{song_id}', response_model=models.Song, summary="Retrieve the song with the given id. Use id 'random' for a random song.", response_description="The song", tags=["Songs"])
+async def api_get_song_by_id(song_id):
+    song = Song.get_song_by_id(song_id)
+
+    if song is None:
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    return song.to_json()
+
+
 @app.get('/api/songs/{song_id}/cover', tags=["Songs"])
 async def api_cover(song_id):
     song = Song.get_song_by_id(song_id)

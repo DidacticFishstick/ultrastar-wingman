@@ -16,6 +16,7 @@ import ApiClient from "../ApiClient";
 import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
 import SingModel from '../model/SingModel';
+import Song from '../model/Song';
 import SongsResponse from '../model/SongsResponse';
 
 /**
@@ -74,6 +75,48 @@ export default class SongsApi {
       let returnType = Object;
       return this.apiClient.callApi(
         '/api/songs/{song_id}/cover', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiGetSongByIdApiSongsSongIdGet operation.
+     * @callback module:api/SongsApi~apiGetSongByIdApiSongsSongIdGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/Song} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Retrieve the song with the given id. Use id 'random' for a random song.
+     * @param {Object} songId 
+     * @param {module:api/SongsApi~apiGetSongByIdApiSongsSongIdGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/Song}
+     */
+    apiGetSongByIdApiSongsSongIdGet(songId, callback) {
+      let postBody = null;
+      // verify the required parameter 'songId' is set
+      if (songId === undefined || songId === null) {
+        throw new Error("Missing the required parameter 'songId' when calling apiGetSongByIdApiSongsSongIdGet");
+      }
+
+      let pathParams = {
+        'song_id': songId
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Song;
+      return this.apiClient.callApi(
+        '/api/songs/{song_id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

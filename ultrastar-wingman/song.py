@@ -2,6 +2,7 @@ import asyncio
 import json
 import logging
 import os
+import random
 import re
 import shutil
 import tempfile
@@ -291,6 +292,17 @@ class Song:
 
     @classmethod
     def get_song_by_id(cls, id) -> Optional['Song']:
+        """
+        Returns the song with the given ID.
+        Use id "random" to get a random song.
+
+        :param id: The song id
+        :return: The song object or None if the song does not exist
+        """
+
+        if id == "random" and cls.songs:
+            return random.choice(list(cls.songs.values()))
+
         return cls.songs.get(str(id))
 
     @classmethod
