@@ -29,6 +29,12 @@ ul.songs-list {
     color: var(--color);
 }
 
+.song-list-item .title .wished-count {
+    font-weight: bold;
+    color: var(--highlight-blue-light);
+    padding-right: 0.25rem;
+}
+
 .song-list-item .title .heart,
 .song-list-item .title .mark {
     margin-bottom: -0.12em;

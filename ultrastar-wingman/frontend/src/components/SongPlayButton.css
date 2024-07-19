@@ -1,0 +1,20 @@
+.song-play-button {
+    font-size: 1rem;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.song-play-button .play {
+    color: var(--highlight-blue-light);
+    display: block;
+}
+.song-play-button.playing .play {
+    display: none;
+}
+.song-play-button .stop {
+    color: var(--highlight-pink-light);
+    display: none;
+}
+.song-play-button.playing .stop {
+    display: block;
+}

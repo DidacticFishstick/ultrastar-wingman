@@ -1,0 +1,27 @@
+.wishlist .wishlist-scope {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--color-darker);
+    margin: 0 16px
+}
+
+.wishlist .wishlist-scope input {
+    display: none;
+}
+
+.wishlist .wishlist-scope .text {
+    display: block;
+    color: var(--color-dark);
+    padding: 4px 16px;
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.wishlist .wishlist-scope input:checked ~ .text {
+    color: var(--highlight-blue-light);
+    background-color: var(--highlight-blue-dark);
+    border-color: var(--highlight-blue-light);
+}

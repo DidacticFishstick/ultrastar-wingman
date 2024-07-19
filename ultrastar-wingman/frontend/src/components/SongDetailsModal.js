@@ -5,12 +5,11 @@ import {FaPlay, FaStop} from "react-icons/fa";
 import {SongsApi, UltraStarDeluxeApi, WishlistApi} from "../api/src";
 import {IoMdClose, IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
 import {MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck} from "react-icons/md";
+import SongPlayButton from "./SongPlayButton";
 
 const SongDetailsModal = ({song, onClose}) => {
     const modalRef = useRef(null);
 
-    const songsApi = new SongsApi();
-    const usdxApi = new UltraStarDeluxeApi();
     const wishlistApi = new WishlistApi();
 
     const formatDuration = (seconds) => {
@@ -27,42 +26,6 @@ const SongDetailsModal = ({song, onClose}) => {
         onClose();
     };
 
-    const play = (force = false) => {
-        songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {force: force}, (error, data, response) => {
-            if (error) {
-                if (response.status === 409) {
-                    if (window.confirm("Another song is already playing. Abort the current song and start this one?")) {
-                        play(true);
-                    }
-                } else {
-                    console.error(error, response.text);
-                    alert(response.text);
-                }
-            } else {
-                // successfully started
-                modalRef.current.classList.add("playing");
-            }
-        });
-    }
-
-    const onPlay = (e) => {
-        play();
-    };
-
-    const onStop = (e) => {
-        if (window.confirm("Do you really wish to abort the current song?")) {
-            usdxApi.apiUsdxKillApiUsdxKillPost((error, data, response) => {
-                if (error) {
-                    console.error(error, response.text);
-                    alert(response.text);
-                } else {
-                    // successfully killed
-                    modalRef.current.classList.remove("playing");
-                }
-            });
-        }
-    };
-
     const onAddWish = (e) => {
         wishlistApi.apiWishlistClientPostApiWishlistClientPost({song_id: song.id}, (error, data, response) => {
             if (error) {
@@ -72,6 +35,9 @@ const SongDetailsModal = ({song, onClose}) => {
                 // successfully wished
                 modalRef.current.classList.add("wished");
                 song.wished = true;
+                if (song.wishedCount !== undefined) {
+                    song.wishedCount++;
+                }
             }
         });
     };
@@ -85,6 +51,9 @@ const SongDetailsModal = ({song, onClose}) => {
                 // successfully removed
                 modalRef.current.classList.remove("wished");
                 song.wished = false;
+                if (song.wishedCount !== undefined) {
+                    song.wishedCount--;
+                }
             }
         });
     };
@@ -123,10 +92,7 @@ const SongDetailsModal = ({song, onClose}) => {
                         <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite} title={"Add to personal favorites"}/>
                         <IoMdHeart className={"favorite"} onClick={onRemoveFavorite} title={"Remove from personal favorites"}/>
                     </div>
-                    <div className={"center"}>
-                        <FaPlay className={"play"} onClick={onPlay} title={"Start song"}/>
-                        <FaStop className={"stop"} onClick={onStop} title={"Stop song"}/>
-                    </div>
+                    <SongPlayButton song={song} className={"center"}/>
                     <div>
                         <MdOutlinePlaylistAdd className={"add-wish"} onClick={onAddWish} title={"Add to wishlist"}/>
                         <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={onRemoveWish} title={"Remove from wishlist"}/>

@@ -1,29 +1,9 @@
-import asyncio
-import json
-import logging
-import os
-import re
-import shutil
-import tempfile
 import time
-import uuid
-from functools import lru_cache
-
-import chardet
-from typing import Optional, List, Dict, Union
-
-import eyed3
-import httpx
-from bs4 import BeautifulSoup
-from tqdm import tqdm
-
-import config
-import models
-import ws
-import usdx
+from typing import List, Dict, Union, Tuple
 from song import Song
 
 
+# TODO: track time of first wish for each song
 class Wishlist:
     wishlists: Dict[str, 'Wishlist'] = {}
 
@@ -49,12 +29,14 @@ class Wishlist:
         data = {}
 
         for wishlist in cls.wishlists.values():
-            for song in wishlist.songs.values():
+            for date, song in wishlist.songs.values():
                 if song.id in data:
                     data[song.id]["count"] += 1
+                    data[song.id]["date"] = min(round(date * 1000), data[song.id]["date"])
                 else:
                     data[song.id] = {
                         "count": 1,
+                        "date": round(date * 1000),
                         "song": song.to_json()
                     }
 
@@ -71,7 +53,8 @@ class Wishlist:
 
         self.client_id = client_id
 
-        self.songs: Dict[str, Song] = {}
+        # timestamp and song under the song id
+        self.songs: Dict[str, Tuple[float, Song]] = {}
 
         self.wishlists[client_id] = self
 
@@ -91,8 +74,9 @@ class Wishlist:
         return {
             "wishes": [{
                 "count": 1,
+                "date": round(date * 1000),
                 "song": song.to_json()
-            } for song in self.songs.values()]
+            } for date, song in self.songs.values()]
         }
 
     def add_song(self, song: Song):
@@ -102,7 +86,7 @@ class Wishlist:
         :param song: The song to add
         """
 
-        self.songs[song.id] = song
+        self.songs[song.id] = time.time(), song
 
     def remove_song(self, song: Union[str, Song]):
         """

@@ -324,6 +324,8 @@ class Song:
         Callback to be used for the end of a song.
         """
 
+        # TODO: when killing the previous process and directly starting a new one, this sometimes registers that the exit of the last one
+
         logging.info("Active song has ended")
 
         async with cls.active_song_lock:

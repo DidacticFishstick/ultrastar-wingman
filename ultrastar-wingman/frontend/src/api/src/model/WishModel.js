@@ -53,6 +53,9 @@ class WishModel {
             if (data.hasOwnProperty('count')) {
                 obj['count'] = ApiClient.convertToType(data['count'], 'Number');
             }
+            if (data.hasOwnProperty('date')) {
+                obj['date'] = ApiClient.convertToType(data['date'], 'Number');
+            }
             if (data.hasOwnProperty('song')) {
                 obj['song'] = Song.constructFromObject(data['song']);
             }
@@ -90,6 +93,12 @@ WishModel.RequiredProperties = ["song"];
  * @member {Number} count
  */
 WishModel.prototype['count'] = undefined;
+
+/**
+ * The timestamp of the wish (the first timestamp for this song if count > 1).
+ * @member {Number} date
+ */
+WishModel.prototype['date'] = undefined;
 
 /**
  * @member {module:model/Song} song

@@ -67,7 +67,3 @@ src/model/UsdbIdsList.js
 src/model/ValidationError.js
 src/model/WishModel.js
 src/model/WishlistModel.js
-test/api/WishlistApi.spec.js
-test/model/AddToWishListModel.spec.js
-test/model/WishModel.spec.js
-test/model/WishlistModel.spec.js

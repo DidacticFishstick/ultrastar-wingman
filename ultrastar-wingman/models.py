@@ -98,6 +98,7 @@ class SingModel(BaseModel):
 
 class WishModel(BaseModel):
     count: int = Field(None, description="The number of wishes for this song.")
+    date: int = Field(None, description="The timestamp of the wish (the first timestamp for this song if count > 1).")
     song: Song
 
 
