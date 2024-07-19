@@ -1,11 +1,11 @@
 // RandomSongSelector.js
 import './RandomSongSelector.css';
 import React, {useEffect, useRef, useState} from "react";
-import FullScreenModal from "./FullScreenModal";
 import {SongsApi} from "../api/src";
-import Spinner from "./Spinner";
+import SongPlayButton from "./SongPlayButton";
 
 const RandomSongSelector = () => {
+    const [scope, setScope] = useState("all");
     const [currentSong, setCurrentSong] = useState({});
     const [nextSong, setNextSong] = useState({});
     const [randomCount, setRandomCount] = useState(1);
@@ -20,6 +20,8 @@ const RandomSongSelector = () => {
         return Math.floor(Math.random() * 20) + 40;
     };
 
+    // TODO: select: all songs, wishlist, wishlist (weighted)
+
     const spin = async (first = false) => {
         setError(null);
 
@@ -29,7 +31,6 @@ const RandomSongSelector = () => {
                 setError(error + " - " + response.text);
             } else {
                 // skip animation on first load
-                console.log(first);
                 if (!first) {
                     coverListRef.current.classList.add("spinning");
                     coverListRef.current.style.top = "0%";
@@ -58,14 +59,28 @@ const RandomSongSelector = () => {
         spin(true);
     }, []);
 
+    const handleRadioChange = (event) => {
+        setScope(event.target.value);
+    };
+
     // TODO: favorites and wishlist info from parent
-    return <FullScreenModal className={"random-song-selector"}>
+    // TODO: onclick show details
+    return <div className={"random-song-selector"}>
         <h1>Random Song Selector</h1>
         {error && <h1>{error}</h1>}
         <div className={"slot-machine"}>
-            <div className={"left"}></div>
+            <div className={"side left"}>
+                <div className={"song-info"}>
+                    <label className={"title"}>{(currentSong.title !== undefined) ? currentSong.title : "Random Song"}</label>
+                    <label className={"artist"}>{(currentSong.artist !== undefined) ? currentSong.artist : "Ultrastar Wingman"}</label>
+                </div>
+                <div className={"spacer"}></div>
+                <div className={"song-controls"}>
+                    <SongPlayButton/>
+                </div>
+            </div>
             <div className={"cover"}>
-                <div ref={coverListRef} className={"cover-list"}>
+            <div ref={coverListRef} className={"cover-list"}>
                     <div
                         key={-1}
                         className={"sub-cover next"}
@@ -84,14 +99,45 @@ const RandomSongSelector = () => {
                         style={{...((currentSong.id !== undefined) ? {backgroundImage: `url(/api/songs/${currentSong.id}/cover)`} : {})}}
                     ></div>
                 </div>
-                <span className={"right"}></span>
                 <div className={"select-line"}></div>
             </div>
-            <label className={"spin-button"} onClick={() => {
-                spin();
-            }}>SPIN</label>
+            <div className={"side right"}>
+                <div className={"random-controls"}>
+                    <label>
+                        <input
+                            type="radio"
+                            value="all"
+                            checked={scope === "all"}
+                            onChange={handleRadioChange}
+                        />
+                        <span className={"text"}>All Songs</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="wishlist"
+                            checked={scope === "wishlist"}
+                            onChange={handleRadioChange}
+                        />
+                        <span className={"text"}>Wishlist</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="wishlist-weighted"
+                            checked={scope === "wishlist-weighted"}
+                            onChange={handleRadioChange}
+                        />
+                        <span className={"text"}>Wishlist (weighted)</span>
+                    </label>
+                    <div className={"spacer"}></div>
+                    <label className={"spin-button"} onClick={() => {
+                        spin();
+                    }}>SPIN</label>
+                </div>
+            </div>
         </div>
-    </FullScreenModal>;
+    </div>;
 };
 
 export default RandomSongSelector;

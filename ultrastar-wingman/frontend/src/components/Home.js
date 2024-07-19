@@ -1,8 +1,6 @@
 // Home.js
 import Tile from './Tile';
 import {FaGithub} from 'react-icons/fa';
-import {TfiReload} from "react-icons/tfi";
-import {VscSettings} from "react-icons/vsc";
 import 'react-toastify/dist/ReactToastify.css';
 import './Home.css';
 import Wishlist from "./Wishlist";

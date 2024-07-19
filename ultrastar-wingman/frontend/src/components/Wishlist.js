@@ -1,16 +1,10 @@
 // Wishlist.js
-import React, {useState, useEffect, useRef} from 'react';
-import {FaSearch} from "react-icons/fa";
-import {BsThreeDots} from "react-icons/bs";
-import {NavLink} from 'react-router-dom';
-import {SongsApi, WishlistApi} from "../api/src";
+import React, {useState, useEffect} from 'react';
+import {WishlistApi} from "../api/src";
 import SongListItem from "./SongListItem";
 import SongDetailsModal from "./SongDetailsModal";
 import './Wishlist.css';
-import Tile from "./Tile";
 import Spinner from "./Spinner";
-import Input from "./Input";
-import song from "../api/src/model/Song";
 import SongPlayButton from "./SongPlayButton";
 
 function Wishlist() {
