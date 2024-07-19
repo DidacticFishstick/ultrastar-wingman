@@ -4,7 +4,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 500;
+    z-index: 2000;
     background: rgba(18, 22, 27, 0.8); /* Milky glass effect */
     backdrop-filter: blur(8px); /* Blur effect for the background */
     display: flex;
@@ -16,7 +16,7 @@
     display: block;
     position: absolute;
     top: 16px;
-    right: 16px;
+    right: 24px;
     color: var(--color-darker);
     font-size: 2rem;
     pointer-events: none;
@@ -43,7 +43,7 @@
     max-width: 600px;
     max-height: 100vh;
     overflow-y: auto;
-    z-index: 501;
+    z-index: 2001;
 }
 
 .modal-content h1,
@@ -73,7 +73,8 @@
 .modal-content h3 {
     font-size: 0.8rem;
     color: var(--color-dark);
-    margin: 16px 0 4px 0;
+    margin: 16px auto 4px auto;
+    max-width: 400px;
 }
 
 .modal-content audio {
@@ -94,15 +95,17 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin: 40px auto;
+    margin: 48px auto 32px auto;
 }
 
 .modal-content .controls > div {
-    width: max-content;
+    width: 60px;
     font-size: 3rem;
     padding: 4px;
     cursor: pointer;
     color: var(--color-dark);
+    display: flex;
+    justify-content: center;
 }
 
 .modal-content .center {
@@ -111,20 +114,36 @@
     cursor: pointer;
 }
 
+.modal-content .no-favorite,
+.modal-content.wished .no-favorite {
+    font-size: 0.85em;
+}
+
+.modal-content .no-favorite {
+    display: block;
+}
+.modal-content.favorite .no-favorite {
+    display: none;
+}
+.modal-content .favorite {
+    color: var(--highlight-pink-light);
+    display: none;
+}
+.modal-content.favorite .favorite {
+    display: block;
+}
+
 .modal-content .play {
     color: var(--highlight-blue-light);
     display: block;
 }
-
 .modal-content.playing .play {
     display: none;
 }
-
 .modal-content .stop {
     color: var(--highlight-pink-light);
     display: none;
 }
-
 .modal-content.playing .stop {
     display: block;
 }
@@ -132,16 +151,13 @@
 .modal-content .add-wish {
     display: block;
 }
-
 .modal-content.wished .add-wish {
     display: none;
 }
-
 .modal-content .remove-wish {
     color: var(--highlight-blue-light);
     display: none;
 }
-
 .modal-content.wished .remove-wish {
     display: block;
 }

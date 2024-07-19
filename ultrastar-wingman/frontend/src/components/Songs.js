@@ -34,6 +34,8 @@ function Songs() {
                     setError(error + " - " + response.text);
                 } else {
                     let wishIds = data.wishes.map(wish => wish.song.id);
+                    // TODO: actual favorites
+                    let favoriteIds = [];
 
                     songsApi.apiSongsApiSongsGet((error, data, response) => {
                         if (error) {
@@ -42,6 +44,7 @@ function Songs() {
                         } else {
                             data.songs.forEach(song => {
                                 song.wished = wishIds.includes(song.id);
+                                song.favorite = favoriteIds.includes(song.id);
                             })
 
                             setSongs(data.songs);

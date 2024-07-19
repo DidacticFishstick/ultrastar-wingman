@@ -3,9 +3,8 @@ import './SongDetailsModal.css';
 import React, {useRef} from "react";
 import {FaPlay, FaStop} from "react-icons/fa";
 import {SongsApi, UltraStarDeluxeApi, WishlistApi} from "../api/src";
-import {IoMdClose} from "react-icons/io";
+import {IoMdClose, IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
 import {MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck} from "react-icons/md";
-import {BsQuestion} from "react-icons/bs";
 
 const SongDetailsModal = ({song, onClose}) => {
     const modalRef = useRef(null);
@@ -90,11 +89,26 @@ const SongDetailsModal = ({song, onClose}) => {
         });
     };
 
+    const onAddFavorite = (e) => {
+        modalRef.current.classList.add("favorite");
+        song.favorite = true;
+        alert("Personal favorites are not yet implemented");
+    };
+
+    const onRemoveFavorite = (e) => {
+        modalRef.current.classList.remove("favorite");
+        song.favorite = false;
+    };
+
     return (
         <div className="modal-backdrop" onClick={close}>
             <IoMdClose className={"close"}/>
             {/*TODO: set playing class*/}
-            <div className={"modal-content" + (song.wished ? " wished" : "")} onClick={close} ref={modalRef}>
+            <div className={
+                "modal-content"
+                + (song.wished ? " wished" : "")
+                + (song.favorite ? " favorite" : "")
+            } onClick={close} ref={modalRef}>
                 <img src={`/api/songs/${song.id}/cover`} height={"250px"} alt={`${song.title} cover`}/>
                 <h1>{song.title}</h1>
                 <h2>{song.artist}</h2>
@@ -106,8 +120,8 @@ const SongDetailsModal = ({song, onClose}) => {
                 {/*<label className={"directory"}>{song.directory}</label>*/}
                 <div className={"controls"}>
                     <div>
-                        {/*TODO: something for symetry*/}
-                        <BsQuestion/>
+                        <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite}/>
+                        <IoMdHeart className={"favorite"} onClick={onRemoveFavorite}/>
                     </div>
                     <div className={"center"}>
                         <FaPlay className={"play"} onClick={onPlay}/>

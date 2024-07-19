@@ -29,10 +29,18 @@ ul.songs-list {
     color: var(--color);
 }
 
+.song-list-item .title .heart,
+.song-list-item .title .mark {
+    margin-bottom: -0.12em;
+    padding-left: 0.25rem;
+}
+
+.song-list-item .title .heart {
+    color: var(--highlight-pink-light);
+}
+
 .song-list-item .title .mark {
     color: var(--highlight-blue-light);
-    margin-bottom: -0.12em;
-    padding-left: 0.5rem;
 }
 
 .song-list-item .artist {
