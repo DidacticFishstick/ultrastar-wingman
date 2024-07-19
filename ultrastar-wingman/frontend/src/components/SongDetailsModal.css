@@ -82,14 +82,25 @@
     font-size: 0.75em;
 }
 
-.modal-content .play,
-.modal-content .stop {
+.modal-content .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 32px auto;
+}
+
+.modal-content .controls > div {
     width: max-content;
-    font-size: 3.5rem;
+    font-size: 3rem;
     padding: 4px;
-    margin: 40px auto;
     cursor: pointer;
-    text-align: center;
+    color: var(--color-dark);
+}
+
+.modal-content .center {
+    font-size: 3.5rem !important;
+    padding: 4px;
+    cursor: pointer;
 }
 
 .modal-content .play {
@@ -97,16 +108,33 @@
     display: block;
 }
 
+.modal-content.playing .play {
+    display: none;
+}
+
 .modal-content .stop {
     color: var(--highlight-pink-light);
     display: none;
 }
 
-.modal-content.playing .play {
+.modal-content.playing .stop {
+    display: block;
+}
+
+.modal-content .add-wish {
+    display: block;
+}
+
+.modal-content.wished .add-wish {
     display: none;
 }
 
-.modal-content.playing .stop {
+.modal-content .remove-wish {
+    color: var(--highlight-blue-light);
+    display: none;
+}
+
+.modal-content.wished .remove-wish {
     display: block;
 }
 

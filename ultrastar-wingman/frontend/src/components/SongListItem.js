@@ -2,6 +2,7 @@
 import React from 'react';
 import StarRating from "./StarRating";
 import './SongListItem.css';
+import {FaCheck} from "react-icons/fa";
 
 function SongListItem({song, onClick, coverUrl, button, onButton}) {
     return (
@@ -9,7 +10,8 @@ function SongListItem({song, onClick, coverUrl, button, onButton}) {
             <div className="cover" style={{backgroundImage: `url('${coverUrl}')`}}>
             </div>
             <div className="details">
-                <div className="title">{song.title}</div>
+                {/*<div className="title">{song.title}</div>*/}
+                <div className="title">{song.title}{song.wished && <FaCheck className={"mark"}/>}</div>
                 <div className="artist">{song.rating !== undefined && <StarRating rating={song.rating}/>} <span>{song.artist}</span></div>
             </div>
             <div className={song.downloaded ? "song-button downloaded" : "song-button"} onClick={(e) => {

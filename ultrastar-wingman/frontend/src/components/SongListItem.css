@@ -31,11 +31,9 @@ ul.songs-list {
 }
 
 .song-list-item .title .mark {
-    color: var(--highlight-pink-light);
-}
-
-.song-list-item .title .mark svg {
+    color: var(--highlight-blue-light);
     margin-bottom: -0.12em;
+    padding-left: 0.5rem;
 }
 
 .song-list-item .artist {

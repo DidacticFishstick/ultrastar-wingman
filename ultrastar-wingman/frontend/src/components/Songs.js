@@ -1,15 +1,16 @@
 // Songs.js
 import React, {useState, useEffect, useRef} from 'react';
 import {FaSearch} from "react-icons/fa";
-import { BsThreeDots } from "react-icons/bs";
+import {BsThreeDots} from "react-icons/bs";
 import {NavLink} from 'react-router-dom';
-import {SongsApi} from "../api/src";
+import {SongsApi, WishlistApi} from "../api/src";
 import SongListItem from "./SongListItem";
 import SongDetailsModal from "./SongDetailsModal";
 import './Songs.css';
 import Tile from "./Tile";
 import Spinner from "./Spinner";
 import Input from "./Input";
+import song from "../api/src/model/Song";
 
 function Songs() {
     const [songs, setSongs] = useState([]);
@@ -19,22 +20,37 @@ function Songs() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const api = new SongsApi();
+    const songsApi = new SongsApi();
+    const wishlistApi = new WishlistApi();
 
     useEffect(() => {
         const fetchSongs = async () => {
             setLoading(true);
             setError(null);
 
-            api.apiSongsApiSongsGet((error, data, response) => {
+            wishlistApi.apiWishlistClientGetApiWishlistClientGet((error, data, response) => {
                 if (error) {
                     console.error(error, response.text);
                     setError(error + " - " + response.text);
                 } else {
-                    setSongs(data.songs);
-                    setLoading(false);
+                    let wishIds = data.wishes.map(wish => wish.song.id);
+
+                    songsApi.apiSongsApiSongsGet((error, data, response) => {
+                        if (error) {
+                            console.error(error, response.text);
+                            setError(error + " - " + response.text);
+                        } else {
+                            data.songs.forEach(song => {
+                                song.wished = wishIds.includes(song.id);
+                            })
+
+                            setSongs(data.songs);
+                            setLoading(false);
+                        }
+                    });
                 }
             });
+
         };
 
         fetchSongs();
@@ -73,7 +89,8 @@ function Songs() {
             </div>
             <h2>Downloaded Songs</h2>
             <div ref={inputRef} className="songs-search">
-                <Input type="text" placeholder="Search downloaded songs" icon={<FaSearch/>} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onEnter={() => {}} onFocus={() => {
+                <Input type="text" placeholder="Search downloaded songs" icon={<FaSearch/>} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onEnter={() => {
+                }} onFocus={() => {
                     setTimeout(() => {
                         inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})
                     }, 50);
