@@ -1,103 +1,49 @@
-.modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 2000;
-    background: rgba(18, 22, 27, 0.8); /* Milky glass effect */
-    backdrop-filter: blur(8px); /* Blur effect for the background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-backdrop .close {
-    display: block;
-    position: absolute;
-    top: 16px;
-    right: 24px;
-    color: var(--color-darker);
-    font-size: 2rem;
-    pointer-events: none;
-}
-
-.modal-backdrop:before {
-    content: '';
-    display: block;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(0deg, var(--highlight-blue-light) 0%, rgba(0,0,0,0) 100%);;
-    opacity: 0.15;
-    pointer-events: none;
-}
-
-.modal-content {
-    padding: 60px 20px 100px 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 600px;
-    max-height: 100vh;
-    overflow-y: auto;
-    z-index: 2001;
-}
-
-.modal-content h1,
-.modal-content h2 {
+.song-detail-modal h1,
+.song-detail-modal h2 {
     display: block;
     width: max-content;
     max-width: 100%;
     margin: 0 auto;
 }
 
-.modal-content img {
+.song-detail-modal img {
     display: block;
     margin: 0 auto;
 }
 
-.modal-content h1 {
+.song-detail-modal h1 {
     font-size: 1.2rem;
     margin-top: 16px;
 }
 
-.modal-content h2 {
+.song-detail-modal h2 {
     font-size: 0.8rem;
     color: var(--color-dark);
     margin-top: 4px;
 }
 
-.modal-content h3 {
+.song-detail-modal h3 {
     font-size: 0.8rem;
     color: var(--color-dark);
     margin: 16px auto 4px auto;
     max-width: 400px;
 }
 
-.modal-content audio {
+.song-detail-modal audio {
     display: block;
     width: 100%;
     max-width: 400px;
     margin: 8px auto 24px auto;
 }
 
-.modal-content  {
-    color: var(--color-dark);
-    display: block;
-    margin-top: 16px;
-    font-size: 0.75em;
-}
-
-.modal-content .controls {
+.song-detail-modal .controls {
     display: flex;
     justify-content: space-around;
     align-items: center;
     margin: 48px auto 32px auto;
 }
 
-.modal-content .controls > div {
+.song-detail-modal .controls > div {
     width: 60px;
     font-size: 3rem;
     padding: 4px;
@@ -107,42 +53,42 @@
     justify-content: center;
 }
 
-.modal-content .center {
+.song-detail-modal .center {
     font-size: 3.5rem !important;
     padding: 4px;
     cursor: pointer;
 }
 
-.modal-content .no-favorite,
-.modal-content.wished .no-favorite {
+.song-detail-modal .no-favorite,
+.song-detail-modal.wished .no-favorite {
     font-size: 0.85em;
 }
 
-.modal-content .no-favorite {
+.song-detail-modal .no-favorite {
     display: block;
 }
-.modal-content.favorite .no-favorite {
+.song-detail-modal.favorite .no-favorite {
     display: none;
 }
-.modal-content .favorite {
+.song-detail-modal .favorite {
     color: var(--highlight-pink-light);
     display: none;
 }
-.modal-content.favorite .favorite {
+.song-detail-modal.favorite .favorite {
     display: block;
 }
 
-.modal-content .add-wish {
+.song-detail-modal .add-wish {
     display: block;
 }
-.modal-content.wished .add-wish {
+.song-detail-modal.wished .add-wish {
     display: none;
 }
-.modal-content .remove-wish {
+.song-detail-modal .remove-wish {
     color: var(--highlight-blue-light);
     display: none;
 }
-.modal-content.wished .remove-wish {
+.song-detail-modal.wished .remove-wish {
     display: block;
 }
 

@@ -6,6 +6,7 @@ import {SongsApi, UltraStarDeluxeApi, WishlistApi} from "../api/src";
 import {IoMdClose, IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
 import {MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck} from "react-icons/md";
 import SongPlayButton from "./SongPlayButton";
+import FullScreenModal from "./FullScreenModal";
 
 const SongDetailsModal = ({song, onClose}) => {
     const modalRef = useRef(null);
@@ -16,14 +17,6 @@ const SongDetailsModal = ({song, onClose}) => {
         const minutes = Math.floor(seconds / 60);
         const remainingSeconds = Math.floor(seconds % 60);
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-    };
-
-    const close = (e) => {
-        if (e.target !== e.currentTarget) {
-            e.stopPropagation();
-            return;
-        }
-        onClose();
     };
 
     const onAddWish = (e) => {
@@ -70,36 +63,32 @@ const SongDetailsModal = ({song, onClose}) => {
     };
 
     return (
-        <div className="modal-backdrop" onClick={close}>
-            <IoMdClose className={"close"}/>
-            {/*TODO: set playing class*/}
-            <div className={
-                "modal-content"
-                + (song.wished ? " wished" : "")
-                + (song.favorite ? " favorite" : "")
-            } onClick={close} ref={modalRef}>
-                <img src={`/api/songs/${song.id}/cover`} height={"250px"} alt={`${song.title} cover`}/>
-                <h1>{song.title}</h1>
-                <h2>{song.artist}</h2>
-                <h3>Song Preview</h3>
-                <audio controls>
-                    <source src={`/api/songs/${song.id}/mp3`} type="audio/mp3"/>
-                    Your browser does not support the audio element.
-                </audio>
-                {/*<label className={"directory"}>{song.directory}</label>*/}
-                <div className={"controls"}>
-                    <div>
-                        <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite} title={"Add to personal favorites"}/>
-                        <IoMdHeart className={"favorite"} onClick={onRemoveFavorite} title={"Remove from personal favorites"}/>
-                    </div>
-                    <SongPlayButton song={song} className={"center"}/>
-                    <div>
-                        <MdOutlinePlaylistAdd className={"add-wish"} onClick={onAddWish} title={"Add to wishlist"}/>
-                        <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={onRemoveWish} title={"Remove from wishlist"}/>
-                    </div>
+        <FullScreenModal ref={modalRef} className={
+            "song-detail-modal"
+            + (song.wished ? " wished" : "")
+            + (song.favorite ? " favorite" : "")
+        } onClose={onClose}>
+            <img src={`/api/songs/${song.id}/cover`} height={"250px"} alt={`${song.title} cover`}/>
+            <h1>{song.title}</h1>
+            <h2>{song.artist}</h2>
+            <h3>Song Preview</h3>
+            <audio controls>
+                <source src={`/api/songs/${song.id}/mp3`} type="audio/mp3"/>
+                Your browser does not support the audio element.
+            </audio>
+            {/*<label className={"directory"}>{song.directory}</label>*/}
+            <div className={"controls"}>
+                <div>
+                    <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite} title={"Add to personal favorites"}/>
+                    <IoMdHeart className={"favorite"} onClick={onRemoveFavorite} title={"Remove from personal favorites"}/>
+                </div>
+                <SongPlayButton song={song} className={"center"}/>
+                <div>
+                    <MdOutlinePlaylistAdd className={"add-wish"} onClick={onAddWish} title={"Add to wishlist"}/>
+                    <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={onRemoveWish} title={"Remove from wishlist"}/>
                 </div>
             </div>
-        </div>
+        </FullScreenModal>
     );
 };
 
