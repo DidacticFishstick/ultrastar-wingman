@@ -12,8 +12,55 @@
     position: relative;
     margin: 0 auto;
     background: #000;
-    border: 3px solid var(--color-darker);
+    border: 2px solid var(--color-dark);
     border-radius: 8px;
+}
+
+.random-song-selector .cover::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+    pointer-events: none; /* Ensure it doesn't interfere with inner content */
+    z-index: 1005;
+}
+
+.random-song-selector .cover .select-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    top: calc(50% - 1px);
+    background: var(--color-dark);
+    pointer-events: none;
+    z-index: 1006;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
+}
+
+.random-song-selector .cover .select-line::before,
+.random-song-selector .cover .select-line::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.random-song-selector .cover .select-line::after {
+    right: 0; /* Adjust the position as needed */
+    border-width: 5px 10px 5px 0; /* Adjust triangle size */
+    border-color: transparent var(--color-dark) transparent transparent; /* Triangle color */
+}
+
+.random-song-selector .cover .select-line::before {
+    left: 0; /* Adjust the position as needed */
+    border-width: 5px 0 5px 10px; /* Adjust triangle size */
+    border-color: transparent transparent transparent var(--color-dark); /* Triangle color */
 }
 
 .random-song-selector .cover-list {

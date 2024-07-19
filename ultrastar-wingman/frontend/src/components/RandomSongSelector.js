@@ -84,8 +84,9 @@ const RandomSongSelector = () => {
                         style={{...((currentSong.id !== undefined) ? {backgroundImage: `url(/api/songs/${currentSong.id}/cover)`} : {})}}
                     ></div>
                 </div>
+                <span className={"right"}></span>
+                <div className={"select-line"}></div>
             </div>
-            <div className={"right"}></div>
             <label className={"spin-button"} onClick={() => {
                 spin();
             }}>SPIN</label>
