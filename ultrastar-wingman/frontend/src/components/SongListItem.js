@@ -11,9 +11,8 @@ function SongListItem({song, onClick, coverUrl, button, onButton}) {
             <div className="cover" style={{backgroundImage: `url('${coverUrl}')`}}>
             </div>
             <div className="details">
-                {/*<div className="title">{song.title}</div>*/}
-                <div className="title">{song.title}{song.favorite && <IoMdHeart className={"heart"}/>}{song.wished && <FaCheck className={"mark"}/>}</div>
-                <div className="artist">{song.rating !== undefined && <StarRating rating={song.rating}/>} <span>{song.artist}</span></div>
+                <div className="title" title={song.title}>{song.title}{song.favorite && <IoMdHeart className={"heart"}/>}{song.wished && <FaCheck className={"mark"}/>}</div>
+                <div className="artist" title={song.artist}>{song.rating !== undefined && <StarRating rating={song.rating}/>} <span>{song.artist}</span></div>
             </div>
             <div className={song.downloaded ? "song-button downloaded" : "song-button"} onClick={(e) => {
                 onButton(e);

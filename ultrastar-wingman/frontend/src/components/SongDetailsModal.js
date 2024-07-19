@@ -120,16 +120,16 @@ const SongDetailsModal = ({song, onClose}) => {
                 {/*<label className={"directory"}>{song.directory}</label>*/}
                 <div className={"controls"}>
                     <div>
-                        <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite}/>
-                        <IoMdHeart className={"favorite"} onClick={onRemoveFavorite}/>
+                        <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite} title={"Add to personal favorites"}/>
+                        <IoMdHeart className={"favorite"} onClick={onRemoveFavorite} title={"Remove from personal favorites"}/>
                     </div>
                     <div className={"center"}>
-                        <FaPlay className={"play"} onClick={onPlay}/>
-                        <FaStop className={"stop"} onClick={onStop}/>
+                        <FaPlay className={"play"} onClick={onPlay} title={"Start song"}/>
+                        <FaStop className={"stop"} onClick={onStop} title={"Stop song"}/>
                     </div>
                     <div>
-                        <MdOutlinePlaylistAdd className={"add-wish"} onClick={onAddWish}/>
-                        <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={onRemoveWish}/>
+                        <MdOutlinePlaylistAdd className={"add-wish"} onClick={onAddWish} title={"Add to wishlist"}/>
+                        <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={onRemoveWish} title={"Remove from wishlist"}/>
                     </div>
                 </div>
             </div>
