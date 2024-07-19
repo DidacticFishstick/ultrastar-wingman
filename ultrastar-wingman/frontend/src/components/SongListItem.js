@@ -13,10 +13,14 @@ function SongListItem({song, onClick, coverUrl, button, onButton}) {
             <div className="details">
                 <div className="title" title={song.title}>
                     {song.wishedCount > 0 && <span className={"wished-count"}>{`${song.wishedCount}x`}</span>}
-                    {song.title}{song.favorite && <IoMdHeart className={"heart"}/>}
+                    <span className={"text"}>{song.title}</span>
+                    {song.favorite && <IoMdHeart className={"heart"}/>}
                     {song.wished && <FaCheck className={"mark"}/>}
                 </div>
-                <div className="artist" title={song.artist}>{song.rating !== undefined && <StarRating rating={song.rating}/>} <span>{song.artist}</span></div>
+                <div className="artist" title={song.artist}>
+                    {song.rating !== undefined && <StarRating rating={song.rating}/>}
+                    <span className={"text"}>{song.artist}</span>
+                </div>
             </div>
             <div className={song.downloaded ? "song-button downloaded" : "song-button"} onClick={(e) => {
                 onButton(e);

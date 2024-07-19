@@ -101,33 +101,34 @@ function Wishlist() {
 
     return (
         <div className="wishlist">
-            {/*TODO: global / client selection*/}
-            <h2>Wishlist</h2>
+            <h2>
+                <span>Wishlist</span>
 
-            <div className={"wishlist-scope"}>
-                <label>
-                    <input
-                        type="radio"
-                        value="false"
-                        checked={globalScope === false}
-                        onChange={handleRadioChange}
-                    />
-                    <span className={"text"}>You</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        value="true"
-                        checked={globalScope === true}
-                        onChange={handleRadioChange}
-                    />
-                    <span className={"text"}>All</span>
-                </label>
-            </div>
+                <div className={"wishlist-scope"}>
+                    <label>
+                        <input
+                            type="radio"
+                            value="true"
+                            checked={globalScope === true}
+                            onChange={handleRadioChange}
+                        />
+                        <span className={"text"}>Everyone</span>
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            value="false"
+                            checked={globalScope === false}
+                            onChange={handleRadioChange}
+                        />
+                        <span className={"text"}>You</span>
+                    </label>
+                </div>
+            </h2>
 
             {loading && <Spinner/>}
             {error && <h1>{error}</h1>}
-            <ul className={"songs-list wishlist"}>
+            <ul className={"songs-list wishlist carousel"}>
                 {wishlist.map(wish => (
                     <SongListItem song={wish.song} coverUrl={`/api/songs/${wish.song.id}/cover`} onClick={() => handleSongClick(wish.song)} button={<SongPlayButton song={wish.song}/>} onButton={() => {
                     }}/>

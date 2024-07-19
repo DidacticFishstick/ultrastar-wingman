@@ -19,14 +19,14 @@ function Home() {
                     <a href={"https://github.com/DidacticFishstick/ultrastar-wingman"} target="_blank" rel="noopener noreferrer" className={"git"}><FaGithub/> GitHub</a>
                 </div>
             </Tile>
-            <Tile className={"icon-and-text clickable"}>
-                <VscSettings/>
-                <label>Settings</label>
-            </Tile>
-            <Tile className={"icon-and-text clickable"}>
-                <TfiReload/>
-                <label>Restart USDX</label>
-            </Tile>
+            {/*<Tile className={"icon-and-text clickable"}>*/}
+            {/*    <VscSettings/>*/}
+            {/*    <label>Settings</label>*/}
+            {/*</Tile>*/}
+            {/*<Tile className={"icon-and-text clickable"}>*/}
+            {/*    <TfiReload/>*/}
+            {/*    <label>Restart USDX</label>*/}
+            {/*</Tile>*/}
         </div>
         <Wishlist/>
     </div>;
