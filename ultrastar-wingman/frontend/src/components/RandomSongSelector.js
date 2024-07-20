@@ -4,6 +4,7 @@ import React, {useEffect, useRef, useState} from "react";
 import {SongsApi} from "../api/src";
 import SongPlayButton from "./SongPlayButton";
 import SongDetailsModal from "./SongDetailsModal";
+import RadioButton from "./RadioButton";
 
 const RandomSongSelector = () => {
     const [scope, setScope] = useState("all");
@@ -114,34 +115,9 @@ const RandomSongSelector = () => {
             <div className={"side right"}>
                 {/*TODO: functionality*/}
                 <div className={"random-controls"}>
-                    <label>
-                        <input
-                            type="radio"
-                            value="all"
-                            checked={scope === "all"}
-                            onChange={handleRadioChange}
-                        />
-                        <span className={"text"}>All Songs</span>
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="wishlist"
-                            checked={scope === "wishlist"}
-                            onChange={handleRadioChange}
-                        />
-                        <span className={"text"}>Wishlist</span>
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            value="wishlist-weighted"
-                            checked={scope === "wishlist-weighted"}
-                            onChange={handleRadioChange}
-                        />
-                        <span className={"text"}>Wishlist (weighted)</span>
-                    </label>
-                    <div className={"spacer"}></div>
+                    <RadioButton text={"All Songs"} value={"all"} state={scope} setState={setScope}/>
+                    <RadioButton text={"Wishlist"} value={"wishlist"} state={scope} setState={setScope}/>
+                    <RadioButton text={"Wishlist (Weighted)"} value={"wishlist-weighted"} state={scope} setState={setScope}/>
                     <label className={"spin-button"} onClick={() => {
                         spin();
                     }}>SPIN</label>

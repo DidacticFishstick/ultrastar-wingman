@@ -10,13 +10,6 @@
     padding: 0 16px;
 }
 
-.random-song-selector .side .spacer {
-    display: block;
-    width: 100%;
-    height: 1px;
-    background: var(--color-darker);
-}
-
 .random-song-selector .header {
     display: flex;
     justify-content: space-between;
@@ -26,7 +19,7 @@
     padding: 8px;
     background: var(--input-bg);
     border: 1px solid var(--color-darker);
-    border-radius: 4px;
+    border-radius: 8px;
     position: relative;
 }
 
@@ -86,33 +79,16 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    box-sizing: border-box;
     height: 100%;
     width: 100%;
     gap: 8px;
+    padding-top:8px;
+    font-size: 0.6rem;
 }
 
 .random-song-selector .random-controls > * {
     width: 100%;
-}
-
-.random-song-selector input {
-    display: none;
-}
-
-.random-song-selector .random-controls .text,
-.random-song-selector .random-controls .spin-button {
-    display: block;
-    color: var(--color-dark);
-    width: 100%;
-    box-sizing: border-box;
-    padding: 4px;
-    background: var(--input-bg);
-    border: 1px solid var(--color-darker);
-    border-radius: 4px;
-    font-size: 0.6em;
-    text-align: center;
-    cursor: pointer;
-    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
 .random-song-selector .random-controls .spin-button {
@@ -121,23 +97,21 @@
     align-items: center;
     font-weight: bold;
     flex-grow: 1;
+    color: var(--color);
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--input-bg);
+    border: 1px solid var(--color-darker);
+    border-radius: 8px;
     font-size: 2em;
-    transition: color 0.2s;
-}
-
-.random-song-selector. .random-controls .spin-button:hover {
-    color: var(--highlight-blue-light)
+    margin-top: 8px;
+    cursor: pointer;
+    transition: color 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
 .random-song-selector.spinning .random-controls .spin-button {
     pointer-events: none;
     color: var(--color-darker)
-}
-
-.random-song-selector .random-controls input:checked ~ .text {
-    color: var(--highlight-blue-light);
-    background-color: var(--highlight-blue-dark);
-    border-color: var(--highlight-blue-light);
 }
 
 .random-song-selector .cover {
@@ -202,6 +176,12 @@
     width: var(--slot-machine-cover-width);
     position: absolute;
     top: 0;
+    /*Show logo in place of broken covers*/
+    background-color: #BFBFBF;
+    background-size: contain;
+    background-repeat: repeat;
+    background-position: top;
+    background-image: url("../../public/logo.png");
 }
 
 .random-song-selector .cover-list.spinning {
@@ -211,8 +191,4 @@
 .random-song-selector .sub-cover {
     width: var(--slot-machine-cover-width);
     height: var(--slot-machine-cover-width);
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url("../../public/logo.png");
 }
