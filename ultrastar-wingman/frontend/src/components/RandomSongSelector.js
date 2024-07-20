@@ -3,12 +3,16 @@ import './RandomSongSelector.css';
 import React, {useEffect, useRef, useState} from "react";
 import {SongsApi} from "../api/src";
 import SongPlayButton from "./SongPlayButton";
+import SongDetailsModal from "./SongDetailsModal";
 
 const RandomSongSelector = () => {
     const [scope, setScope] = useState("all");
+    const [isSpinning, setIsSpinning] = useState(false);
     const [currentSong, setCurrentSong] = useState({});
     const [nextSong, setNextSong] = useState({});
     const [randomCount, setRandomCount] = useState(1);
+
+    const [selectedSong, setSelectedSong] = useState(null);
 
     const [error, setError] = useState(null);
 
@@ -20,8 +24,6 @@ const RandomSongSelector = () => {
         return Math.floor(Math.random() * 20) + 40;
     };
 
-    // TODO: select: all songs, wishlist, wishlist (weighted)
-
     const spin = async (first = false) => {
         setError(null);
 
@@ -32,10 +34,10 @@ const RandomSongSelector = () => {
             } else {
                 // skip animation on first load
                 if (!first) {
+                    setIsSpinning(true);
                     coverListRef.current.classList.add("spinning");
                     coverListRef.current.style.top = "0%";
                 }
-
                 const finishSpin = () => {
                     const r = getRandomCoverCount();
                     coverListRef.current.classList.remove("spinning");
@@ -44,12 +46,13 @@ const RandomSongSelector = () => {
                     setRandomCount(r);
                     setCurrentSong(nextSong);
                     setNextSong(data);
+                    setIsSpinning(false);
                 };
 
                 if (first) {
                     finishSpin();
                 } else {
-                    setTimeout(finishSpin, 5050);
+                    setTimeout(finishSpin, 5500);
                 }
             }
         });
@@ -63,24 +66,31 @@ const RandomSongSelector = () => {
         setScope(event.target.value);
     };
 
+    const handleSongClick = () => {
+        if (currentSong.id !== undefined) {
+            setSelectedSong(currentSong);
+        }
+    };
+
+    const closeModal = () => {
+        setSelectedSong(null);
+    };
+
     // TODO: favorites and wishlist info from parent
-    // TODO: onclick show details
-    return <div className={"random-song-selector"}>
-        <h1>Random Song Selector</h1>
+    return <div className={"random-song-selector" + (isSpinning ? " spinning" : "")}>
         {error && <h1>{error}</h1>}
         <div className={"slot-machine"}>
-            <div className={"side left"}>
-                <div className={"song-info"}>
+            <div className={"header"}>
+                <div className={"song-info"} onClick={handleSongClick}>
                     <label className={"title"}>{(currentSong.title !== undefined) ? currentSong.title : "Random Song"}</label>
                     <label className={"artist"}>{(currentSong.artist !== undefined) ? currentSong.artist : "Ultrastar Wingman"}</label>
                 </div>
-                <div className={"spacer"}></div>
-                <div className={"song-controls"}>
-                    <SongPlayButton/>
-                </div>
+                {currentSong.id !== undefined && <div className={"song-controls"}>
+                    <SongPlayButton song={currentSong}/>
+                </div>}
             </div>
             <div className={"cover"}>
-            <div ref={coverListRef} className={"cover-list"}>
+                <div ref={coverListRef} className={"cover-list"}>
                     <div
                         key={-1}
                         className={"sub-cover next"}
@@ -102,6 +112,7 @@ const RandomSongSelector = () => {
                 <div className={"select-line"}></div>
             </div>
             <div className={"side right"}>
+                {/*TODO: functionality*/}
                 <div className={"random-controls"}>
                     <label>
                         <input
@@ -137,6 +148,7 @@ const RandomSongSelector = () => {
                 </div>
             </div>
         </div>
+        {selectedSong && <SongDetailsModal song={selectedSong} onClose={closeModal}/>}
     </div>;
 };
 

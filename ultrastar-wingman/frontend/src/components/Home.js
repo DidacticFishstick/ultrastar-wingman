@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Home.css';
 import Wishlist from "./Wishlist";
 import RandomSongSelector from "./RandomSongSelector";
+import React from "react";
 
 function Home() {
     return <div>
@@ -28,6 +29,7 @@ function Home() {
             {/*</Tile>*/}
         </div>
         <Wishlist/>
+        <h2>Random Song Selector</h2>
         <RandomSongSelector/>
     </div>;
 }

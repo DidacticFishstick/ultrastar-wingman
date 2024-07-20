@@ -1,12 +1,13 @@
 .random-song-selector .slot-machine {
+    --slot-machine-cover-width: 200px;
+
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
     gap: 8px;
     max-width: 420px;
-    margin: 16px auto;
+    margin: 16px 0;
     padding: 0 16px;
-    --slot-machine-cover-width: 160px;
 }
 
 .random-song-selector .side .spacer {
@@ -16,64 +17,68 @@
     background: var(--color-darker);
 }
 
-.random-song-selector .left {
+.random-song-selector .header {
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: space-between;
-    height: 100%;
+    grid-column: 1/-1;
     width: 100%;
-    gap: 8px;
+    box-sizing: border-box;
+    padding: 8px;
+    background: var(--input-bg);
+    border: 1px solid var(--color-darker);
+    border-radius: 4px;
+    position: relative;
 }
 
 .random-song-selector .song-info {
     display: grid;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 4px;
-    background: var(--input-bg);
-    border: 1px solid var(--color-darker);
-    border-radius: 4px;
+}
+
+.random-song-selector.spinning .song-info {
+    pointer-events: none;
 }
 
 .random-song-selector .song-info label {
     display: block;
     color: var(--color);
     font-size: 1rem;
-    width: 100%;
+    cursor: pointer;
+    transition: color 0.2s;
 
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .random-song-selector .song-info .title {
     color: var(--color);
     font-weight: bold;
+}
 
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+.random-song-selector.spinning .song-info .title {
+    color: var(--color-darker);
 }
 
 .random-song-selector .song-info .artist {
     color: var(--color-dark);
     font-size: 0.75em;
-    white-space: nowrap;
 }
 
-.random-song-selector .song-controls {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    gap: 8px;
-    padding: 8px;
+.random-song-selector.spinning .song-info .artist {
+    color: var(--color-darkerer);
+}
+
+.random-song-selector.spinning .song-controls {
+    pointer-events: none;
+    color: var(--color-darker);
 }
 
 .random-song-selector .song-controls > * {
-    font-size: 2.5rem;
+    font-size: 1.7rem;
+}
+
+.random-song-selector.spinning .song-controls svg {
+    color: var(--color-darkerer);
 }
 
 .random-song-selector .random-controls {
@@ -117,6 +122,16 @@
     font-weight: bold;
     flex-grow: 1;
     font-size: 2em;
+    transition: color 0.2s;
+}
+
+.random-song-selector. .random-controls .spin-button:hover {
+    color: var(--highlight-blue-light)
+}
+
+.random-song-selector.spinning .random-controls .spin-button {
+    pointer-events: none;
+    color: var(--color-darker)
 }
 
 .random-song-selector .random-controls input:checked ~ .text {

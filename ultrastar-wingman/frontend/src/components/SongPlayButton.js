@@ -5,8 +5,7 @@ import {FaPlay, FaStop} from "react-icons/fa";
 import {SongsApi, UltraStarDeluxeApi} from "../api/src";
 
 const SongPlayButton = ({song, props}) => {
-    // TODO: staying at stop in wishlist when another song is started
-
+    // TODO: change back to not started when the song changes
     const buttonRef = useRef(null);
 
     const songsApi = new SongsApi();
