@@ -59,7 +59,8 @@ class Session:
 
             if time.time() - last_date > 6 * 60 * 60:
                 # The current session is a new session
-                sessions[-1].end_date = last_date
+                if sessions:
+                    sessions[-1].end_date = last_date
                 sessions.append(Session(session_id=len(sessions), start_date=round(time.time())))
 
             cls.sessions = sessions
