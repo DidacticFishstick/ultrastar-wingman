@@ -47,6 +47,7 @@ function Home() {
         <RandomSongSelector
             setSelectedSong={setSelectedSong}
             currentlyPlayingSong={currentlyPlayingSong}
+            globalWishlist={globalWishlist}
         />
 
         {selectedSong &&

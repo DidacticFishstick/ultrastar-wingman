@@ -302,6 +302,10 @@ export function useDownloadQueue() {
 
 // endregion
 
+export function getRandomSong(callback) {
+    songsApi.apiGetSongByIdApiSongsSongIdGet("random", apiCallback(callback));
+}
+
 export function addFavorite(favoriteIds, setFavoriteIds, id) {
     // TODO: send to backend
     if (!favoriteIds.includes(id)) {

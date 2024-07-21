@@ -5,6 +5,7 @@
     margin: 0 16px 0 32px;
     cursor: pointer;
     width: max-content;
+    color: var(--color-dark);
 }
 
 .radio input {
@@ -12,9 +13,9 @@
 }
 
 .radio .text {
-    cursor: pointer;
+    cursor: inherit;
     font-weight: bold;
-    color: var(--color-dark);
+    color: inherit;
     padding-left: calc(16px + 0.5em);
     transition: color 0.2s;
     display: flex;
@@ -103,4 +104,22 @@
 
 .radio input:checked ~ .checkmark:after {
     animation: checkmark_after 0.1s linear forwards;
+}
+
+.radio.disabled {
+    cursor: default;
+}
+
+.radio.disabled .text {
+    color: var(--color-darker) !important;
+}
+
+.radio.disabled:before {
+    background-color: transparent;
+    border: 1px solid var(--color-darker);
+}
+
+.radio.disabled .checkmark:before,
+.radio.disabled .checkmark:after {
+    background: var(--color-darker);
 }

@@ -1,13 +1,14 @@
 // RandomSongSelector.js
 import './RandomSongSelector.css';
 import React, {useEffect, useRef, useState} from "react";
-import {SongsApi} from "../api/src";
 import SongPlayButton from "./SongPlayButton";
 import RadioButton from "./RadioButton";
+import {getRandomSong} from "../helpers";
 
 const RandomSongSelector = ({
                                 currentlyPlayingSong,
-                                setSelectedSong
+                                setSelectedSong,
+                                globalWishlist
                             }) => {
     const [scope, setScope] = useState("all");
     const [isSpinning, setIsSpinning] = useState(false);
@@ -15,11 +16,7 @@ const RandomSongSelector = ({
     const [nextSong, setNextSong] = useState({});
     const [randomCount, setRandomCount] = useState(1);
 
-    const [error, setError] = useState(null);
-
     const coverListRef = useRef(null);
-
-    const songsApi = new SongsApi();
 
     // TODO: currently the random covers change everytime any State changes
 
@@ -27,44 +24,81 @@ const RandomSongSelector = ({
         return Math.floor(Math.random() * 20) + 40;
     };
 
+
+    const weightedWishes = [];
+    Object.values(globalWishlist).forEach(wish => {
+        for (let i = 0; i < wish.count; i++) {
+            weightedWishes.push(wish);
+        }
+    });
+
+    const getRandomWish = () => {
+        const wishes = Object.values(globalWishlist);
+        return wishes[Math.floor(Math.random() * wishes.length)];
+    };
+
+    const getRandomWeightedWish = () => {
+        return weightedWishes[Math.floor(Math.random() * weightedWishes.length)];
+    };
+
+    const getRandomCoverUrl = index => {
+        switch (scope) {
+            case "all":
+                return `url('/api/songs/random/cover?i=${new Date().getTime()}-${index}')`;
+            case "wishlist":
+                return `url('/api/songs/${getRandomWish().song.id}/cover')`;
+            case "wishlistWeighted":
+                return `url('/api/songs/${getRandomWeightedWish().song.id}/cover')`;
+        }
+    };
+
+    const getSong = callback => {
+        switch (scope) {
+            case "all":
+                getRandomSong(callback);
+                break;
+            case "wishlist":
+                callback(getRandomWish().song);
+                break;
+            case "wishlistWeighted":
+                callback(getRandomWeightedWish().song);
+                break;
+        }
+    };
+
     const spin = async (first = false) => {
-        setError(null);
+        getSong(song => {
+            // skip animation on first load
+            if (!first) {
+                setIsSpinning(true);
+                coverListRef.current.classList.add("spinning");
+                coverListRef.current.style.top = "0%";
+            }
 
-        // TODO: helpers.js
-        songsApi.apiGetSongByIdApiSongsSongIdGet("random", (error, data, response) => {
-            if (error) {
-                console.error(error, response.text);
-                setError(error + " - " + response.text);
-            } else {
-                // skip animation on first load
+            const finishSpin = () => {
+                const r = getRandomCoverCount();
+                coverListRef.current.classList.remove("spinning");
+                coverListRef.current.style.top = ((r + 1) * -100) + "%";
+
+                setRandomCount(r);
                 if (!first) {
-                    setIsSpinning(true);
-                    coverListRef.current.classList.add("spinning");
-                    coverListRef.current.style.top = "0%";
-                }
-                const finishSpin = () => {
-                    const r = getRandomCoverCount();
-                    coverListRef.current.classList.remove("spinning");
-                    coverListRef.current.style.top = ((r + 1) * -100) + "%";
-
-                    setRandomCount(r);
                     setCurrentSong(nextSong);
-                    setNextSong(data);
-                    setIsSpinning(false);
-                };
-
-                if (first) {
-                    finishSpin();
-                } else {
-                    setTimeout(finishSpin, 5500);
                 }
+                setNextSong(song);
+                setIsSpinning(false);
+            };
+
+            if (first) {
+                finishSpin();
+            } else {
+                setTimeout(finishSpin, 5500);
             }
         });
     };
 
     useEffect(() => {
         spin(true);
-    }, []);
+    }, [scope]);
 
     const handleRadioChange = (event) => {
         setScope(event.target.value);
@@ -77,7 +111,6 @@ const RandomSongSelector = ({
     };
 
     return <div className={"random-song-selector" + (isSpinning ? " spinning" : "")}>
-        {error && <h1>{error}</h1>}
         <div className={"slot-machine"}>
             <div className={"header"}>
                 <div className={"song-info"} onClick={handleSongClick}>
@@ -99,7 +132,7 @@ const RandomSongSelector = ({
                         <div
                             key={index}
                             className={"sub-cover random"}
-                            style={{backgroundImage: `url(/api/songs/random/cover?i=${new Date().getTime()}-${index})`}}
+                            style={{backgroundImage: getRandomCoverUrl(index)}}
                         ></div>
                     ))}
                     <div
@@ -111,11 +144,10 @@ const RandomSongSelector = ({
                 <div className={"select-line"}></div>
             </div>
             <div className={"side right"}>
-                {/*TODO: functionality*/}
                 <div className={"random-controls"}>
-                    <RadioButton text={"All Songs"} value={"all"} state={scope} setState={setScope}/>
-                    <RadioButton text={"Wishlist"} value={"wishlist"} state={scope} setState={setScope}/>
-                    <RadioButton text={"Wishlist (Weighted)"} value={"wishlist-weighted"} state={scope} setState={setScope}/>
+                    <RadioButton disabled={isSpinning} text={"All Songs"} value={"all"} state={scope} setState={setScope}/>
+                    <RadioButton disabled={isSpinning || Object.keys(globalWishlist).length === 0} text={"Wishlist"} value={"wishlist"} state={scope} setState={setScope}/>
+                    <RadioButton disabled={isSpinning || Object.keys(globalWishlist).length === 0} text={"Wishlist (Weighted)"} value={"wishlistWeighted"} state={scope} setState={setScope}/>
                     <label className={"spin-button"} onClick={() => {
                         spin();
                     }}>SPIN</label>
