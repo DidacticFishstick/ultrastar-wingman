@@ -1,10 +1,13 @@
 import {useEffect, useState} from 'react';
 import {SongsApi, WishlistApi} from "./api/src";
+import WebSocketService from "./websocketService";
+import websocketService from "./websocketService";
 
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
 
-// TODO: also do ws subscription here and set states accordingly
+// const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
+const wsService = new WebSocketService(`ws://localhost:8080/ws`);
 
 // handles errors for the api callback and only calls the given callback on success with the data
 export function apiCallback(callback) {
@@ -76,6 +79,10 @@ export function useSongs() {
         songsApi.apiSongsApiSongsGet(apiCallback(data => {
             setSongs(data.songs);
         }));
+
+        wsService.registerCallback("download_finished", song => {
+            setSongs([...songs, song]);
+        });
     }, []);
 
     return [songs, setSongs];

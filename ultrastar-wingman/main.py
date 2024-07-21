@@ -98,7 +98,9 @@ async def api_usdb_ids():
 async def api_usdb_download(usdb_id_model: models.UsdbId):
     await download_queue.put(usdb_id_model.id)
 
-    await ws.broadcast_download_queued(usdb_id_model.id)
+    await ws.broadcast(ws.WsMessageType.download_queued, {
+        "usdb_id": usdb_id_model.id
+    })
 
     return {"success": True}
 
@@ -414,6 +416,7 @@ async def api_wishlist_global_get():
 async def ws_endpoint(websocket: WebSocket):
     await websocket.accept()
     ws.ws_connections.add(websocket)
+    logging.info("WebSocket client connected")
     try:
         while True:
             data = await websocket.receive_text()

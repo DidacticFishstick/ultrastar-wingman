@@ -206,8 +206,11 @@ async def download_queue_consumer(queue: asyncio.Queue):
             song = await Song.download(usdb_id)
         except Exception as e:
             logging.exception(f"Failed to download song {usdb_id}")
-            await ws.broadcast_download_failed(usdb_id, str(e))
+            await ws.broadcast(ws.WsMessageType.download_failed, {
+                "usdb_id": usdb_id,
+                "error": str(e)
+            })
         else:
-            await ws.broadcast_download_complete(song)
+            await ws.broadcast(ws.WsMessageType.download_finished, song.to_json())
 
         queue.task_done()

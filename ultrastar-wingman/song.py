@@ -202,7 +202,11 @@ class Song:
         else:
             raise DownloadException("missing video")
 
-        await ws.broadcast_download_started(id, title, artist)
+        await ws.broadcast(ws.WsMessageType.download_started, {
+            "usdb_id": id,
+            "title": title,
+            "artist": artist
+        })
 
         if id is None:
             sanitized_name = cls.create_valid_dir_name(f"{artist} - {title}")

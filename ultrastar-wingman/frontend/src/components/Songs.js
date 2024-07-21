@@ -3,7 +3,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import {FaSearch} from "react-icons/fa";
 import {BsThreeDots} from "react-icons/bs";
 import {NavLink} from 'react-router-dom';
-import {SongsApi, WishlistApi} from "../api/src";
 import SongListItem from "./SongListItem";
 import './Songs.css';
 import Tile from "./Tile";

@@ -22,10 +22,6 @@ function Home() {
         setSelectedSong(null);
     };
 
-    console.log("clientWishlist", clientWishlist);
-    console.log("globalWishlist", globalWishlist);
-    console.log("favoriteIds", favoriteIds);
-
     return <div>
         <div className="tile-container">
             <Tile className={"title"} span>
