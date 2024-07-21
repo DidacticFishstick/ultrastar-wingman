@@ -10,6 +10,7 @@ import {addFavorite, addWish, removeFavorite, removeWish} from "../helpers";
 const SongDetailsModal = ({
                               song,
                               onClose,
+                              currentlyPlayingSong,
                               clientWishlist,
                               setClientWishlist,
                               globalWishlist,
@@ -45,7 +46,7 @@ const SongDetailsModal = ({
                     <IoMdHeartEmpty className={"no-favorite"} onClick={() => addFavorite(favoriteIds, setFavoriteIds, song.id)} title={"Add to personal favorites"}/>
                     <IoMdHeart className={"favorite"} onClick={() => removeFavorite(favoriteIds, setFavoriteIds, song.id)} title={"Remove from personal favorites"}/>
                 </div>
-                <SongPlayButton song={song} className={"center"}/>
+                <SongPlayButton className={"center"} song={song} currentlyPlayingSong={currentlyPlayingSong}/>
                 <div>
                     <MdOutlinePlaylistAdd className={"add-wish"} onClick={() => addWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, song)} title={"Add to wishlist"}/>
                     <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={() => removeWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, song.id)} title={"Remove from wishlist"}/>

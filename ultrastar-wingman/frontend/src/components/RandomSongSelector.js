@@ -6,6 +6,7 @@ import SongPlayButton from "./SongPlayButton";
 import RadioButton from "./RadioButton";
 
 const RandomSongSelector = ({
+                                currentlyPlayingSong,
                                 setSelectedSong
                             }) => {
     const [scope, setScope] = useState("all");
@@ -84,7 +85,7 @@ const RandomSongSelector = ({
                     <label className={"artist"}>{(currentSong.artist !== undefined) ? currentSong.artist : "Ultrastar Wingman"}</label>
                 </div>
                 {currentSong.id !== undefined && <div className={"song-controls"}>
-                    <SongPlayButton song={currentSong}/>
+                    <SongPlayButton song={currentSong} currentlyPlayingSong={currentlyPlayingSong}/>
                 </div>}
             </div>
             <div className={"cover"}>

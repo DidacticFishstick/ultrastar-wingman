@@ -1,10 +1,11 @@
 import {useEffect, useState} from 'react';
-import {SongsApi, USDBApi, WishlistApi} from "./api/src";
+import {SongsApi, UltraStarDeluxeApi, USDBApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
 const usdbApi = new USDBApi();
+const usdxApi = new UltraStarDeluxeApi();
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
@@ -369,4 +370,26 @@ export function removeWish(clientWishlist, setClientWishlist, globalWishlist, se
 
 export function downloadFromUsdb(usdbId) {
     usdbApi.apiUsdbDownloadApiUsdbDownloadPost(JSON.stringify({id: usdbId}), apiCallback());
+}
+
+export function playSong(song, force = false) {
+    songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {force: force}, (error, data, response) => {
+        if (error) {
+            if (response.status === 409) {
+                // TODO: custom modal
+                if (window.confirm("Another song is already playing. Abort the current song and start this one?")) {
+                    playSong(song, true);
+                }
+            } else {
+                displayApiError(error, data, response)
+            }
+        }
+    });
+}
+
+export function killUsdb() {
+    // TODO: custom modal
+    if (window.confirm("Do you really wish to kill Ultrastar Deluxe and abort any running song?")) {
+        usdxApi.apiUsdxKillApiUsdxKillPost(apiCallback());
+    }
 }

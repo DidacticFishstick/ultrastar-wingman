@@ -11,7 +11,6 @@ import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useGlobalWis
 import CurrentlyPlayingSong from "./CurrentlyPlayingSong";
 
 function Home() {
-
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useCurrentlyPlayingSong();
     const [selectedSong, setSelectedSong] = useState(null);
 
@@ -44,6 +43,7 @@ function Home() {
 
         <Wishlist
             setSelectedSong={setSelectedSong}
+            currentlyPlayingSong={currentlyPlayingSong}
             clientWishlist={clientWishlist}
             globalWishlist={globalWishlist}
             favoriteIds={favoriteIds}
@@ -52,12 +52,14 @@ function Home() {
         <h2>Random Song Selector</h2>
         <RandomSongSelector
             setSelectedSong={setSelectedSong}
+            currentlyPlayingSong={currentlyPlayingSong}
         />
 
         {selectedSong &&
             <SongDetailsModal
                 song={selectedSong}
                 onClose={() => setSelectedSong(null)}
+                currentlyPlayingSong={currentlyPlayingSong}
                 clientWishlist={clientWishlist}
                 setClientWishlist={setClientWishlist}
                 globalWishlist={globalWishlist}

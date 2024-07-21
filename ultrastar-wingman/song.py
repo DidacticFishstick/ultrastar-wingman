@@ -346,15 +346,10 @@ class Song:
         :param song: The song that ended
         """
 
-        # TODO: when killing the previous process and directly starting a new one, this sometimes registers that the exit of the last one
-
-        logging.info("Active song has ended")
-
         async with cls.active_song_lock:
             if cls.active_song is not None and song.id == cls.active_song.id:
+                cls.active_song = None
                 await ws.broadcast(ws.MessageType.active_song, {})
-
-            cls.active_song = None
 
     @classmethod
     async def _sing_song(cls, song: 'Song', force=False) -> bool:

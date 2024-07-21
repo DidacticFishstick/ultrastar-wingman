@@ -233,6 +233,9 @@ async def api_mp3(song_id):
 
 @app.post('/api/songs/{song_id}/sing', response_model=models.BasicResponse, tags=["Songs"], summary="Starts UltraStar Deluxe and loads the song")
 async def api_sing_song(song_id, sing_model: models.SingModel):
+    if Song.active_song is not None and Song.active_song.id == song_id:
+        return {"success": True}
+
     song = Song.get_song_by_id(song_id)
 
     if song is None:

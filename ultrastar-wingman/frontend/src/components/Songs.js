@@ -8,10 +8,12 @@ import './Songs.css';
 import Tile from "./Tile";
 import Spinner from "./Spinner";
 import Input from "./Input";
-import {useClientWishlist, useFavoriteIds, useSongs} from "../helpers";
+import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useSongs} from "../helpers";
 import SongDetailsModal from "./SongDetailsModal";
 
 function Songs() {
+    const [currentlyPlayingSong, setCurrentlyPlayingSong] = useCurrentlyPlayingSong();
+
     const [songs, setSongs] = useSongs();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSong, setSelectedSong] = useState(null);
@@ -81,6 +83,7 @@ function Songs() {
                 <SongDetailsModal
                     song={selectedSong}
                     onClose={() => setSelectedSong(null)}
+                    currentlyPlayingSong={currentlyPlayingSong}
                     clientWishlist={clientWishlist}
                     setClientWishlist={setClientWishlist}
                     favoriteIds={favoriteIds}

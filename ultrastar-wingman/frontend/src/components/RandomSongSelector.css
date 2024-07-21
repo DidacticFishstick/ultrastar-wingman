@@ -61,13 +61,18 @@
     color: var(--color-darkerer);
 }
 
+.random-song-selector .song-controls {
+    display: flex;
+    align-items: center;
+}
+
 .random-song-selector.spinning .song-controls {
     pointer-events: none;
     color: var(--color-darker);
 }
 
 .random-song-selector .song-controls > * {
-    font-size: 1.7rem;
+    font-size: 2rem;
 }
 
 .random-song-selector.spinning .song-controls svg {

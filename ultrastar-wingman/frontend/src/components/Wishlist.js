@@ -6,6 +6,7 @@ import SongPlayButton from "./SongPlayButton";
 
 function Wishlist({
                       setSelectedSong,
+                      currentlyPlayingSong,
                       clientWishlist,
                       globalWishlist,
                       favoriteIds,
@@ -63,7 +64,7 @@ function Wishlist({
                         song={wish.song}
                         coverUrl={`/api/songs/${wish.song.id}/cover`}
                         onClick={() => handleSongClick(wish.song)}
-                        button={<SongPlayButton song={wish.song}/>}
+                        button={<SongPlayButton song={wish.song} currentlyPlayingSong={currentlyPlayingSong}/>}
                         onButton={() => {
                         }}
                         globalWishlist={globalWishlist}
