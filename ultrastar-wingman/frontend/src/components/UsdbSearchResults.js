@@ -38,7 +38,7 @@ const UsdbSearchResults = ({songs}) => {
                     song={song}
                     coverUrl={`https://usdb.animux.de/data/cover/${song.id}.jpg`}
                     button={getButton(song)}
-                    onButton={(e) => {
+                    onClick={(e) => {
                         if (song.downloaded || downloadQueue.finished.includes(song.id)) {
                         } else if (song.id in downloadQueue.failed) {
                             // TODO: custom modal

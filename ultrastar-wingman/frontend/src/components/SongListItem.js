@@ -38,8 +38,10 @@ function SongListItem({
                 </div>
             </div>
             <div className={song.downloaded ? "song-button downloaded" : "song-button"} onClick={(e) => {
-                onButton(e);
-                e.stopPropagation();
+                if (onButton !== undefined) {
+                    onButton(e);
+                    e.stopPropagation();
+                }
             }}>
                 {button}
             </div>
