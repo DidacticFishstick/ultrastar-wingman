@@ -31,7 +31,7 @@ const SongDetailsModal = ({
             + ((song.id in clientWishlist) ? " wished" : "")
             + (favoriteIds.includes(song.id) ? " favorite" : "")
         } onClose={onClose}>
-            <img src={`/api/songs/${song.id}/cover`} height={"250px"} alt={`${song.title} cover`}/>
+            <img src={`/api/songs/${song.id}/cover`} width={"256px"} alt={`${song.title} cover`}/>
             <h1>{song.title}</h1>
             <h2>{song.artist}</h2>
             <h3>Song Preview</h3>

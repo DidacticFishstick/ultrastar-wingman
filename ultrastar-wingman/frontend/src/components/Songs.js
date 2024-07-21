@@ -54,7 +54,7 @@ function Songs() {
                     </Tile>
                 </NavLink>
             </div>
-            <h2>Downloaded Songs</h2>
+            <h2>{`Downloaded Songs (${Object.keys(songs).length})`}</h2>
             <div ref={inputRef} className="songs-search">
                 <Input type="text" placeholder="Search downloaded songs" icon={<FaSearch/>} searchTerm={searchTerm} setSearchTerm={setSearchTerm} onEnter={() => {
                 }} onFocus={() => {

@@ -10,13 +10,18 @@ const usdbApi = new USDBApi();
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
 const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
 
+
+function displayApiError(error, data, response) {
+    console.error(error, response.text);
+    // TODO: better error handling
+    alert(response.text);
+}
+
 // handles errors for the api callback and only calls the given callback on success with the data
 export function apiCallback(callback) {
     return (error, data, response) => {
         if (error) {
-            console.error(error, response.text);
-            // TODO: better error handling
-            alert(response.text);
+            displayApiError(error, data, response);
         } else {
             if (callback !== undefined) {
                 callback(data);
@@ -40,11 +45,32 @@ class Lock {
 // region States
 
 export function useCurrentlyPlayingSong() {
-    const [favoriteIds, setFavoriteIds] = useState(null);
+    const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState(null);
 
-    // TODO: actually get the currently playing song
+    useEffect(() => {
+        songsApi.apiGetSongByIdApiSongsSongIdGet("current", (error, data, response) => {
+            if (error) {
+                console.log(response);
+                if (response.status === 404) {
+                    setCurrentlyPlayingSong(null);
+                } else {
+                    displayApiError(error, data, response);
+                }
+            } else {
+                setCurrentlyPlayingSong(data)
+            }
+        });
 
-    return [favoriteIds, setFavoriteIds];
+        wsService.registerCallback("active_song", song => {
+            if (song.id === undefined) {
+                setCurrentlyPlayingSong(null)
+            } else {
+                setCurrentlyPlayingSong(song)
+            }
+        });
+    }, []);
+
+    return [currentlyPlayingSong, setCurrentlyPlayingSong];
 }
 
 export function useFavoriteIds() {
@@ -260,7 +286,6 @@ export function useDownloadQueue() {
 
                     setDownloadQueue(newDownloadQueue);
 
-                    // TODO: show some error;
                     console.warn(`USDB download failed (${message.usdb_id}):`, message.error);
 
                     return newDownloadQueue;

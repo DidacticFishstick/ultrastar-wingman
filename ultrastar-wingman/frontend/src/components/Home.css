@@ -1,4 +1,4 @@
-.tile.title .logo {
+.home .tile.title .logo {
     display: block;
     height: 200px;
     background-image: url("../../public/logo.png");
@@ -7,7 +7,7 @@
     background-position: center;
 }
 
-.tile.title label {
+.home .tile.title label {
     display: block;
     font-weight: bold;
     text-align: center;
@@ -15,7 +15,7 @@
     font-size: 2em;
 }
 
-.tile.tile > .info {
+.home .tile.tile > .info {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
@@ -25,15 +25,19 @@
     color: var(--color-dark);
 }
 
-.tile.tile > .info a {
+.home .tile.tile > .info a {
     color: var(--color-dark);
     text-decoration: none;
 }
 
-.tile.title .info svg {
+.home .tile.title .info svg {
     margin-bottom: -0.12em;
 }
 
-.tile-container > a {
+.home .tile-container > a {
     text-decoration: none;
+}
+
+.home h2 {
+    margin-top: 32px;
 }

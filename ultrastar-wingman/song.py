@@ -202,7 +202,7 @@ class Song:
         else:
             raise DownloadException("missing video")
 
-        await ws.broadcast(ws.WsMessageType.download_started, {
+        await ws.broadcast(ws.MessageType.download_started, {
             "usdb_id": id,
             "title": title,
             "artist": artist
@@ -299,6 +299,7 @@ class Song:
         """
         Returns the song with the given ID.
         Use id "random" to get a random song.
+        Use id "current" to get the currently playing song.
 
         :param id: The song id
         :return: The song object or None if the song does not exist
@@ -306,6 +307,9 @@ class Song:
 
         if id == "random" and cls.songs:
             return random.choice(list(cls.songs.values()))
+
+        if id == "current" and cls.songs:
+            return cls.active_song
 
         return cls.songs.get(str(id))
 
@@ -335,9 +339,11 @@ class Song:
         return duration
 
     @classmethod
-    async def _on_song_end(cls):
+    async def _on_song_end(cls, song: 'Song'):
         """
         Callback to be used for the end of a song.
+
+        :param song: The song that ended
         """
 
         # TODO: when killing the previous process and directly starting a new one, this sometimes registers that the exit of the last one
@@ -345,6 +351,9 @@ class Song:
         logging.info("Active song has ended")
 
         async with cls.active_song_lock:
+            if song.id == cls.active_song.id:
+                await ws.broadcast(ws.MessageType.active_song, {})
+
             cls.active_song = None
 
     @classmethod
@@ -367,12 +376,13 @@ class Song:
             logging.info(f"Starting song {song}")
 
             await usdx.start(
-                params=["-SongPath", str(song.directory)],
+                song=song,
                 kill_previous=True,
                 callback=cls._on_song_end
             )
 
             cls.active_song = song
+            await ws.broadcast(ws.MessageType.active_song, cls.active_song.to_json())
 
         return True
 

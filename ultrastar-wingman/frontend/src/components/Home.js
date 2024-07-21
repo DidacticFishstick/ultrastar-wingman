@@ -8,6 +8,7 @@ import RandomSongSelector from "./RandomSongSelector";
 import React, {useState} from "react";
 import SongDetailsModal from "./SongDetailsModal";
 import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useGlobalWishlist} from "../helpers";
+import CurrentlyPlayingSong from "./CurrentlyPlayingSong";
 
 function Home() {
 
@@ -22,7 +23,7 @@ function Home() {
         setSelectedSong(null);
     };
 
-    return <div>
+    return <div className="home">
         <div className="tile-container">
             <Tile className={"title"} span>
                 <span className={"logo"}></span>
@@ -34,16 +35,24 @@ function Home() {
                 </div>
             </Tile>
         </div>
+
+        <CurrentlyPlayingSong
+            currentlyPlayingSong={currentlyPlayingSong}
+            setSelectedSong={setSelectedSong}
+        />
+
         <Wishlist
             setSelectedSong={setSelectedSong}
             clientWishlist={clientWishlist}
             globalWishlist={globalWishlist}
             favoriteIds={favoriteIds}
         />
+
         <h2>Random Song Selector</h2>
         <RandomSongSelector
             setSelectedSong={setSelectedSong}
         />
+
         {selectedSong &&
             <SongDetailsModal
                 song={selectedSong}

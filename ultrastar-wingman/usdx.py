@@ -37,31 +37,34 @@ process = None
 process_lock = asyncio.Lock()
 
 
-async def _monitor_process(p, callback):
+async def _monitor_process(p, callback, song: Optional['Song']):
     """
     Waits for the given process to exit before calling the given callback.
 
     :param p: The process to monitor.
     :param callback: The callback to call.
+    :param callback: The callback to call.
     """
 
     await p.wait()
-    await callback()
+    await callback(song)
 
 
-async def start(params: List[str] = None, kill_previous=False, callback=None):
+async def start(song: Optional['Song'] = None, kill_previous=False, callback=None):
     """
     Starts ultrastar wingman with an optional list of parameters.
     If ultrastar wingman is already running, the old proces will be killed first
 
-    :param params: A list of parameters to pass to the ultrastar wingman.
+    :param song: Optional song to start.
     :param kill_previous: If the previous process should be killed (if it is still running).
     :param callback: A callback function to call when the process ends.
     """
 
     global process
 
-    params = params or []
+    params = []
+    if song is not None:
+        params = ["-SongPath", str(song.directory)]
 
     async with process_lock:
         try:
@@ -88,7 +91,7 @@ async def start(params: List[str] = None, kill_previous=False, callback=None):
 
             # configure callback
             if callback is not None:
-                asyncio.create_task(_monitor_process(process, callback))
+                asyncio.create_task(_monitor_process(process, callback, song))
 
             logging.info(f"USDX started")
         except:

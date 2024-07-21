@@ -98,7 +98,7 @@ async def api_usdb_ids():
 async def api_usdb_download(usdb_id_model: models.UsdbId):
     await download_queue.put(usdb_id_model.id)
 
-    await ws.broadcast(ws.WsMessageType.download_queued, {
+    await ws.broadcast(ws.MessageType.download_queued, {
         "usdb_id": usdb_id_model.id
     })
 
@@ -194,7 +194,7 @@ async def api_songs():
     return {"songs": Song.song_list()}
 
 
-@app.get('/api/songs/{song_id}', response_model=models.Song, summary="Retrieve the song with the given id. Use id 'random' for a random song.", response_description="The song", tags=["Songs"])
+@app.get('/api/songs/{song_id}', response_model=models.Song, summary="Retrieve the song with the given id. Use id 'random' for a random song or 'current' for the currently playing song.", response_description="The song", tags=["Songs"])
 async def api_get_song_by_id(song_id):
     song = Song.get_song_by_id(song_id)
 

@@ -191,4 +191,7 @@
 .random-song-selector .sub-cover {
     width: var(--slot-machine-cover-width);
     height: var(--slot-machine-cover-width);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }

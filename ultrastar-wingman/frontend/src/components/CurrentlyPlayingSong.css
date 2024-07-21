@@ -1,0 +1,35 @@
+.currently-playing-song {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.currently-playing-song .cover {
+    width: 256px;
+    height: 256px;
+    background-color: #000;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("../../public/logo.png");
+}
+
+.currently-playing-song .title,
+.currently-playing-song .artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: 8px;
+}
+
+.currently-playing-song .title {
+    color: var(--color);
+    font-size: 1.5em;
+}
+
+.currently-playing-song .artist {
+    color: var(--color-dark);
+    height: 2em;
+    font-size: 1em;
+}
