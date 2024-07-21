@@ -12,6 +12,8 @@ class MessageType(str, Enum):
     download_finished = "download_finished"
     download_failed = "download_failed"
     active_song = "active_song"
+    wish_added = "wish_added"
+    wish_removed = "wish_removed"
 
 
 async def broadcast(message_type: MessageType, message: dict):

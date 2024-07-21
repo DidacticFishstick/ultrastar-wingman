@@ -51,7 +51,6 @@ export function useCurrentlyPlayingSong() {
     useEffect(() => {
         songsApi.apiGetSongByIdApiSongsSongIdGet("current", (error, data, response) => {
             if (error) {
-                console.log(response);
                 if (response.status === 404) {
                     setCurrentlyPlayingSong(null);
                 } else {
@@ -93,13 +92,15 @@ export function useClientWishlist() {
                 return acc;
             }, {}));
         }));
+
+        // only the global wishlist is done using websocket
     }, []);
 
     return [clientWishlist, setClientWishlist];
 }
 
 export function useGlobalWishlist() {
-    const [globaltWishlist, setGlobalWishlist] = useState({});
+    const [globalWishlist, setGlobalWishlist] = useState({});
 
     useEffect(() => {
         wishlistApi.apiWishlistGlobalGetApiWishlistGlobalGet(apiCallback(data => {
@@ -109,9 +110,32 @@ export function useGlobalWishlist() {
                 return acc;
             }, {}));
         }));
+
+        wsService.registerCallback("wish_added", wish => {
+            setGlobalWishlist(prevState => ({
+                ...prevState,
+                [wish.song.id]: wish
+            }));
+        });
+
+        wsService.registerCallback("wish_removed", wish => {
+            if (wish.song.id in globalWishlist) {
+                if (wish.count === 0) {
+                    setGlobalWishlist(prevState => {
+                        const {[wish.song.id]: _, ...newState} = globalWishlist;
+                        setGlobalWishlist(newState);
+                    });
+                } else {
+                    setGlobalWishlist(prevState => ({
+                        ...prevState,
+                        [wish.song.id]: wish
+                    }));
+                }
+            }
+        });
     }, []);
 
-    return [globaltWishlist, setGlobalWishlist];
+    return [globalWishlist, setGlobalWishlist];
 }
 
 export function useSongs() {
@@ -321,22 +345,6 @@ export function removeFavorite(favoriteIds, setFavoriteIds, id) {
 
 export function addWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, song) {
     wishlistApi.apiWishlistClientPostApiWishlistClientPost({song_id: song.id}, apiCallback(data => {
-        if (globalWishlist !== undefined) {
-            if (song.id in globalWishlist) {
-                globalWishlist[song.id].count++;
-                setGlobalWishlist(globalWishlist);
-            } else {
-                setGlobalWishlist(prevState => ({
-                    ...prevState,
-                    [song.id]: {
-                        count: 1,
-                        date: new Date().getTime(),
-                        song: song
-                    }
-                }));
-            }
-        }
-
         if (!(song.id in clientWishlist)) {
             setClientWishlist(prevState => ({
                 ...prevState,
@@ -351,20 +359,7 @@ export function addWish(clientWishlist, setClientWishlist, globalWishlist, setGl
 }
 
 export function removeWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, id) {
-    // TODO: optional global
     wishlistApi.apiWishlistClientDeleteApiWishlistClientDelete(id, apiCallback(data => {
-        if (globalWishlist !== undefined) {
-            if (id in globalWishlist) {
-                if (globalWishlist[id].count > 1) {
-                    globalWishlist[id].count--;
-                    setGlobalWishlist(globalWishlist);
-                } else {
-                    const {[id]: _, ...newState} = globalWishlist;
-                    setGlobalWishlist(newState);
-                }
-            }
-        }
-
         if (id in clientWishlist) {
             const {[id]: _, ...newState} = clientWishlist;
             setClientWishlist(newState);

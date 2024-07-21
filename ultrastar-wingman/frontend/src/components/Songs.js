@@ -36,7 +36,8 @@ function Songs() {
     // Filter songs based on search term
     const filteredSongs = sortedSongs.filter(song =>
         song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        song.artist.toLowerCase().includes(searchTerm.toLowerCase())
+        song.artist.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        song.id === searchTerm
     );
 
     const inputRef = useRef();

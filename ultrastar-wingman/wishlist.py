@@ -1,5 +1,7 @@
 import time
 from typing import List, Dict, Union, Tuple
+
+import ws
 from song import Song
 
 
@@ -43,6 +45,47 @@ class Wishlist:
             "wishes": list(data.values())
         }
 
+    @classmethod
+    def get_song_date_and_wish_count(cls, song: 'Song') -> Tuple[int, float]:
+        """
+        Returns the firste time this song was wished across all wishlists
+        and how often this song occurs in all wishlists.
+
+        :param song: The song to get the count for
+        :return: The count and the date (float in s)
+        """
+
+        count = 0
+        date = time.time()
+
+        for wishlist in cls.wishlists.values():
+            if song.id in wishlist.songs:
+                count += 1
+                date = min(wishlist.songs[song.id][0], date)
+
+        return count, date
+
+    @classmethod
+    def get_wish_json(cls, date, song, global_count_and_date=False) -> Dict[str, Union[int, dict]]:
+        """
+        Creates the json representation of a single wish.
+
+        :param date: The date of the wish
+        :param song: The wished song
+        :param global_count_and_date: If the global count and date should be used (count will always be 1 otherwise)
+        :return: The json representation
+        """
+
+        count = 1
+        if global_count_and_date:
+            count, date = cls.get_song_date_and_wish_count(song)
+
+        return {
+            "count": count,
+            "date": round(date * 1000),
+            "song": song.to_json()
+        }
+
     def __init__(self, client_id: str):
         """
         Creates a new empty wishlist
@@ -63,31 +106,32 @@ class Wishlist:
     def __repr__(self):
         return str(self)
 
-    def to_json(self) -> Dict[str, List[Dict[str, Union[int, 'Song']]]]:
+    def to_json(self, global_count_and_date=False) -> Dict[str, List[Dict[str, Union[int, 'Song']]]]:
         """
         Creates a list of all wishes to be used in the api
 
+        :param global_count_and_date: If the global count and date should be used (count will always be 1 otherwise)
         :return: A list of wishes
         """
 
         return {
-            "wishes": [{
-                "count": 1,
-                "date": round(date * 1000),
-                "song": song.to_json()
-            } for date, song in self.songs.values()]
+            "wishes": [self.get_wish_json(date, song, global_count_and_date=global_count_and_date) for date, song in self.songs.values()]
         }
 
-    def add_song(self, song: Song):
+    async def add_song(self, song: Song):
         """
         Adds a song to the wishlist
 
         :param song: The song to add
         """
 
-        self.songs[song.id] = time.time(), song
+        date = time.time()
 
-    def remove_song(self, song: Union[str, Song]):
+        self.songs[song.id] = date, song
+
+        await ws.broadcast(ws.MessageType.wish_added, self.get_wish_json(date, song, global_count_and_date=True))
+
+    async def remove_song(self, song: Union[str, Song]):
         """
         Adds a song to the wishlist
 
@@ -100,4 +144,6 @@ class Wishlist:
             song_id = song_id
 
         if song_id in self.songs:
-            self.songs.pop(song_id)
+            date, song = self.songs.pop(song_id)
+
+            await ws.broadcast(ws.MessageType.wish_removed, self.get_wish_json(date, song, global_count_and_date=True))

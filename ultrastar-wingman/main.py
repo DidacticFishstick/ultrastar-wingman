@@ -385,7 +385,7 @@ async def api_wishlist_client_post(request: Request, add_to_wishlist: models.Add
 
     wishlist = Wishlist.get_wishlist(get_client_identifier(request))
 
-    wishlist.add_song(song)
+    await wishlist.add_song(song)
 
     return {"success": True}
 
@@ -401,7 +401,7 @@ async def api_wishlist_client_delete(request: Request, song_id: str = Query(...,
 
     wishlist = Wishlist.get_wishlist(get_client_identifier(request))
 
-    wishlist.remove_song(song_id)
+    await wishlist.remove_song(song_id)
 
     return {"success": True}
 
