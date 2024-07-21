@@ -5,66 +5,23 @@ import {BsThreeDots} from "react-icons/bs";
 import {NavLink} from 'react-router-dom';
 import {SongsApi, WishlistApi} from "../api/src";
 import SongListItem from "./SongListItem";
-import SongDetailsModal from "./SongDetailsModal";
 import './Songs.css';
 import Tile from "./Tile";
 import Spinner from "./Spinner";
 import Input from "./Input";
-import song from "../api/src/model/Song";
+import {useClientWishlist, useFavoriteIds, useSongs} from "../helpers";
+import SongDetailsModal from "./SongDetailsModal";
 
 function Songs() {
-    const [songs, setSongs] = useState([]);
+    const [songs, setSongs] = useSongs();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSong, setSelectedSong] = useState(null);
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const songsApi = new SongsApi();
-    const wishlistApi = new WishlistApi();
-
-    useEffect(() => {
-        const fetchSongs = async () => {
-            setLoading(true);
-            setError(null);
-
-            wishlistApi.apiWishlistClientGetApiWishlistClientGet((error, data, response) => {
-                if (error) {
-                    console.error(error, response.text);
-                    setError(error + " - " + response.text);
-                } else {
-                    let wishIds = data.wishes.map(wish => wish.song.id);
-                    // TODO: actual favorites
-                    let favoriteIds = [];
-
-                    songsApi.apiSongsApiSongsGet((error, data, response) => {
-                        if (error) {
-                            console.error(error, response.text);
-                            setError(error + " - " + response.text);
-                        } else {
-                            data.songs.forEach(song => {
-                                song.wished = wishIds.includes(song.id);
-                                song.favorite = favoriteIds.includes(song.id);
-                            })
-
-                            setSongs(data.songs);
-                            setLoading(false);
-                        }
-                    });
-                }
-            });
-
-        };
-
-        fetchSongs();
-    }, []);
+    const [clientWishlist, setClientWishlist] = useClientWishlist();
+    const [favoriteIds, setFavoriteIds] = useFavoriteIds();
 
     const handleSongClick = (song) => {
         setSelectedSong(song);
-    };
-
-    const closeModal = () => {
-        setSelectedSong(null);
     };
 
     // Filter songs based on search term
@@ -99,14 +56,30 @@ function Songs() {
                     }, 50);
                 }}/>
             </div>
-            {loading && <Spinner/>}
-            {error && <h1>{error}</h1>}
+            {(songs === {}) && <Spinner/>}
             <ul className={"songs-list"}>
                 {filteredSongs.map(song => (
-                    <SongListItem song={song} coverUrl={`/api/songs/${song.id}/cover`} onClick={() => handleSongClick(song)} button={<BsThreeDots/>} onButton={() => handleSongClick(song)}/>
+                    <SongListItem
+                        song={song}
+                        coverUrl={`/api/songs/${song.id}/cover`}
+                        onClick={() => handleSongClick(song)}
+                        button={<BsThreeDots/>}
+                        onButton={() => handleSongClick(song)}
+                        clientWishList={clientWishlist}
+                        favoriteIds={favoriteIds}
+                    />
                 ))}
             </ul>
-            {selectedSong && <SongDetailsModal song={selectedSong} onClose={closeModal}/>}
+            {selectedSong &&
+                <SongDetailsModal
+                    song={selectedSong}
+                    onClose={() => setSelectedSong(null)}
+                    clientWishlist={clientWishlist}
+                    setClientWishlist={setClientWishlist}
+                    favoriteIds={favoriteIds}
+                    setFavoriteIds={setFavoriteIds}
+                />
+            }
         </div>
     );
 }

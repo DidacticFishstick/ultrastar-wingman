@@ -5,9 +5,27 @@ import 'react-toastify/dist/ReactToastify.css';
 import './Home.css';
 import Wishlist from "./Wishlist";
 import RandomSongSelector from "./RandomSongSelector";
-import React from "react";
+import React, {useState} from "react";
+import SongDetailsModal from "./SongDetailsModal";
+import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useGlobalWishlist} from "../helpers";
 
 function Home() {
+
+    const [currentlyPlayingSong, setCurrentlyPlayingSong] = useCurrentlyPlayingSong();
+    const [selectedSong, setSelectedSong] = useState(null);
+
+    const [clientWishlist, setClientWishlist] = useClientWishlist();
+    const [globalWishlist, setGlobalWishlist] = useGlobalWishlist();
+    const [favoriteIds, setFavoriteIds] = useFavoriteIds();
+
+    const closeModal = () => {
+        setSelectedSong(null);
+    };
+
+    console.log("clientWishlist", clientWishlist);
+    console.log("globalWishlist", globalWishlist);
+    console.log("favoriteIds", favoriteIds);
+
     return <div>
         <div className="tile-container">
             <Tile className={"title"} span>
@@ -19,18 +37,29 @@ function Home() {
                     <a href={"https://github.com/DidacticFishstick/ultrastar-wingman"} target="_blank" rel="noopener noreferrer" className={"git"}><FaGithub/> GitHub</a>
                 </div>
             </Tile>
-            {/*<Tile className={"icon-and-text clickable"}>*/}
-            {/*    <VscSettings/>*/}
-            {/*    <label>Settings</label>*/}
-            {/*</Tile>*/}
-            {/*<Tile className={"icon-and-text clickable"}>*/}
-            {/*    <TfiReload/>*/}
-            {/*    <label>Restart USDX</label>*/}
-            {/*</Tile>*/}
         </div>
-        <Wishlist/>
+        <Wishlist
+            setSelectedSong={setSelectedSong}
+            clientWishlist={clientWishlist}
+            globalWishlist={globalWishlist}
+            favoriteIds={favoriteIds}
+        />
         <h2>Random Song Selector</h2>
-        <RandomSongSelector/>
+        <RandomSongSelector
+            setSelectedSong={setSelectedSong}
+        />
+        {selectedSong &&
+            <SongDetailsModal
+                song={selectedSong}
+                onClose={() => setSelectedSong(null)}
+                clientWishlist={clientWishlist}
+                setClientWishlist={setClientWishlist}
+                globalWishlist={globalWishlist}
+                setGlobalWishlist={setGlobalWishlist}
+                favoriteIds={favoriteIds}
+                setFavoriteIds={setFavoriteIds}
+            />
+        }
     </div>;
 }
 

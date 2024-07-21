@@ -1,18 +1,23 @@
 // SongDetailsModal.js
 import './SongDetailsModal.css';
 import React, {useRef} from "react";
-import {FaPlay, FaStop} from "react-icons/fa";
-import {SongsApi, UltraStarDeluxeApi, WishlistApi} from "../api/src";
-import {IoMdClose, IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
+import {IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
 import {MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck} from "react-icons/md";
 import SongPlayButton from "./SongPlayButton";
 import FullScreenModal from "./FullScreenModal";
-import Spinner from "./Spinner";
+import {addFavorite, addWish, removeFavorite, removeWish} from "../helpers";
 
-const SongDetailsModal = ({song, onClose}) => {
+const SongDetailsModal = ({
+                              song,
+                              onClose,
+                              clientWishlist,
+                              setClientWishlist,
+                              globalWishlist,
+                              setGlobalWishlist,
+                              favoriteIds,
+                              setFavoriteIds
+                          }) => {
     const modalRef = useRef(null);
-
-    const wishlistApi = new WishlistApi();
 
     const formatDuration = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -20,54 +25,11 @@ const SongDetailsModal = ({song, onClose}) => {
         return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
     };
 
-    const onAddWish = (e) => {
-        wishlistApi.apiWishlistClientPostApiWishlistClientPost({song_id: song.id}, (error, data, response) => {
-            if (error) {
-                console.error(error, response.text);
-                alert(response.text);
-            } else {
-                // successfully wished
-                modalRef.current.classList.add("wished");
-                song.wished = true;
-                if (song.wishedCount !== undefined) {
-                    song.wishedCount++;
-                }
-            }
-        });
-    };
-
-    const onRemoveWish = (e) => {
-        wishlistApi.apiWishlistClientDeleteApiWishlistClientDelete(song.id, (error, data, response) => {
-            if (error) {
-                console.error(error, response.text);
-                alert(response.text);
-            } else {
-                // successfully removed
-                modalRef.current.classList.remove("wished");
-                song.wished = false;
-                if (song.wishedCount !== undefined) {
-                    song.wishedCount--;
-                }
-            }
-        });
-    };
-
-    const onAddFavorite = (e) => {
-        modalRef.current.classList.add("favorite");
-        song.favorite = true;
-        alert("Personal favorites are not yet implemented");
-    };
-
-    const onRemoveFavorite = (e) => {
-        modalRef.current.classList.remove("favorite");
-        song.favorite = false;
-    };
-
     return (
         <FullScreenModal ref={modalRef} className={
             "song-detail-modal"
-            + (song.wished ? " wished" : "")
-            + (song.favorite ? " favorite" : "")
+            + ((song.id in clientWishlist) ? " wished" : "")
+            + (favoriteIds.includes(song.id) ? " favorite" : "")
         } onClose={onClose}>
             <img src={`/api/songs/${song.id}/cover`} height={"250px"} alt={`${song.title} cover`}/>
             <h1>{song.title}</h1>
@@ -80,13 +42,13 @@ const SongDetailsModal = ({song, onClose}) => {
             {/*<label className={"directory"}>{song.directory}</label>*/}
             <div className={"controls"}>
                 <div>
-                    <IoMdHeartEmpty className={"no-favorite"} onClick={onAddFavorite} title={"Add to personal favorites"}/>
-                    <IoMdHeart className={"favorite"} onClick={onRemoveFavorite} title={"Remove from personal favorites"}/>
+                    <IoMdHeartEmpty className={"no-favorite"} onClick={() => addFavorite(favoriteIds, setFavoriteIds, song.id)} title={"Add to personal favorites"}/>
+                    <IoMdHeart className={"favorite"} onClick={() => removeFavorite(favoriteIds, setFavoriteIds, song.id)} title={"Remove from personal favorites"}/>
                 </div>
                 <SongPlayButton song={song} className={"center"}/>
                 <div>
-                    <MdOutlinePlaylistAdd className={"add-wish"} onClick={onAddWish} title={"Add to wishlist"}/>
-                    <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={onRemoveWish} title={"Remove from wishlist"}/>
+                    <MdOutlinePlaylistAdd className={"add-wish"} onClick={() => addWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, song)} title={"Add to wishlist"}/>
+                    <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={() => removeWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, song.id)} title={"Remove from wishlist"}/>
                 </div>
             </div>
         </FullScreenModal>

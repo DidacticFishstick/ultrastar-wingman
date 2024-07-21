@@ -1,92 +1,29 @@
 // Wishlist.js
-import React, {useState, useEffect} from 'react';
-import {WishlistApi} from "../api/src";
+import React, {useState} from 'react';
 import SongListItem from "./SongListItem";
-import SongDetailsModal from "./SongDetailsModal";
 import './Wishlist.css';
-import Spinner from "./Spinner";
 import SongPlayButton from "./SongPlayButton";
 
-function Wishlist() {
-    // TODO: ability to reload / websocket - maybe makes some manual state setting obsolete
+function Wishlist({
+                      setSelectedSong,
+                      clientWishlist,
+                      globalWishlist,
+                      favoriteIds,
+                  }) {
     const [globalScope, setGlobalScope] = useState(true);
-    const [clientWishlist, setClientWishlist] = useState([]);
-    const [globalWishlist, setGlobalWishlist] = useState([]);
-    const [favoriteIds, setFavoriteIds] = useState([]);
 
-    const [selectedSong, setSelectedSong] = useState(null);
+    const wishlist = globalScope ? Object.values(globalWishlist) : Object.values(clientWishlist);
 
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const wishlistApi = new WishlistApi();
-
-    useEffect(() => {
-        const fetchWishlists = async () => {
-            setLoading(true);
-            setError(null);
-
-            const handleWishResponse = (error, data, response, global, clientWishIds = []) => {
-                if (error) {
-                    console.error(error, response.text);
-                    setError(error + " - " + response.text);
-                } else {
-                    if (global) {
-                        data.wishes.forEach(wish => {
-                            wish.song.wished = clientWishIds.includes(wish.song.id);
-                            wish.song.wishedCount = wish.count;
-                            wish.song.favorite = favoriteIds.includes(wish.song.id);
-                        });
-
-                        setGlobalWishlist(data.wishes);
-                        return data.wishes;
-                    } else {
-                        data.wishes.forEach(wish => {
-                            wish.song.wished = true;
-                            wish.song.favorite = favoriteIds.includes(wish.song.id);
-                        });
-
-                        setClientWishlist(data.wishes);
-                        return data.wishes;
-                    }
-                }
-            };
-
-            // TODO: get the actual favorites
-            setFavoriteIds([]);
-            wishlistApi.apiWishlistClientGetApiWishlistClientGet((error, data, response) => {
-                const clientWishlist = handleWishResponse(error, data, response, false);
-
-                let clientWishIds = clientWishlist.map(wish => wish.song.id);
-
-                wishlistApi.apiWishlistGlobalGetApiWishlistGlobalGet((error, data, response) => {
-                    handleWishResponse(error, data, response, true, clientWishIds);
-                    setLoading(false);
-                });
-            });
-        };
-
-        fetchWishlists();
-    }, []);
-
-    const wishlist = globalScope ? globalWishlist : clientWishlist;
-
-    if (globalScope) {
-        wishlist.sort((a, b) => {
-            if (a.count < b.count) return 1;
-            if (a.count > b.count) return -1;
-            if (a.date < b.date) return -1;
-            if (a.date > b.date) return 1;
-            return 0;
-        });
-    }
+    wishlist.sort((a, b) => {
+        if (globalScope && (a.count < b.count)) return 1;
+        if (globalScope && (a.count > b.count)) return -1;
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return 0;
+    });
 
     const handleSongClick = (song) => {
         setSelectedSong(song);
-    };
-
-    const closeModal = () => {
-        setSelectedSong(null);
     };
 
     const handleRadioChange = (event) => {
@@ -120,15 +57,21 @@ function Wishlist() {
                 </div>
             </h2>
 
-            {loading && <Spinner/>}
-            {error && <h1>{error}</h1>}
             <ul className={"songs-list wishlist carousel"}>
                 {wishlist.map(wish => (
-                    <SongListItem song={wish.song} coverUrl={`/api/songs/${wish.song.id}/cover`} onClick={() => handleSongClick(wish.song)} button={<SongPlayButton song={wish.song}/>} onButton={() => {
-                    }}/>
+                    <SongListItem
+                        song={wish.song}
+                        coverUrl={`/api/songs/${wish.song.id}/cover`}
+                        onClick={() => handleSongClick(wish.song)}
+                        button={<SongPlayButton song={wish.song}/>}
+                        onButton={() => {
+                        }}
+                        globalWishlist={globalWishlist}
+                        clientWishList={clientWishlist}
+                        favoriteIds={favoriteIds}
+                    />
                 ))}
             </ul>
-            {selectedSong && <SongDetailsModal song={selectedSong} onClose={closeModal}/>}
         </div>
     );
 }

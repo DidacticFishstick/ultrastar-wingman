@@ -5,7 +5,6 @@ import {IoMdClose} from "react-icons/io";
 
 const FullScreenModal = forwardRef(({onClose, className, children, ...props}, ref) => {
     const close = (e) => {
-        console.log("close", e);
         if (e.target !== e.currentTarget) {
             e.stopPropagation();
             return;

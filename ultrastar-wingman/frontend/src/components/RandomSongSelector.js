@@ -3,23 +3,24 @@ import './RandomSongSelector.css';
 import React, {useEffect, useRef, useState} from "react";
 import {SongsApi} from "../api/src";
 import SongPlayButton from "./SongPlayButton";
-import SongDetailsModal from "./SongDetailsModal";
 import RadioButton from "./RadioButton";
 
-const RandomSongSelector = () => {
+const RandomSongSelector = ({
+                                setSelectedSong
+                            }) => {
     const [scope, setScope] = useState("all");
     const [isSpinning, setIsSpinning] = useState(false);
     const [currentSong, setCurrentSong] = useState({});
     const [nextSong, setNextSong] = useState({});
     const [randomCount, setRandomCount] = useState(1);
 
-    const [selectedSong, setSelectedSong] = useState(null);
-
     const [error, setError] = useState(null);
 
     const coverListRef = useRef(null);
 
     const songsApi = new SongsApi();
+
+    // TODO: currently the random covers change everytime any State changes
 
     const getRandomCoverCount = () => {
         return Math.floor(Math.random() * 20) + 40;
@@ -73,11 +74,6 @@ const RandomSongSelector = () => {
         }
     };
 
-    const closeModal = () => {
-        setSelectedSong(null);
-    };
-
-    // TODO: favorites and wishlist info from parent
     return <div className={"random-song-selector" + (isSpinning ? " spinning" : "")}>
         {error && <h1>{error}</h1>}
         <div className={"slot-machine"}>
@@ -124,7 +120,6 @@ const RandomSongSelector = () => {
                 </div>
             </div>
         </div>
-        {selectedSong && <SongDetailsModal song={selectedSong} onClose={closeModal}/>}
     </div>;
 };
 

@@ -5,17 +5,32 @@ import './SongListItem.css';
 import {FaCheck} from "react-icons/fa";
 import {IoMdHeart} from "react-icons/io";
 
-function SongListItem({song, onClick, coverUrl, button, onButton}) {
+function SongListItem({
+                          song,
+                          coverUrl,
+                          onClick,
+                          button,
+                          onButton,
+                          globalWishlist,
+                          clientWishList,
+                          favoriteIds
+                      }) {
     return (
         <li key={song.id} className="song-list-item" onClick={onClick}>
             <div className="cover" style={{backgroundImage: `url('${coverUrl}')`}}>
             </div>
             <div className="details">
                 <div className="title" title={song.title}>
-                    {song.wishedCount > 0 && <span className={"wished-count"}>{`${song.wishedCount}x`}</span>}
+                    {globalWishlist?.hasOwnProperty(song.id) &&
+                        <span className={"wished-count"}>{`${globalWishlist[song.id].count}x`}</span>
+                    }
                     <span className={"text"}>{song.title}</span>
-                    {song.favorite && <IoMdHeart className={"heart"}/>}
-                    {song.wished && <FaCheck className={"mark"}/>}
+                    {favoriteIds?.includes(song.id) &&
+                        <IoMdHeart className={"heart"}/>
+                    }
+                    {song.id in clientWishList &&
+                        <FaCheck className={"mark"}/>
+                    }
                 </div>
                 <div className="artist" title={song.artist}>
                     {song.rating !== undefined && <StarRating rating={song.rating}/>}
