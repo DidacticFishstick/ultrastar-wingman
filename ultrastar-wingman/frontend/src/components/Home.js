@@ -1,7 +1,6 @@
 // Home.js
 import Tile from './Tile';
 import {FaGithub} from 'react-icons/fa';
-import 'react-toastify/dist/ReactToastify.css';
 import './Home.css';
 import Wishlist from "./Wishlist";
 import RandomSongSelector from "./RandomSongSelector";
@@ -18,10 +17,6 @@ function Home() {
     const [globalWishlist, setGlobalWishlist] = useGlobalWishlist();
     const [favoriteIds, setFavoriteIds] = useFavoriteIds();
 
-    const closeModal = () => {
-        setSelectedSong(null);
-    };
-
     return <div className="home">
         <div className="tile-container">
             <Tile className={"title"} span>
@@ -35,7 +30,6 @@ function Home() {
             </Tile>
         </div>
 
-        <h1>Currently Playing</h1>
         <CurrentlyPlayingSong
             currentlyPlayingSong={currentlyPlayingSong}
             setSelectedSong={setSelectedSong}

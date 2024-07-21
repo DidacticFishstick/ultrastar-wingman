@@ -1,5 +1,4 @@
 // CurrentlyPlayingSong.js
-import 'react-toastify/dist/ReactToastify.css';
 import './CurrentlyPlayingSong.css';
 import React from "react";
 
@@ -19,7 +18,7 @@ function CurrentlyPlayingSong({
         return <div className={"currently-playing-song"}>
             <div className={"cover"}></div>
             <label className={"title"}>No Active Song</label>
-            <label className={"artist"}></label>
+            <label className={"artist"}>Select any song and press play</label>
         </div>;
 }
 

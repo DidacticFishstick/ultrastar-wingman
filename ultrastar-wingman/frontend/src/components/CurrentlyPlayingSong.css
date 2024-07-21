@@ -6,6 +6,7 @@
     width: 100%;
     position: relative;
     box-sizing: border-box;
+    margin-top: 16px;
 }
 
 .currently-playing-song .cover {
@@ -25,17 +26,19 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    margin-top: 8px;
     text-align: center;
 }
 
 .currently-playing-song .title {
     color: var(--color);
     font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 8px;
 }
 
 .currently-playing-song .artist {
     color: var(--color-dark);
     height: 2em;
     font-size: 1em;
+    margin-top: 4px;
 }
