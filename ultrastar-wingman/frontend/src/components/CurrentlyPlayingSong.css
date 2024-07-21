@@ -3,6 +3,9 @@
     flex-direction: column;
     align-items: center;
     padding: 0 16px;
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .currently-playing-song .cover {
@@ -17,10 +20,13 @@
 
 .currently-playing-song .title,
 .currently-playing-song .artist {
+    display: block;
+    width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin-top: 8px;
+    text-align: center;
 }
 
 .currently-playing-song .title {

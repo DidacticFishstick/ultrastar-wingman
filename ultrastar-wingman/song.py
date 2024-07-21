@@ -351,7 +351,7 @@ class Song:
         logging.info("Active song has ended")
 
         async with cls.active_song_lock:
-            if song.id == cls.active_song.id:
+            if cls.active_song is not None and song.id == cls.active_song.id:
                 await ws.broadcast(ws.MessageType.active_song, {})
 
             cls.active_song = None

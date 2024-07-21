@@ -36,6 +36,7 @@ function Home() {
             </Tile>
         </div>
 
+        <h1>Currently Playing</h1>
         <CurrentlyPlayingSong
             currentlyPlayingSong={currentlyPlayingSong}
             setSelectedSong={setSelectedSong}
