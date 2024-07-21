@@ -3,7 +3,6 @@ from typing import List, Dict, Union, Tuple
 from song import Song
 
 
-# TODO: track time of first wish for each song
 class Wishlist:
     wishlists: Dict[str, 'Wishlist'] = {}
 

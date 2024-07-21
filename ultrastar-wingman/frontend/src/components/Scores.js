@@ -29,6 +29,7 @@ function Scores() {
 
     useEffect(() => {
         const fetchSessions = async () => {
+            // TODO: helpers.js
             api.apiSessionsGetApiSessionsGet((error, data, response) => {
                 if (error) {
                     console.error(error, response.text);

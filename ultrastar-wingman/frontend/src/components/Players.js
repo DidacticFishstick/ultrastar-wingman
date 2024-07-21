@@ -34,6 +34,7 @@ function Players() {
 
     useEffect(() => {
         const fetchPlayers = async () => {
+            // TODO: helpers.js
             api.apiPlayersApiPlayersGet((error, data, response) => {
                 if (error) {
                     console.error(error, response.text);

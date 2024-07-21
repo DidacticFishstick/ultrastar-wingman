@@ -12,6 +12,7 @@ const SongPlayButton = ({song, props}) => {
     const usdxApi = new UltraStarDeluxeApi();
 
     const play = (force = false) => {
+        // TODO: helpers.js
         songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {force: force}, (error, data, response) => {
             if (error) {
                 if (response.status === 409) {
@@ -36,6 +37,7 @@ const SongPlayButton = ({song, props}) => {
     const onStop = (e) => {
         if (window.confirm("Do you really wish to abort the current song?")) {
             usdxApi.apiUsdxKillApiUsdxKillPost((error, data, response) => {
+                // TODO: helpers.js
                 if (error) {
                     console.error(error, response.text);
                     alert(response.text);

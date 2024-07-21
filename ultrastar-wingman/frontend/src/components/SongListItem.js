@@ -28,7 +28,7 @@ function SongListItem({
                     {favoriteIds?.includes(song.id) &&
                         <IoMdHeart className={"heart"}/>
                     }
-                    {song.id in clientWishList &&
+                    {clientWishList?.hasOwnProperty(song.id) &&
                         <FaCheck className={"mark"}/>
                     }
                 </div>

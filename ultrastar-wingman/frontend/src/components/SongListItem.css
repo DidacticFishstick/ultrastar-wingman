@@ -28,6 +28,8 @@ ul.songs-list.carousel {
     height: 48px;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    background-color: #000;
 }
 
 .carousel .song-list-item .cover {

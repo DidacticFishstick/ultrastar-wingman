@@ -4,6 +4,8 @@ import {SongsApi, WishlistApi} from "./api/src";
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
 
+// TODO: also do ws subscription here and set states accordingly
+
 // handles errors for the api callback and only calls the given callback on success with the data
 export function apiCallback(callback) {
     return (error, data, response) => {
