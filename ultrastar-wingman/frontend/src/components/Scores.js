@@ -147,6 +147,7 @@ function Scores() {
     // create the list
     let scoresListDiv;
     switch (scoreGroups) {
+        // TODO: no groups
         case 'song':
             scoresListDiv = <div className={"grouped-songs"}>
                 {sortedData.map((song, index) => (

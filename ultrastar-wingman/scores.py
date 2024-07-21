@@ -126,7 +126,11 @@ class Session:
             ]
 
             for score in json_array:
-                score["song_id"] = Song.get_song_by_artist_and_title(score["artist"], score["title"]).id
+                song = Song.get_song_by_artist_and_title(score["artist"], score["title"])
+                if song is not None:
+                    score["song_id"] = song.id
+                else:
+                    score["song_id"] = ""
 
             return json_array
         finally:
