@@ -62,8 +62,8 @@ export function useGlobalWishlist() {
     useEffect(() => {
         wishlistApi.apiWishlistGlobalGetApiWishlistGlobalGet(apiCallback(data => {
             // convert to json with song ids as keys
-            setGlobalWishlist(data.wishes.reduce((acc, obj) => {
-                acc[obj.song.id] = obj;
+            setGlobalWishlist(data.wishes.reduce((acc, wish) => {
+                acc[wish.song.id] = wish;
                 return acc;
             }, {}));
         }));
@@ -73,15 +73,26 @@ export function useGlobalWishlist() {
 }
 
 export function useSongs() {
-    const [songs, setSongs] = useState([]);
+    const [songs, setSongs] = useState({});
 
     useEffect(() => {
         songsApi.apiSongsApiSongsGet(apiCallback(data => {
             setSongs(data.songs);
+
+            // convert to json with song ids as keys
+            setSongs(data.songs.reduce((acc, song) => {
+                acc[song.id] = song;
+                return acc;
+            }, {}));
         }));
 
         wsService.registerCallback("download_finished", song => {
-            setSongs([...songs, song]);
+            if (!(song.id in songs)) {
+                setSongs(prevState => ({
+                    ...prevState,
+                    [song.id]: song
+                }));
+            }
         });
     }, []);
 

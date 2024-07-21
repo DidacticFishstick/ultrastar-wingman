@@ -24,7 +24,7 @@ function Songs() {
     };
 
     // Filter songs based on search term
-    const filteredSongs = songs.filter(song =>
+    const filteredSongs = Object.values(songs).filter(song =>
         song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         song.artist.toLowerCase().includes(searchTerm.toLowerCase())
     );
