@@ -1,13 +1,14 @@
 import {useEffect, useState} from 'react';
-import {SongsApi, WishlistApi} from "./api/src";
+import {SongsApi, USDBApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
-import websocketService from "./websocketService";
 
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
+const usdbApi = new USDBApi();
 
+// TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
-const wsService = new WebSocketService(`ws://localhost:8080/ws`);
+const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
 
 // handles errors for the api callback and only calls the given callback on success with the data
 export function apiCallback(callback) {
@@ -17,8 +18,22 @@ export function apiCallback(callback) {
             // TODO: better error handling
             alert(response.text);
         } else {
-            callback(data);
+            if (callback !== undefined) {
+                callback(data);
+            }
         }
+    }
+}
+
+class Lock {
+    constructor() {
+        this.lock = Promise.resolve();
+    }
+
+    acquire() {
+        let unlockNext;
+        this.lock = new Promise(resolve => (unlockNext = resolve));
+        return unlockNext;
     }
 }
 
@@ -99,6 +114,166 @@ export function useSongs() {
     return [songs, setSongs];
 }
 
+export function useDownloadQueue() {
+    // USDB IDs for queued, started and finished, {id: error} for failed
+    const [downloadQueue, setDownloadQueue] = useState({
+        queued: [],
+        started: [],
+        finished: [],
+        failed: {}
+    });
+
+    const lock = new Lock();
+
+    const copyDownloadQueue = (currentQueue) => {
+        return {
+            ...currentQueue,
+            queued: [...currentQueue.queued],
+            started: [...currentQueue.started],
+            finished: [...currentQueue.finished],
+            failed: {...currentQueue.failed}
+        }
+    }
+
+    // TODO: get the current queue from some API endpoint
+
+    useEffect(() => {
+        wsService.registerCallback("download_queued", async message => {
+            const release = await lock.acquire();
+
+            try {
+                setDownloadQueue(currentQueue => {
+                    const newDownloadQueue = copyDownloadQueue(currentQueue);
+
+                    // remove from all other lists (can only be in one)
+                    if (message.usdb_id in newDownloadQueue.failed) {
+                        delete newDownloadQueue.failed[message.usdb_id];
+                    }
+
+                    // skip if already started or finished
+                    if (newDownloadQueue.started.includes(message.usdb_id)) {
+                        return newDownloadQueue;
+                    } else if (newDownloadQueue.finished.includes(message.usdb_id)) {
+                        return newDownloadQueue;
+                    }
+
+                    // add to queued
+                    if (!newDownloadQueue.queued.includes(message.usdb_id)) {
+                        newDownloadQueue.queued.push(message.usdb_id);
+                    }
+
+                    setDownloadQueue(newDownloadQueue);
+
+                    return newDownloadQueue;
+                });
+            } finally {
+                release();
+            }
+        })
+
+        wsService.registerCallback("download_started", async message => {
+            const release = await lock.acquire();
+
+            try {
+                setDownloadQueue(currentQueue => {
+                    const newDownloadQueue = copyDownloadQueue(currentQueue);
+
+                    // remove from all other lists (can only be in one)
+                    if (newDownloadQueue.queued.includes(message.usdb_id)) {
+                        newDownloadQueue.queued = newDownloadQueue.queued.filter(id => id !== message.usdb_id);
+                    } else if (message.usdb_id in newDownloadQueue.failed) {
+                        delete newDownloadQueue.failed[message.usdb_id];
+                    }
+
+                    // skip if already finished
+                    if (newDownloadQueue.finished.includes(message.usdb_id)) {
+                        return newDownloadQueue;
+                    }
+
+                    // add to started
+                    if (!newDownloadQueue.started.includes(message.usdb_id)) {
+                        newDownloadQueue.started.push(message.usdb_id);
+                    }
+
+                    setDownloadQueue(newDownloadQueue);
+
+                    return newDownloadQueue;
+                });
+            } finally {
+                release();
+            }
+        })
+
+        wsService.registerCallback("download_finished", async message => {
+            const release = await lock.acquire();
+
+            try {
+                setDownloadQueue(currentQueue => {
+                    const newDownloadQueue = copyDownloadQueue(currentQueue);
+
+                    // remove from all other lists (can only be in one)
+                    if (newDownloadQueue.started.includes(message.usdb_id)) {
+                        newDownloadQueue.started = newDownloadQueue.started.filter(id => id !== message.usdb_id);
+                    } else if (newDownloadQueue.queued.includes(message.usdb_id)) {
+                        newDownloadQueue.queued = newDownloadQueue.queued.filter(id => id !== message.usdb_id);
+                    } else if (message.usdb_id in newDownloadQueue.failed) {
+                        delete newDownloadQueue.failed[message.usdb_id];
+                    }
+
+                    // add to finished
+                    if (!newDownloadQueue.finished.includes(message.usdb_id)) {
+                        newDownloadQueue.finished.push(message.usdb_id);
+                    }
+
+                    setDownloadQueue(newDownloadQueue);
+
+                    return newDownloadQueue;
+                });
+            } finally {
+                release();
+            }
+        })
+
+        wsService.registerCallback("download_failed", async message => {
+            const release = await lock.acquire();
+
+            try {
+                setDownloadQueue(currentQueue => {
+                    const newDownloadQueue = copyDownloadQueue(currentQueue);
+
+                    // remove from all other lists (can only be in one)
+                    if (newDownloadQueue.started.includes(message.usdb_id)) {
+                        newDownloadQueue.started = newDownloadQueue.started.filter(id => id !== message.usdb_id);
+                    } else if (newDownloadQueue.queued.includes(message.usdb_id)) {
+                        newDownloadQueue.queued = newDownloadQueue.queued.filter(id => id !== message.usdb_id);
+                    }
+
+                    // skip if already finished
+                    if (newDownloadQueue.finished.includes(message.usdb_id)) {
+                        return newDownloadQueue;
+                    }
+
+                    // add to failed
+                    if (!(message.usdb_id in newDownloadQueue.failed)) {
+                        newDownloadQueue.failed[message.usdb_id] = message.error;
+                    }
+
+                    setDownloadQueue(newDownloadQueue);
+
+                    // TODO: show some error;
+                    console.warn(`USDB download failed (${message.usdb_id}):`, message.error);
+
+                    return newDownloadQueue;
+                });
+            } finally {
+                release();
+            }
+        })
+    }, []);
+
+    return [downloadQueue, setDownloadQueue]
+}
+
 // endregion
 
 export function addFavorite(favoriteIds, setFavoriteIds, id) {
@@ -165,4 +340,8 @@ export function removeWish(clientWishlist, setClientWishlist, globalWishlist, se
             setClientWishlist(newState);
         }
     }));
+}
+
+export function downloadFromUsdb(usdbId) {
+    usdbApi.apiUsdbDownloadApiUsdbDownloadPost(JSON.stringify({id: usdbId}), apiCallback());
 }

@@ -7,10 +7,12 @@
     --color-dark: #ccc;
     --color-darker: #888;
     --color-darkerer: #666;
-    --highlight-pink-light: #9e3b95;
-    --highlight-pink-dark: #6d2d90;
     --highlight-blue-light: #4b92cd;
     --highlight-blue-dark: #1c354a;
+    --highlight-pink-light: #9e3b95;
+    --highlight-pink-dark: #6d2d90;
+    --highlight-red-light: #a50126;
+    --highlight-red-dark: #71182c;
     --border-radius: 16px;
     --border-radius-small: 8px;
     --input-border-color: #384a59;

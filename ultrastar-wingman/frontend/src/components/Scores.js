@@ -115,7 +115,6 @@ function Scores() {
                 if (a.averageScore > b.averageScore) return -1;
                 return 0;
             });
-            console.log("avg-score!");
             break;
         case 'best-score':
             sortedData = groupedDataList.sort((a, b) => {
@@ -123,7 +122,6 @@ function Scores() {
                 if (a.bestScore > b.bestScore) return -1;
                 return 0;
             });
-            console.log("best-score!");
             break;
         case 'worst-score':
             sortedData = groupedDataList.sort((a, b) => {
@@ -131,7 +129,6 @@ function Scores() {
                 if (a.worstScore > b.worstScore) return 1;
                 return 0;
             });
-            console.log("worst-score!");
             break;
         case 'alphabetically':
         default:
@@ -144,7 +141,6 @@ function Scores() {
                 if (a.title.toLowerCase() > b.title.toLowerCase()) return 1;
                 return 0;
             });
-            console.log("alphabetically!");
             break;
     }
 

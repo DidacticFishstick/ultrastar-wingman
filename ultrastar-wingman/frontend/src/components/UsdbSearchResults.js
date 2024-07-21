@@ -4,23 +4,31 @@ import SongListItem from "./SongListItem";
 import {HiDownload} from "react-icons/hi";
 import {PulseLoader} from "react-spinners";
 import {FaCheck} from "react-icons/fa";
-import {USDBApi} from "../api/src";
 import './UsdbSearchResults.css';
+import {downloadFromUsdb, useDownloadQueue} from "../helpers";
+import {MdError} from "react-icons/md";
+import {IoTimerOutline} from "react-icons/io5";
 
 const UsdbSearchResults = ({songs}) => {
-    const api = new USDBApi();
+    const [downloadQueue, setDownloadQueue] = useDownloadQueue();
 
-    // TODO: set button to downloaded triggered by ws
+    console.log(downloadQueue);
+    console.log("4531" in downloadQueue)
 
-    const download = async (song, button) => {
-        // TODO: helpers.json
-        api.apiUsdbDownloadApiUsdbDownloadPost(JSON.stringify({id: song.id}), (error, data, response) => {
-            if (error) {
-                console.error(error, response.text);
-                button.removeClass("downloading");
-            }
-        });
-    };
+    const getButton = (song) => {
+        if (song.downloaded || downloadQueue.finished.includes(song.id)) return <FaCheck className={"finished"}/>;
+        if (song.id in downloadQueue.failed) return <MdError className={"failed"}/>;
+        if (downloadQueue.started.includes(song.id)) return <PulseLoader
+            className={"started"}
+            color="var(--highlight-blue-light)"
+            size={9}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+        />;
+
+        if (downloadQueue.queued.includes(song.id)) return <IoTimerOutline className={"queued"}/>;
+        return <HiDownload className={"download-button"}/>;
+    }
 
     return (
         <ul className={"songs-list usdb-list"}>
@@ -29,29 +37,19 @@ const UsdbSearchResults = ({songs}) => {
                 <SongListItem
                     song={song}
                     coverUrl={`https://usdb.animux.de/data/cover/${song.id}.jpg`}
-                    button={
-                        <div>
-                            <span className={"usdb-state download-button"}>
-                                <HiDownload/>
-                            </span>
-                            <span className={"usdb-state downloading-button"}>
-                                <PulseLoader
-                                    color="var(--highlight-blue-light)"
-                                    size={9}
-                                    aria-label="Loading Spinner"
-                                    data-testid="loader"
-                                />
-                            </span>
-                            <span className={"usdb-state downloaded-button"}>
-                                <FaCheck/>
-                            </span>
-                        </div>
-                    }
+                    button={getButton(song)}
                     onButton={(e) => {
-                        if (e.currentTarget.classList.contains("downloading") || e.currentTarget.classList.contains("downloaded")) return;
-
-                        e.currentTarget.classList.add("downloading");
-                        download(song, e.currentTarget);
+                        if (song.downloaded || downloadQueue.finished.includes(song.id)) {
+                        } else if (song.id in downloadQueue.failed) {
+                            // TODO: custom modal
+                            if (window.confirm(`FAILED TO DOWNLOAD - TRY AGAIN?\n--------------------------------\n${downloadQueue.failed[song.id]}\n--------------------------------\nFAILED TO DOWNLOAD - TRY AGAIN?`)) {
+                                downloadFromUsdb(song.id)
+                            }
+                        } else if (downloadQueue.started.includes(song.id)) {
+                        } else if (downloadQueue.queued.includes(song.id)) {
+                        } else {
+                            downloadFromUsdb(song.id)
+                        }
                     }}
                 />
             ))}
