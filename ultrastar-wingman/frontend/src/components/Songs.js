@@ -23,8 +23,16 @@ function Songs() {
         setSelectedSong(song);
     };
 
+    const sortedSongs = Object.values(songs).sort((a, b) => {
+        if (a.artist.toLowerCase() < b.artist.toLowerCase()) return -1;
+        if (a.artist.toLowerCase() > b.artist.toLowerCase()) return 1;
+        if (a.title.toLowerCase() < b.title.toLowerCase()) return -1;
+        if (a.title.toLowerCase() > b.title.toLowerCase()) return 1;
+        return 0;
+    });
+
     // Filter songs based on search term
-    const filteredSongs = Object.values(songs).filter(song =>
+    const filteredSongs = sortedSongs.filter(song =>
         song.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         song.artist.toLowerCase().includes(searchTerm.toLowerCase())
     );
