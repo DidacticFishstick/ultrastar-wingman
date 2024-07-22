@@ -8,10 +8,12 @@ import React, {useState} from "react";
 import SongDetailsModal from "./SongDetailsModal";
 import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useGlobalWishlist} from "../helpers";
 import CurrentlyPlayingSong from "./CurrentlyPlayingSong";
+import PlayerSelection from "./PlayerSelection";
 
 function Home() {
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useCurrentlyPlayingSong();
     const [selectedSong, setSelectedSong] = useState(null);
+    const [playerSelectionSong, setPlayerSelectionSong] = useState(null);
 
     const [clientWishlist, setClientWishlist] = useClientWishlist();
     const [globalWishlist, setGlobalWishlist] = useGlobalWishlist();
@@ -37,6 +39,7 @@ function Home() {
 
         <Wishlist
             setSelectedSong={setSelectedSong}
+            setPlayerSelectionSong={setPlayerSelectionSong}
             currentlyPlayingSong={currentlyPlayingSong}
             clientWishlist={clientWishlist}
             globalWishlist={globalWishlist}
@@ -46,14 +49,16 @@ function Home() {
         <h2>Random Song Selector</h2>
         <RandomSongSelector
             setSelectedSong={setSelectedSong}
+            setPlayerSelectionSong={setPlayerSelectionSong}
             currentlyPlayingSong={currentlyPlayingSong}
             globalWishlist={globalWishlist}
         />
 
-        {selectedSong &&
+        {selectedSong && !playerSelectionSong &&
             <SongDetailsModal
                 song={selectedSong}
                 onClose={() => setSelectedSong(null)}
+                setPlayerSelectionSong={setPlayerSelectionSong}
                 currentlyPlayingSong={currentlyPlayingSong}
                 clientWishlist={clientWishlist}
                 setClientWishlist={setClientWishlist}
@@ -61,6 +66,13 @@ function Home() {
                 setGlobalWishlist={setGlobalWishlist}
                 favoriteIds={favoriteIds}
                 setFavoriteIds={setFavoriteIds}
+            />
+        }
+
+        {playerSelectionSong &&
+            <PlayerSelection
+                song={playerSelectionSong}
+                onClose={() => setPlayerSelectionSong(false)}
             />
         }
     </div>;

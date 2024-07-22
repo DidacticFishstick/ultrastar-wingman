@@ -21,6 +21,8 @@ import Paging from './model/Paging';
 import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
 import PlayerList from './model/PlayerList';
+import PlayersModel from './model/PlayersModel';
+import RegisteredPlayerModel from './model/RegisteredPlayerModel';
 import Score from './model/Score';
 import ScoresModel from './model/ScoresModel';
 import SessionModel from './model/SessionModel';
@@ -31,6 +33,7 @@ import SongsResponse from './model/SongsResponse';
 import USDBSong from './model/USDBSong';
 import USDBSongsResponse from './model/USDBSongsResponse';
 import UdEnum from './model/UdEnum';
+import UnregisteredPlayerModel from './model/UnregisteredPlayerModel';
 import UsdbId from './model/UsdbId';
 import UsdbIdsList from './model/UsdbIdsList';
 import ValidationError from './model/ValidationError';
@@ -41,7 +44,6 @@ import ScoresApi from './api/ScoresApi';
 import SongsApi from './api/SongsApi';
 import USDBApi from './api/USDBApi';
 import UltraStarDeluxeApi from './api/UltraStarDeluxeApi';
-import WebsiteApi from './api/WebsiteApi';
 import WishlistApi from './api/WishlistApi';
 
 
@@ -132,6 +134,18 @@ export {
     PlayerList,
 
     /**
+     * The PlayersModel model constructor.
+     * @property {module:model/PlayersModel}
+     */
+    PlayersModel,
+
+    /**
+     * The RegisteredPlayerModel model constructor.
+     * @property {module:model/RegisteredPlayerModel}
+     */
+    RegisteredPlayerModel,
+
+    /**
      * The Score model constructor.
      * @property {module:model/Score}
      */
@@ -192,6 +206,12 @@ export {
     UdEnum,
 
     /**
+     * The UnregisteredPlayerModel model constructor.
+     * @property {module:model/UnregisteredPlayerModel}
+     */
+    UnregisteredPlayerModel,
+
+    /**
      * The UsdbId model constructor.
      * @property {module:model/UsdbId}
      */
@@ -250,12 +270,6 @@ export {
     * @property {module:api/UltraStarDeluxeApi}
     */
     UltraStarDeluxeApi,
-
-    /**
-    * The WebsiteApi service constructor.
-    * @property {module:api/WebsiteApi}
-    */
-    WebsiteApi,
 
     /**
     * The WishlistApi service constructor.

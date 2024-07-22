@@ -1,17 +1,13 @@
-import json
 import os
 import asyncio
 import logging
 import os.path
-import time
 from contextlib import asynccontextmanager
 
 import uvicorn
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse, FileResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+from fastapi.responses import FileResponse
 
 import config
 import models
@@ -60,15 +56,6 @@ async def api_usdb_ids():
     }
 
     return openapi
-
-
-# TODO: remove?
-@app.get('/avatars/{avatar}', tags=["Website"])
-async def avatar(avatar):
-    try:
-        return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", f"cat_{avatar}"))
-    except FileNotFoundError:
-        return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
 
 
 @app.post('/api/usdx/start', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Starts UltraStar Deluxe without any parameters")
@@ -241,7 +228,7 @@ async def api_sing_song(song_id, sing_model: models.SingModel):
     if song is None:
         raise HTTPException(status_code=404, detail="Song not found")
 
-    if await song.sing(force=sing_model.force):
+    if await song.sing(sing_model.players, force=sing_model.force):
         return {"success": True}
     else:
         raise HTTPException(status_code=409, detail="Another song is already playing")
@@ -253,11 +240,22 @@ async def api_players():
     Retrieves a list of all unique player names and the available colors.
     """
 
+    # TODO: actual implementation
+
     try:
-        with open(config.players_file, 'r') as file:
+        with open(config.players_file, 'r', encoding="utf-8") as file:
             names = file.read().splitlines()
+        import random
         return {
-            "players": sorted(set(names)),
+            "players": {
+                "registered": [{
+                    "id": "TODO_ID",
+                    "name": name
+                } for i, name in enumerate(names) if i % 2 == 0],
+                "unregistered": [{
+                    "name": name
+                } for i, name in enumerate(names) if i % 2 == 1]
+            },
             "colors": config.setup_colors
         }
     except FileNotFoundError:
@@ -278,9 +276,11 @@ async def api_players_add(player_data: models.PlayerCreation):
     If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
     """
 
+    # TODO: player class for handling
+
     logging.info(f"Adding player '{player_data.name}'")
     try:
-        with open(config.players_file, 'a') as file:
+        with open(config.players_file, 'a', encoding="utf-8") as file:
             file.write(player_data.name + '\n')
         return {"success": True}
     except IOError as e:
@@ -298,6 +298,8 @@ async def api_players_delete(name: str = Query(..., description="The name of the
     If the operation is successful, it returns a success message.
     """
 
+    # TODO: player class for handling
+
     logging.info(f"Deleting player '{name}'")
     try:
         with open(config.players_file, 'r') as file:
@@ -314,22 +316,30 @@ async def api_players_delete(name: str = Query(..., description="The name of the
     return {"success": True}
 
 
-@app.post('/api/players/submit', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Submit Player Names", response_description="Confirmation of successful name submission", tags=["Players"])
-async def api_players_submit(submit_request: models.PlayerList):
+@app.get('/api/players/avatars/default/{color}', tags=["Players"])
+async def api_get_default_avatar(color):
     """
-    Submits a list of player names.
+    The default avatars (cat pictures)
 
-    - **names**: A list of names to be submitted.
-
-    Accepts a list of names in the request body and submits them.
+    :param color: The color
     """
 
     try:
-        usdx.enter_names(submit_request.players)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to submit names") from e
+        return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", f"cat_{color}.jpg"))
+    except FileNotFoundError:
+        return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
 
-    return {"success": True}
+
+@app.get('/api/players/registered/{player}/avatar', tags=["Players"])
+async def api_get_player_avatar(player):
+    """
+    The avatar for the given player
+
+    :param player: The player name
+    """
+
+    # Use logo as default avatar
+    return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/public/logo.png"))
 
 
 @app.get('/api/sessions', response_model=models.SessionsListModel, status_code=status.HTTP_200_OK, summary="Get all sessions", response_description="The sessions", tags=["Scores"])

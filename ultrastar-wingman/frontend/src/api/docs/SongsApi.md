@@ -5,7 +5,7 @@ All URIs are relative to *http://localhost*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**apiCoverApiSongsSongIdCoverGet**](SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
-[**apiGetSongByIdApiSongsSongIdGet**](SongsApi.md#apiGetSongByIdApiSongsSongIdGet) | **GET** /api/songs/{song_id} | Retrieve the song with the given id. Use id &#39;random&#39; for a random song.
+[**apiGetSongByIdApiSongsSongIdGet**](SongsApi.md#apiGetSongByIdApiSongsSongIdGet) | **GET** /api/songs/{song_id} | Retrieve the song with the given id. Use id &#39;random&#39; for a random song or &#39;current&#39; for the currently playing song.
 [**apiMp3ApiSongsSongIdMp3Get**](SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 [**apiSingSongApiSongsSongIdSingPost**](SongsApi.md#apiSingSongApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 [**apiSongsApiSongsGet**](SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
@@ -59,7 +59,7 @@ No authorization required
 
 > Song apiGetSongByIdApiSongsSongIdGet(songId)
 
-Retrieve the song with the given id. Use id &#39;random&#39; for a random song.
+Retrieve the song with the given id. Use id &#39;random&#39; for a random song or &#39;current&#39; for the currently playing song.
 
 ### Example
 

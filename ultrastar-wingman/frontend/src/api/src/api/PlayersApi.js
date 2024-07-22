@@ -39,6 +39,92 @@ export default class PlayersApi {
 
 
     /**
+     * Callback function to receive the result of the apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet operation.
+     * @callback module:api/PlayersApi~apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGetCallback
+     * @param {String} error Error message, if any.
+     * @param {Object} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Api Get Default Avatar
+     * The default avatars (cat pictures)  :param color: The color
+     * @param {Object} color 
+     * @param {module:api/PlayersApi~apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Object}
+     */
+    apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet(color, callback) {
+      let postBody = null;
+      // verify the required parameter 'color' is set
+      if (color === undefined || color === null) {
+        throw new Error("Missing the required parameter 'color' when calling apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet");
+      }
+
+      let pathParams = {
+        'color': color
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Object;
+      return this.apiClient.callApi(
+        '/api/players/avatars/default/{color}', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet operation.
+     * @callback module:api/PlayersApi~apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGetCallback
+     * @param {String} error Error message, if any.
+     * @param {Object} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Api Get Player Avatar
+     * The avatar for the given player  :param player: The player name
+     * @param {Object} player 
+     * @param {module:api/PlayersApi~apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link Object}
+     */
+    apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet(player, callback) {
+      let postBody = null;
+      // verify the required parameter 'player' is set
+      if (player === undefined || player === null) {
+        throw new Error("Missing the required parameter 'player' when calling apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet");
+      }
+
+      let pathParams = {
+        'player': player
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = Object;
+      return this.apiClient.callApi(
+        '/api/players/registered/{player}/avatar', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
      * Callback function to receive the result of the apiPlayersAddApiPlayersPost operation.
      * @callback module:api/PlayersApi~apiPlayersAddApiPlayersPostCallback
      * @param {String} error Error message, if any.
@@ -155,48 +241,6 @@ export default class PlayersApi {
       let returnType = BasicResponse;
       return this.apiClient.callApi(
         '/api/players', 'DELETE',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the apiPlayersSubmitApiPlayersSubmitPost operation.
-     * @callback module:api/PlayersApi~apiPlayersSubmitApiPlayersSubmitPostCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/BasicResponse} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Submit Player Names
-     * Submits a list of player names.  - **names**: A list of names to be submitted.  Accepts a list of names in the request body and submits them.
-     * @param {module:model/PlayerList} playerList 
-     * @param {module:api/PlayersApi~apiPlayersSubmitApiPlayersSubmitPostCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/BasicResponse}
-     */
-    apiPlayersSubmitApiPlayersSubmitPost(playerList, callback) {
-      let postBody = playerList;
-      // verify the required parameter 'playerList' is set
-      if (playerList === undefined || playerList === null) {
-        throw new Error("Missing the required parameter 'playerList' when calling apiPlayersSubmitApiPlayersSubmitPost");
-      }
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = ['application/json'];
-      let accepts = ['application/json'];
-      let returnType = BasicResponse;
-      return this.apiClient.callApi(
-        '/api/players/submit', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

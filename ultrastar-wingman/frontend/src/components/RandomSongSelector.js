@@ -8,6 +8,7 @@ import {getRandomSong} from "../helpers";
 const RandomSongSelector = ({
                                 currentlyPlayingSong,
                                 setSelectedSong,
+                                setPlayerSelectionSong,
                                 globalWishlist
                             }) => {
     const [scope, setScope] = useState("all");
@@ -118,7 +119,7 @@ const RandomSongSelector = ({
                     <label className={"artist"}>{(currentSong.artist !== undefined) ? currentSong.artist : "Ultrastar Wingman"}</label>
                 </div>
                 {currentSong.id !== undefined && <div className={"song-controls"}>
-                    <SongPlayButton song={currentSong} currentlyPlayingSong={currentlyPlayingSong}/>
+                    <SongPlayButton song={currentSong} setPlayerSelectionSong={setPlayerSelectionSong} currentlyPlayingSong={currentlyPlayingSong}/>
                 </div>}
             </div>
             <div className={"cover"}>

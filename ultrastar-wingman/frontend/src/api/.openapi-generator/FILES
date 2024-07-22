@@ -11,6 +11,8 @@ docs/PlayerConfig.md
 docs/PlayerCreation.md
 docs/PlayerList.md
 docs/PlayersApi.md
+docs/PlayersModel.md
+docs/RegisteredPlayerModel.md
 docs/Score.md
 docs/ScoresApi.md
 docs/ScoresModel.md
@@ -25,10 +27,10 @@ docs/USDBSong.md
 docs/USDBSongsResponse.md
 docs/UdEnum.md
 docs/UltraStarDeluxeApi.md
+docs/UnregisteredPlayerModel.md
 docs/UsdbId.md
 docs/UsdbIdsList.md
 docs/ValidationError.md
-docs/WebsiteApi.md
 docs/WishModel.md
 docs/WishlistApi.md
 docs/WishlistModel.md
@@ -41,7 +43,6 @@ src/api/ScoresApi.js
 src/api/SongsApi.js
 src/api/USDBApi.js
 src/api/UltraStarDeluxeApi.js
-src/api/WebsiteApi.js
 src/api/WishlistApi.js
 src/index.js
 src/model/AddToWishListModel.js
@@ -52,6 +53,8 @@ src/model/Paging.js
 src/model/PlayerConfig.js
 src/model/PlayerCreation.js
 src/model/PlayerList.js
+src/model/PlayersModel.js
+src/model/RegisteredPlayerModel.js
 src/model/Score.js
 src/model/ScoresModel.js
 src/model/SessionModel.js
@@ -62,6 +65,7 @@ src/model/SongsResponse.js
 src/model/USDBSong.js
 src/model/USDBSongsResponse.js
 src/model/UdEnum.js
+src/model/UnregisteredPlayerModel.js
 src/model/UsdbId.js
 src/model/UsdbIdsList.js
 src/model/ValidationError.js

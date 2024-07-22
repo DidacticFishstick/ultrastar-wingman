@@ -5,7 +5,7 @@ import Home from './components/Home';
 import Songs from './components/Songs';
 import UsdbList from './components/UsdbList';
 import Usdb from "./components/Usdb";
-import Players from "./components/Players";
+import Players from "./components/PlayerSelection";
 import Scores from "./components/Scores";
 import './App.css';
 
@@ -22,7 +22,6 @@ function App() {
                     <Route path="/songs" element={<Songs/>}/>
                     <Route path="/usdbList" element={<UsdbList/>}/>
                     <Route path="/usdb" element={<Usdb/>}/>
-                    <Route path="/players" element={<Players/>}/>
                     <Route path="/scores" element={<Scores/>}/>
                 </Routes>
                 <BottomNav/>

@@ -12,6 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
+import PlayersModel from './PlayersModel';
 
 /**
  * The PlayerConfig model module.
@@ -51,7 +52,7 @@ class PlayerConfig {
                 obj['colors'] = ApiClient.convertToType(data['colors'], ['String']);
             }
             if (data.hasOwnProperty('players')) {
-                obj['players'] = ApiClient.convertToType(data['players'], ['String']);
+                obj['players'] = ApiClient.convertToType(data['players'], PlayersModel);
             }
         }
         return obj;
@@ -67,9 +68,9 @@ class PlayerConfig {
         if (!Array.isArray(data['colors'])) {
             throw new Error("Expected the field `colors` to be an array in the JSON data but got " + data['colors']);
         }
-        // ensure the json data is an array
-        if (!Array.isArray(data['players'])) {
-            throw new Error("Expected the field `players` to be an array in the JSON data but got " + data['players']);
+        // validate the optional field `players`
+        if (data['players']) { // data not null
+          PlayersModel.validateJSON(data['players']);
         }
 
         return true;
@@ -87,8 +88,8 @@ class PlayerConfig {
 PlayerConfig.prototype['colors'] = undefined;
 
 /**
- * List of player names.
- * @member {Array.<String>} players
+ * All available players
+ * @member {module:model/PlayersModel} players
  */
 PlayerConfig.prototype['players'] = undefined;
 

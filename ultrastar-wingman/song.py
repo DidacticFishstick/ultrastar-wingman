@@ -352,12 +352,13 @@ class Song:
                 await ws.broadcast(ws.MessageType.active_song, {})
 
     @classmethod
-    async def _sing_song(cls, song: 'Song', force=False) -> bool:
+    async def _sing_song(cls, song: 'Song', players, force=False) -> bool:
         """
         Starts a new ultrastar deluxe process with the given song.
         If another song is currently active, the new song will not be started.
 
         :param song: The song to start
+        :param players: The list of player names
         :param force: If set to True, any currently playing song will be canceled
         :return: True if the given song was started, False otherwise
         """
@@ -368,7 +369,8 @@ class Song:
                 logging.info(f"Not starting song as another one is already active")
                 return False
 
-            logging.info(f"Starting song {song}")
+            # TODO: write the player names to the config
+            logging.info(f"Starting song {song} for {', '.join(players)}")
 
             await usdx.start(
                 song=song,
@@ -461,12 +463,13 @@ class Song:
         with open(os.path.join(self.directory, "wingman.json"), 'w') as file:
             json.dump(data, file, indent=4)
 
-    async def sing(self, force=False) -> bool:
+    async def sing(self, players: List[str], force=False) -> bool:
         """
         Starts ultrastar deluxe with the song selected
 
+        :param players: The list of player names
         :param force: If set to True, any currently playing song will be canceled
         :return: True if the given song was started, False otherwise
         """
 
-        return await self._sing_song(self, force=force)
+        return await self._sing_song(self, players, force=force)

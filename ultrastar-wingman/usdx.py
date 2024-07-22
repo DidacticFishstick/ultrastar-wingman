@@ -6,8 +6,7 @@ import hashlib
 import shutil
 import sys
 import threading
-from sys import platform
-from typing import List, Optional
+from typing import Optional
 
 import pyautogui
 import keyboard
@@ -145,35 +144,6 @@ def replace_in_config(file_path, replace):
 
     with open(file_path, "w") as file:
         file.write(content)
-
-
-_enter_names_lock = threading.Lock()
-
-
-def enter_names(players):
-    with _enter_names_lock:
-        logging.info("Entering player names")
-
-        max_len_to_delete = max(*list(len(p) for p in players), 10)
-
-        # set number of players
-        pyautogui.press('left', presses=6)
-        pyautogui.press('right', presses=len(players) - 1)
-
-        pyautogui.press('down')
-
-        for player in players:
-            pyautogui.press('down', presses=2)
-
-            for i in range(max_len_to_delete):
-                keyboard.press_and_release('backspace')
-            # pyautogui.press('backspace', presses=max_len_to_delete)
-            pyautogui.write(player)
-
-            pyautogui.press('up', presses=2)
-            pyautogui.press('right')
-
-        pyautogui.press('up')
 
 
 def change_config(colors):

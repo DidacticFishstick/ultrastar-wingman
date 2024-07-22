@@ -19,13 +19,13 @@ function BottomNav() {
                     <FaMusic/>
                     <span>Songs</span>
                 </NavLink>
-                <NavLink to="/players" className={getActiveClass}>
-                    <FaUser/>
-                    <span>Players</span>
-                </NavLink>
                 <NavLink to="/scores" className={getActiveClass}>
                     <BiSolidBarChartAlt2/>
                     <span>Scores</span>
+                </NavLink>
+                <NavLink to="/users" className={getActiveClass}>
+                    <FaUser/>
+                    <span>User</span>
                 </NavLink>
             </div>
         </div>

@@ -1,0 +1,211 @@
+.player-selection {
+    display: grid;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100dvh - env(safe-area-inset-bottom));
+    padding: 16px;
+    box-sizing: border-box;
+    /*TODO: next to each other in landscape*/
+    grid-template-rows: auto auto 1fr auto;
+    gap: 16px
+}
+
+/*region header*/
+
+.player-selection .header {
+    grid-column: 1/-1;
+    width: 100%;
+    display: grid;
+    font-size: 0.8rem;
+}
+
+.player-selection .header h1 {
+    margin: 0;
+}
+
+.player-selection .header h2 {
+    margin-top: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    color: var(--color-dark);
+}
+
+/*endregion*/
+/*region selected-players*/
+
+.player-selection .selected-players {
+    display: flex;
+    gap: 8px;
+    flex-direction: column;
+}
+
+.player-selection .selected-players > div {
+    background: var(--highlight-blue-dark);
+    /*TODO: some max height stuff*/
+    background: var(--input-bg);
+    height: 48px;
+    border-bottom: 2px solid transparent;
+    background: rgba(18, 22, 27, 0.2); /* Milky glass effect */
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    padding-left: 56px;
+    padding-right: 8px;
+    position: relative;
+    background-position: left;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.player-selection .selected-players > div:before {
+    /*make the background a little less saturated*/
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: #0003;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.player-selection .selected-players .placeholder,
+.player-selection .selected-players .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.player-selection .selected-players .placeholder {
+    color: var(--color-darker);
+}
+
+.player-selection .selected-players .player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.player-selection .selected-players .name {
+    color: var(--color);
+}
+
+.player-selection .selected-players .avatar {
+    opacity: 0.33;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 48px;
+    height: 48px;
+    background-image: url("../../public/logo.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #000;
+}
+
+.player-selection .selected-players .occupied .avatar {
+    opacity: 1;
+}
+
+.player-selection .selected-players .remove {
+    padding: 4px;
+    color: var(--highlight-pink-light);
+    cursor: pointer;
+}
+
+/*endregion*/
+/*region all-players*/
+
+.player-selection .player-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px;
+}
+
+.player-selection .player-list .player {
+    display: flex;
+    background: var(--highlight-blue-dark);
+    color: var(--color);
+    height: 40px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.player-selection .player-list .player.selected {
+    cursor: pointer;
+    outline: 2px dashed var(--highlight-blue-light);
+    outline-offset: -2px;
+    background-color: var(--highlight-blue-dark);
+}
+
+.player-selection .player-list .player .avatar {
+    width: 40px;
+    height: 40px;
+    background-image: url("../../public/logo.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: #000;
+    cursor: inherit;
+    flex-shrink: 0;
+}
+
+.player-selection .player-list .player.selected .avatar {
+    opacity: 0.5;
+}
+
+.player-selection .player-list .player .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+    cursor: inherit;
+    padding: 0 8px;
+}
+
+.player-selection .player-list .player.selected .name {
+    color: var(--color-darker);
+}
+
+/*endregion*/
+/*region controls*/
+
+.player-selection .controls {
+    display: flex;
+    width: 100%;
+    gap: 8px;
+    grid-column: 1/-1;
+}
+
+.player-selection .controls span {
+    display: block;
+    background: var(--input-bg);
+    border: 1px solid var(--color-darker);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--color-dark);
+    padding: 8px 0;
+    font-weight: bold;
+    flex: 1;
+    text-align: center;
+    cursor: pointer;
+}
+
+.player-selection .controls span.play {
+    background: var(--highlight-blue-dark);
+    border-color: var(--highlight-blue-light);
+    color: var(--highlight-blue-light);
+}
+
+/*endregion*/
