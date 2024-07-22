@@ -270,6 +270,7 @@ function Scores() {
                         return <option value={session.id}>{(new Date(session.start_time * 1000)).toISOString().substring(0, 10)}</option>
                     })}
                 </select>
+                <MdExpandMore className={"expand"}/>
             </h1>
 
             {loading && <Spinner/>}

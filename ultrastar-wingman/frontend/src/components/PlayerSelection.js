@@ -4,7 +4,7 @@ import './Input.css';
 import './PlayerSelection.css';
 import {playSong, usePlayerSettings} from "../helpers";
 import FullScreenModal from "./FullScreenModal";
-import {IoMdRemoveCircleOutline} from "react-icons/io";
+import {IoIosCloseCircleOutline} from "react-icons/io";
 
 function PlayerSelection({
                              song,
@@ -44,9 +44,20 @@ function PlayerSelection({
     players.sort((a, b) => a.name.localeCompare(b.name));
 
     const selectPlayer = player => {
-        const freeIndex = selectedPlayers.findIndex(s => s === null);
+        // get free index
         const newArray = [...selectedPlayers];
+        const freeIndex = selectedPlayers.findIndex(s => s === null);
         newArray[freeIndex] = player;
+        setSelectedPlayers(newArray);
+    };
+
+    const selectPlayerAtIndex = (name, index) => {
+        if (selectedPlayers[index]?.name === name) {
+            return;
+        }
+
+        const newArray = selectedPlayers.map(p => (p?.name === name ? null : p));
+        newArray[index] = players.find(p => p.name === name);
         setSelectedPlayers(newArray);
     };
 
@@ -86,16 +97,6 @@ function PlayerSelection({
         }
     };
 
-    const createSelectedPlayerDiv = player => {
-        return <div className={"player"}>
-            {player.id &&
-                <span className={"avatar"} style={{backgroundImage: `url('/api/players/registered/${player.id}/avatar')`}}></span>
-            }
-            <label className={"name"}>{player.name}</label>
-            <IoMdRemoveCircleOutline className={"remove"} onClick={() => unSelectPlayer(player)}/>
-        </div>;
-    };
-
     const start = () => {
         const playerNames = selectedPlayers.reduce((acc, item) => {
             acc[item?.name] = acc[item?.name] || [];
@@ -114,25 +115,38 @@ function PlayerSelection({
                 <h2>{song.title}</h2>
             </div>
             <div className={"selected-players"}>
-                {playerSetting.colors.map((color, index) => (
-                    <div className={(selectedPlayers[index] ? "occupied" : "")} style={{
+                {playerSetting.colors.map((color, index) => {
+                    const constIndex = index;
+                    return <div className={(selectedPlayers[index] ? "occupied" : "")} style={{
                         borderColor: colorMap[color] + "AA",
-                        backgroundColor: colorMap[color] + "22",
+                        backgroundColor: colorMap[color] + "28",
                     }}>
                         <span className={"avatar"} style={{backgroundImage: `url('/api/players/avatars/default/${color}')`}}></span>
-                        {!selectedPlayers[index] &&
-                            <label className={"placeholder"}>{`Player ${index + 1}`}</label>
-                        }
-                        {selectedPlayers[index] &&
-                            createSelectedPlayerDiv(selectedPlayers[index], true)
-                        }
+
+                        <div className={"player"}>
+                            {selectedPlayers[index]?.id &&
+                                <span className={"avatar"} style={{backgroundImage: `url('/api/players/registered/${selectedPlayers[index].id}/avatar')`}}></span>
+                            }
+                            {/*<label className={"name"}>{player.name}</label>*/}
+                            <select className={"name"} value={selectedPlayers[index]?.name || "unset"} onChange={(e) => selectPlayerAtIndex(e.target.value, constIndex)}>
+                                <option key={-1} disabled={true} value={"unset"}>{`Player ${index + 1}`}</option>
+                                {players.map((p, index) => (
+                                    <option key={index} value={p.name}>
+                                        {p.name}
+                                    </option>
+                                ))}
+                            </select>
+                            {selectedPlayers[index] &&
+                                <IoIosCloseCircleOutline className={"remove"} onClick={() => unSelectPlayer(selectedPlayers[constIndex])}/>
+                            }
+                        </div>
                     </div>
-                ))}
+                })}
             </div>
             <div className={"all-players"}>
                 <div className={"player-list"}>
                     {players.map((player, index) => (
-                        createPlayerDiv(player, false)
+                        createPlayerDiv(player)
                     ))}
                 </div>
             </div>

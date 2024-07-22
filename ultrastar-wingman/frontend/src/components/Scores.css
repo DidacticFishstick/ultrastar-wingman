@@ -5,11 +5,22 @@
     outline: none;
     font: inherit;
     cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 32px;
 }
 
 .scores-page h1 option {
     background: var(--input-bg);
     cursor: pointer;
+}
+
+.scores-page h1 .expand {
+    pointer-events: none;
+    font-size: 1.5em;
+    transform: translateY(0.275em);
+    margin-left: -32px;
 }
 
 .scores-page .grouped-songs {
