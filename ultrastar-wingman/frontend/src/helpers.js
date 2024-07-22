@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
-import {SongsApi, UltraStarDeluxeApi, USDBApi, WishlistApi} from "./api/src";
+import {PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
 const usdbApi = new USDBApi();
 const usdxApi = new UltraStarDeluxeApi();
+const playersApi = new PlayersApi();
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
@@ -321,7 +322,25 @@ export function useDownloadQueue() {
         })
     }, []);
 
-    return [downloadQueue, setDownloadQueue]
+    return [downloadQueue, setDownloadQueue];
+}
+
+export function usePlayerSettings() {
+    const [playerSetting, setPlayerSettings] = useState({
+        players: {
+            registered: [],
+            unregistered: []
+        },
+        colors: []
+    });
+
+    useEffect(() => {
+        playersApi.apiPlayersApiPlayersGet(apiCallback(data => {
+            setPlayerSettings(data);
+        }));
+    }, []);
+
+    return [playerSetting, setPlayerSettings];
 }
 
 // endregion
@@ -371,16 +390,21 @@ export function downloadFromUsdb(usdbId) {
     usdbApi.apiUsdbDownloadApiUsdbDownloadPost(JSON.stringify({id: usdbId}), apiCallback());
 }
 
-export function playSong(song, force = false) {
-    songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {force: force}, (error, data, response) => {
+export function playSong(song, players, callback=undefined, force = false) {
+    // TODO: pass the players (also in backend)
+    songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {players: players, force: force}, (error, data, response) => {
         if (error) {
             if (response.status === 409) {
                 // TODO: custom modal
                 if (window.confirm("Another song is already playing. Abort the current song and start this one?")) {
-                    playSong(song, true);
+                    playSong(song, players, undefined, true);
                 }
             } else {
-                displayApiError(error, data, response)
+                displayApiError(error, data, response);
+            }
+        } else {
+            if (callback !== undefined) {
+                callback();
             }
         }
     });

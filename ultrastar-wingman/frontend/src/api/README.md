@@ -103,7 +103,7 @@ var UltraStarWingman = require('ultra_star_wingman');
 
 
 var api = new UltraStarWingman.PlayersApi()
-var playerCreation = new UltraStarWingman.PlayerCreation(); // {PlayerCreation} 
+var color = null; // {Object} 
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -111,7 +111,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.apiPlayersAddApiPlayersPost(playerCreation, callback);
+api.apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet(color, callback);
 
 ```
 
@@ -121,15 +121,16 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*UltraStarWingman.PlayersApi* | [**apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet**](docs/PlayersApi.md#apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet) | **GET** /api/players/avatars/default/{color} | Api Get Default Avatar
+*UltraStarWingman.PlayersApi* | [**apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet**](docs/PlayersApi.md#apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet) | **GET** /api/players/registered/{player}/avatar | Api Get Player Avatar
 *UltraStarWingman.PlayersApi* | [**apiPlayersAddApiPlayersPost**](docs/PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 *UltraStarWingman.PlayersApi* | [**apiPlayersDeleteApiPlayersDelete**](docs/PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
-*UltraStarWingman.PlayersApi* | [**apiPlayersSubmitApiPlayersSubmitPost**](docs/PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresGet**](docs/ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresSessionIdGet**](docs/ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
 *UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
-*UltraStarWingman.SongsApi* | [**apiGetSongByIdApiSongsSongIdGet**](docs/SongsApi.md#apiGetSongByIdApiSongsSongIdGet) | **GET** /api/songs/{song_id} | Retrieve the song with the given id. Use id &#39;random&#39; for a random song.
+*UltraStarWingman.SongsApi* | [**apiGetSongByIdApiSongsSongIdGet**](docs/SongsApi.md#apiGetSongByIdApiSongsSongIdGet) | **GET** /api/songs/{song_id} | Retrieve the song with the given id. Use id &#39;random&#39; for a random song or &#39;current&#39; for the currently playing song.
 *UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 *UltraStarWingman.SongsApi* | [**apiSingSongApiSongsSongIdSingPost**](docs/SongsApi.md#apiSingSongApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
@@ -139,7 +140,6 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxKillApiUsdxKillPost**](docs/UltraStarDeluxeApi.md#apiUsdxKillApiUsdxKillPost) | **POST** /api/usdx/kill | Kills any currently running Ultrastar Deluxe process
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxRestartApiUsdxRestartPost**](docs/UltraStarDeluxeApi.md#apiUsdxRestartApiUsdxRestartPost) | **POST** /api/usdx/restart | Restarts UltraStar Deluxe without any parameters
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxStartApiUsdxStartPost**](docs/UltraStarDeluxeApi.md#apiUsdxStartApiUsdxStartPost) | **POST** /api/usdx/start | Starts UltraStar Deluxe without any parameters
-*UltraStarWingman.WebsiteApi* | [**avatarAvatarsAvatarGet**](docs/WebsiteApi.md#avatarAvatarsAvatarGet) | **GET** /avatars/{avatar} | Avatar
 *UltraStarWingman.WishlistApi* | [**apiWishlistClientDeleteApiWishlistClientDelete**](docs/WishlistApi.md#apiWishlistClientDeleteApiWishlistClientDelete) | **DELETE** /api/wishlist/client | Delete a song from the wishlist
 *UltraStarWingman.WishlistApi* | [**apiWishlistClientGetApiWishlistClientGet**](docs/WishlistApi.md#apiWishlistClientGetApiWishlistClientGet) | **GET** /api/wishlist/client | Get the clients wishlist
 *UltraStarWingman.WishlistApi* | [**apiWishlistClientPostApiWishlistClientPost**](docs/WishlistApi.md#apiWishlistClientPostApiWishlistClientPost) | **POST** /api/wishlist/client | Adds the given song_id to the wishlist of the client
@@ -156,6 +156,8 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
  - [UltraStarWingman.PlayerList](docs/PlayerList.md)
+ - [UltraStarWingman.PlayersModel](docs/PlayersModel.md)
+ - [UltraStarWingman.RegisteredPlayerModel](docs/RegisteredPlayerModel.md)
  - [UltraStarWingman.Score](docs/Score.md)
  - [UltraStarWingman.ScoresModel](docs/ScoresModel.md)
  - [UltraStarWingman.SessionModel](docs/SessionModel.md)
@@ -166,6 +168,7 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.USDBSong](docs/USDBSong.md)
  - [UltraStarWingman.USDBSongsResponse](docs/USDBSongsResponse.md)
  - [UltraStarWingman.UdEnum](docs/UdEnum.md)
+ - [UltraStarWingman.UnregisteredPlayerModel](docs/UnregisteredPlayerModel.md)
  - [UltraStarWingman.UsdbId](docs/UsdbId.md)
  - [UltraStarWingman.UsdbIdsList](docs/UsdbIdsList.md)
  - [UltraStarWingman.ValidationError](docs/ValidationError.md)

@@ -14,6 +14,7 @@
     "path": "^0.12.7",
     "querystring": "^0.2.1",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",

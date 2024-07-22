@@ -10,6 +10,7 @@ import Spinner from "./Spinner";
 import Input from "./Input";
 import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useSongs} from "../helpers";
 import SongDetailsModal from "./SongDetailsModal";
+import PlayerSelection from "./PlayerSelection";
 
 function Songs() {
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useCurrentlyPlayingSong();
@@ -17,6 +18,7 @@ function Songs() {
     const [songs, setSongs] = useSongs();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedSong, setSelectedSong] = useState(null);
+    const [playerSelectionSong, setPlayerSelectionSong] = useState(null);
 
     const [clientWishlist, setClientWishlist] = useClientWishlist();
     const [favoriteIds, setFavoriteIds] = useFavoriteIds();
@@ -80,15 +82,24 @@ function Songs() {
                     />
                 ))}
             </ul>
-            {selectedSong &&
+
+            {selectedSong && !playerSelectionSong &&
                 <SongDetailsModal
                     song={selectedSong}
                     onClose={() => setSelectedSong(null)}
+                    setPlayerSelectionSong={setPlayerSelectionSong}
                     currentlyPlayingSong={currentlyPlayingSong}
                     clientWishlist={clientWishlist}
                     setClientWishlist={setClientWishlist}
                     favoriteIds={favoriteIds}
                     setFavoriteIds={setFavoriteIds}
+                />
+            }
+
+            {playerSelectionSong &&
+                <PlayerSelection
+                    song={playerSelectionSong}
+                    onClose={() => setPlayerSelectionSong(false)}
                 />
             }
         </div>

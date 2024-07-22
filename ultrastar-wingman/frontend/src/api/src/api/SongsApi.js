@@ -89,7 +89,7 @@ export default class SongsApi {
      */
 
     /**
-     * Retrieve the song with the given id. Use id 'random' for a random song.
+     * Retrieve the song with the given id. Use id 'random' for a random song or 'current' for the currently playing song.
      * @param {Object} songId 
      * @param {module:api/SongsApi~apiGetSongByIdApiSongsSongIdGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/Song}

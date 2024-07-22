@@ -1,6 +1,6 @@
 // FullScreenModal.js
 import './FullScreenModal.css';
-import React, { forwardRef } from "react";
+import React, {forwardRef} from "react";
 import {IoMdClose} from "react-icons/io";
 
 const FullScreenModal = forwardRef(({onClose, className, children, ...props}, ref) => {
@@ -16,7 +16,9 @@ const FullScreenModal = forwardRef(({onClose, className, children, ...props}, re
 
     return (
         <div ref={ref} className={"modal-backdrop " + className} onClick={close} {...props}>
-            <IoMdClose className={"close"}/>
+            {(onClose !== undefined) &&
+                <IoMdClose className={"close"}/>
+            }
             <div className={"modal-content"} onClick={close}>
                 {children}
             </div>

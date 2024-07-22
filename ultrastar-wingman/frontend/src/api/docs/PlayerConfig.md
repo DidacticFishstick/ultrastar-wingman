@@ -5,6 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **colors** | **[String]** | The available colors | [optional] 
-**players** | **[String]** | List of player names. | [optional] 
+**players** | [**PlayersModel**](PlayersModel.md) | All available players | [optional] 
 
 

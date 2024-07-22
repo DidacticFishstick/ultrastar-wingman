@@ -4,11 +4,102 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet**](PlayersApi.md#apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet) | **GET** /api/players/avatars/default/{color} | Api Get Default Avatar
+[**apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet**](PlayersApi.md#apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet) | **GET** /api/players/registered/{player}/avatar | Api Get Player Avatar
 [**apiPlayersAddApiPlayersPost**](PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 [**apiPlayersApiPlayersGet**](PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 [**apiPlayersDeleteApiPlayersDelete**](PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
-[**apiPlayersSubmitApiPlayersSubmitPost**](PlayersApi.md#apiPlayersSubmitApiPlayersSubmitPost) | **POST** /api/players/submit | Submit Player Names
 
+
+
+## apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet
+
+> Object apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet(color)
+
+Api Get Default Avatar
+
+The default avatars (cat pictures)  :param color: The color
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let color = null; // Object | 
+apiInstance.apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet(color, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **color** | [**Object**](.md)|  | 
+
+### Return type
+
+**Object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet
+
+> Object apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet(player)
+
+Api Get Player Avatar
+
+The avatar for the given player  :param player: The player name
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let player = null; // Object | 
+apiInstance.apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet(player, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **player** | [**Object**](.md)|  | 
+
+### Return type
+
+**Object**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
 ## apiPlayersAddApiPlayersPost
@@ -139,50 +230,5 @@ No authorization required
 ### HTTP request headers
 
 - **Content-Type**: Not defined
-- **Accept**: application/json
-
-
-## apiPlayersSubmitApiPlayersSubmitPost
-
-> BasicResponse apiPlayersSubmitApiPlayersSubmitPost(playerList)
-
-Submit Player Names
-
-Submits a list of player names.  - **names**: A list of names to be submitted.  Accepts a list of names in the request body and submits them.
-
-### Example
-
-```javascript
-import UltraStarWingman from 'ultra_star_wingman';
-
-let apiInstance = new UltraStarWingman.PlayersApi();
-let playerList = new UltraStarWingman.PlayerList(); // PlayerList | 
-apiInstance.apiPlayersSubmitApiPlayersSubmitPost(playerList, (error, data, response) => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.log('API called successfully. Returned data: ' + data);
-  }
-});
-```
-
-### Parameters
-
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **playerList** | [**PlayerList**](PlayerList.md)|  | 
-
-### Return type
-
-[**BasicResponse**](BasicResponse.md)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
-- **Content-Type**: application/json
 - **Accept**: application/json
 

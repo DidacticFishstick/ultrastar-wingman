@@ -50,6 +50,9 @@ class SingModel {
             if (data.hasOwnProperty('force')) {
                 obj['force'] = ApiClient.convertToType(data['force'], 'Boolean');
             }
+            if (data.hasOwnProperty('players')) {
+                obj['players'] = ApiClient.convertToType(data['players'], ['String']);
+            }
         }
         return obj;
     }
@@ -60,6 +63,10 @@ class SingModel {
      * @return {boolean} to indicate whether the JSON data is valid with respect to <code>SingModel</code>.
      */
     static validateJSON(data) {
+        // ensure the json data is an array
+        if (!Array.isArray(data['players'])) {
+            throw new Error("Expected the field `players` to be an array in the JSON data but got " + data['players']);
+        }
 
         return true;
     }
@@ -75,6 +82,12 @@ class SingModel {
  * @default false
  */
 SingModel.prototype['force'] = false;
+
+/**
+ * List of player names.
+ * @member {Array.<String>} players
+ */
+SingModel.prototype['players'] = undefined;
 
 
 

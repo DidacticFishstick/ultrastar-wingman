@@ -5,5 +5,6 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **force** | **Boolean** | Force a song change if another song is currently playing. | [optional] [default to false]
+**players** | **[String]** | List of player names. | [optional] 
 
 

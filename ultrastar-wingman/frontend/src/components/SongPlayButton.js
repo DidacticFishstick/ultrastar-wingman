@@ -6,6 +6,7 @@ import {killUsdb, playSong} from "../helpers";
 
 const SongPlayButton = ({
                             song,
+                            setPlayerSelectionSong,
                             currentlyPlayingSong,
                             className,
                             props
@@ -13,7 +14,7 @@ const SongPlayButton = ({
     if (currentlyPlayingSong?.id === song.id) {
         return <FaStop className={"song-play-button stop " + className} onClick={() => killUsdb()} title={"Stop song"} {...props}/>;
     } else {
-        return <FaPlay className={"song-play-button play " + className} onClick={() => playSong(song)} title={"Start song"} {...props}/>;
+        return <FaPlay className={"song-play-button play " + className} onClick={() => setPlayerSelectionSong(song)} title={"Start song"} {...props}/>;
     }
 };
 

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
@@ -57,9 +57,23 @@ class PlayerCreation(BaseModel):
     name: str = Field(None, description="The player name.")
 
 
+class RegisteredPlayerModel(BaseModel):
+    id: str = Field(None, description="The id for the player.")
+    name: str = Field(None, description="The name of the player.")
+
+
+class UnregisteredPlayerModel(BaseModel):
+    name: str = Field(None, description="The name of the player.")
+
+
+class PlayersModel(BaseModel):
+    registered: List[RegisteredPlayerModel] = Field(None, description="List of registered players.")
+    unregistered: List[UnregisteredPlayerModel] = Field(None, description="List of unregistered players.")
+
+
 class PlayerConfig(BaseModel):
     colors: List[str] = Field(None, description="The available colors")
-    players: List[str] = Field(None, example=["Alice", "Bob", "Charlie"], description="List of player names.")
+    players: PlayersModel = Field(None, description="All available players")
 
 
 class PlayerList(BaseModel):
@@ -94,6 +108,7 @@ class ScoresModel(BaseModel):
 
 class SingModel(BaseModel):
     force: bool = Field(False, description="Force a song change if another song is currently playing.")
+    players: List[str] = Field(None, description="List of player names.")
 
 
 class WishModel(BaseModel):
