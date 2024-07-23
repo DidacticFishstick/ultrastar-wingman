@@ -92,8 +92,22 @@ function UsdbList() {
             <h2>Search USDB</h2>
             <div ref={inputBoxRef} className={"usdb-search"}>
                 <div className={"combined-input"}>
-                    <Input type="text" placeholder="Song Title" icon={<PiTextTBold/>} searchTerm={title} setSearchTerm={setTitle} onEnter={() => fetchSongs(true)}/>
-                    <Input type="text" placeholder="Artist" icon={<IoPerson/>} searchTerm={artist} setSearchTerm={setArtist} onEnter={() => fetchSongs(true)}/>
+                    <Input
+                        type="text"
+                        placeholder="Song Title"
+                        icon={<PiTextTBold/>}
+                        value={title}
+                        setValue={setTitle}
+                        onEnter={() => fetchSongs(true)}
+                    />
+                    <Input
+                        type="text"
+                        placeholder="Artist"
+                        icon={<IoPerson/>}
+                        value={artist}
+                        setValue={setArtist}
+                        onEnter={() => fetchSongs(true)}
+                    />
                     <div className={"input-field"}>
                     <span className={"search"}>
                         <TbArrowsSort/>
@@ -112,7 +126,7 @@ function UsdbList() {
                         </select>
                     </div>
                 </div>
-                <Button text={"Search"} onClick={() => fetchSongs(true)}/>
+                <Button className={"search-button"} onClick={() => fetchSongs(true)}>Search</Button>
             </div>
             {loading && songs.length === 0 && <div className={"top-spinner"}>
                 <Spinner/>

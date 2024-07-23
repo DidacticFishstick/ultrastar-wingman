@@ -40,6 +40,10 @@
     z-index: 200;
 }
 
+.songs-search .search-input {
+    margin: 0 16px;
+}
+
 .songs-search > div {
     position: relative;
 }

@@ -15,8 +15,8 @@
     z-index: 200;
 }
 
-.usdb-list .usdb-search .button {
-    margin-top: 8px;
+.usdb-list .usdb-search .search-button {
+    margin: 8px auto 0 auto;
 }
 
 .usdb-list .bottom-spinner {

@@ -141,6 +141,8 @@
 /*endregion*/
 /*region all-players*/
 
+/*TODO: scrollable*/
+
 .player-selection .player-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -193,6 +195,18 @@
     color: var(--color-darker);
 }
 
+.player-selection .player-list .player.new .name {
+    color: var(--highlight-blue-light);
+    font-weight: bold;
+    padding-left: 6px;
+}
+
+.player-selection .player-list .player .add-button {
+    color: var(--highlight-blue-light);
+    font-size: 2em;
+    padding-left: 4px;
+}
+
 /*endregion*/
 /*region controls*/
 
@@ -203,24 +217,8 @@
     grid-column: 1/-1;
 }
 
-.player-selection .controls span {
-    display: block;
-    background: var(--input-bg);
-    border: 1px solid var(--color-darker);
-    border-radius: 8px;
-    font-size: 0.8rem;
-    color: var(--color-dark);
-    padding: 8px 0;
-    font-weight: bold;
+.player-selection .controls > * {
     flex: 1;
-    text-align: center;
-    cursor: pointer;
-}
-
-.player-selection .controls span.play {
-    background: var(--highlight-blue-dark);
-    border-color: var(--highlight-blue-light);
-    color: var(--highlight-blue-light);
 }
 
 /*endregion*/

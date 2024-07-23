@@ -1,0 +1,15 @@
+.new-unregistered-player h1 {
+    margin-top: 0;
+}
+
+.new-unregistered-player .error {
+    color: var(--highlight-red-light);
+    margin: 4px 0;
+}
+
+.new-unregistered-player .buttons {
+    display: flex;
+    justify-content: right;
+    gap: 8px;
+    margin-top: 16px;
+}

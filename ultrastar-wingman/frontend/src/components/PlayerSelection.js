@@ -3,8 +3,11 @@ import React, {useEffect, useState} from "react";
 import './Input.css';
 import './PlayerSelection.css';
 import {playSong, usePlayerSettings} from "../helpers";
-import FullScreenModal from "./FullScreenModal";
+import Modal from "./Modal";
 import {IoIosCloseCircleOutline} from "react-icons/io";
+import NewUnregisteredPlayer from "./NewUnregisteredPlayer";
+import {MdAddBox} from "react-icons/md";
+import Button from "./Button";
 
 function PlayerSelection({
                              song,
@@ -30,8 +33,9 @@ function PlayerSelection({
     };
 
     const [playerSetting, setPlayerSettings] = usePlayerSettings();
-
     const [selectedPlayers, setSelectedPlayers] = useState([]);
+
+    const [showNewPlayerModal, setShowNewPlayerModal] = useState(false);
 
     useEffect(() => {
         setSelectedPlayers(new Array(playerSetting.colors.length).fill(null));
@@ -85,6 +89,7 @@ function PlayerSelection({
 
         if (player.id === undefined) {
             // unregistered
+            // TODO: option to remove
             return <div className={className} onClick={onClick}>
                 <label className={"name"}>{player.name}</label>
             </div>
@@ -107,8 +112,9 @@ function PlayerSelection({
     };
 
     // TODO: button to insert last configuration
+    // TODO: button to clear selection
 
-    return <FullScreenModal>
+    return <Modal fullscreen={true}>
         <div className={"player-selection"}>
             <div className={"header"}>
                 <h1>Player Selection</h1>
@@ -148,15 +154,30 @@ function PlayerSelection({
                     {players.map((player, index) => (
                         createPlayerDiv(player)
                     ))}
+                    <div className={"player new"} onClick={() => setShowNewPlayerModal(true)}>
+                        <MdAddBox className={"add-button"}/>
+                        <label className={"name"}>Add Player</label>
+                    </div>
                 </div>
             </div>
             <div className={"controls"}>
-                {/*TODO: send the players*/}
-                <span onClick={() => onClose()}>Cancel</span>
-                <span className={"play"} onClick={start}>Play</span>
+                <Button
+                    onClick={onClose}
+                >Cancel</Button>
+                <Button
+                    blue={true}
+                    onClick={start}
+                >Play</Button>
             </div>
         </div>
-    </FullScreenModal>;
+        {showNewPlayerModal &&
+            <NewUnregisteredPlayer
+                players={players}
+                setPlayerSettings={setPlayerSettings}
+                onClose={() => setShowNewPlayerModal(false)}
+            />
+        }
+    </Modal>;
 }
 
 export default PlayerSelection;

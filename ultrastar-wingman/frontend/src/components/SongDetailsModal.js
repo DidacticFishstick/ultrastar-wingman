@@ -4,7 +4,7 @@ import React, {useRef} from "react";
 import {IoMdHeart, IoMdHeartEmpty} from "react-icons/io";
 import {MdOutlinePlaylistAdd, MdOutlinePlaylistAddCheck} from "react-icons/md";
 import SongPlayButton from "./SongPlayButton";
-import FullScreenModal from "./FullScreenModal";
+import Modal from "./Modal";
 import {addFavorite, addWish, removeFavorite, removeWish} from "../helpers";
 
 const SongDetailsModal = ({
@@ -28,7 +28,7 @@ const SongDetailsModal = ({
     };
 
     return (
-        <FullScreenModal ref={modalRef} className={
+        <Modal fullscreen={true} ref={modalRef} className={
             "song-detail-modal"
             + ((song.id in clientWishlist) ? " wished" : "")
             + (favoriteIds.includes(song.id) ? " favorite" : "")
@@ -53,7 +53,7 @@ const SongDetailsModal = ({
                     <MdOutlinePlaylistAddCheck className={"remove-wish"} onClick={() => removeWish(clientWishlist, setClientWishlist, globalWishlist, setGlobalWishlist, song.id)} title={"Remove from wishlist"}/>
                 </div>
             </div>
-        </FullScreenModal>
+        </Modal>
     );
 };
 

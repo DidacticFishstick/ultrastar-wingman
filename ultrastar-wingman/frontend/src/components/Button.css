@@ -1,8 +1,7 @@
 .button {
     display: block;
-    padding: 4px 40px;
+    padding: 8px 32px;
     width: max-content;
-    margin: 0 auto;
     border-radius: var(--border-radius-small);
     outline: none;
     font-size: 1em;
@@ -10,10 +9,16 @@
     color: var(--color);
     border: 1px solid var(--input-border-color);
     cursor: pointer;
+    font-weight: bold;
+    box-sizing: border-box;
+    text-align: center;
 }
 
+.button.blue,
 .button:focus {
-    border: 1px solid var(--highlight-blue-light);
+    background: var(--highlight-blue-dark);
+    border-color: var(--highlight-blue-light);
+    color: var(--highlight-blue-light);
 }
 
 .input-field input::placeholder,

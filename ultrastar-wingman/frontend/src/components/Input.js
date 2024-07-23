@@ -1,18 +1,27 @@
 // components/Input.js
 
-import React, { useRef, useEffect } from 'react';
+import React, {useRef, useEffect} from 'react';
 import './Input.css';
 import {GiCancel} from "react-icons/gi"; // Importing the CSS for styling
 
-const Input = ({type, placeholder, icon, searchTerm, setSearchTerm, onFocus, onEnter}) => {
+const Input = ({
+                   type,
+                   placeholder,
+                   icon,
+                   value,
+                   setValue,
+                   onFocus,
+                   onEnter,
+                   className
+               }) => {
     const inputRef = useRef(null);
 
     const input = <input
         ref={inputRef}
         type={type}
         placeholder={placeholder}
-        value={searchTerm}
-        onChange={e => setSearchTerm(e.target.value)}
+        value={value}
+        onChange={e => setValue(e.target.value)}
         onFocus={onFocus}
         onKeyDown={(event) => {
             if (event.key === 'Enter') {
@@ -22,15 +31,15 @@ const Input = ({type, placeholder, icon, searchTerm, setSearchTerm, onFocus, onE
         }}
     />;
 
-    return <div className={"input-field"}>
+    return <div className={"input-field " + className}>
         {/*TODO: scroll on focus does not work on mobile*/}
         <span className={"search"}>
             {icon}
         </span>
         {input}
-        {searchTerm &&
+        {value &&
             <span className={"cancel"} onClick={() => {
-                setSearchTerm('');
+                setValue('');
                 inputRef.current.focus()
             }}>
                 <GiCancel/>

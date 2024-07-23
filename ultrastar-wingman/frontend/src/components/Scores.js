@@ -294,12 +294,21 @@ function Scores() {
             <RadioButton text={"worst score"} value={"worst-score"} state={scoreSort} setState={setScoreSort}/>
 
             <div ref={inputRef} className="songs-search">
-                <Input type="text" placeholder="Search Scores" icon={<FaSearch/>} searchTerm={songSearchTerm} setSearchTerm={setSongSearchTerm} onEnter={() => {
-                }} onFocus={() => {
-                    setTimeout(() => {
-                        inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})
-                    }, 50);
-                }}/>
+                <Input
+                    className={"search-input"}
+                    type="text"
+                    placeholder="Search Scores"
+                    icon={<FaSearch/>}
+                    value={songSearchTerm}
+                    setValue={setSongSearchTerm}
+                    onEnter={() => {
+                    }}
+                    onFocus={() => {
+                        setTimeout(() => {
+                            inputRef.current.scrollIntoView({behavior: "smooth", block: "start"})
+                        }, 50);
+                    }}
+                />
             </div>
             {scoresListDiv}
         </div>
