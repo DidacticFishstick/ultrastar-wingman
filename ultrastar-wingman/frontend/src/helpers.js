@@ -397,7 +397,7 @@ export function playSong(song, players, callback=undefined, force = false) {
             if (response.status === 409) {
                 // TODO: custom modal
                 if (window.confirm("Another song is already playing. Abort the current song and start this one?")) {
-                    playSong(song, players, undefined, true);
+                    playSong(song, players, callback, true);
                 }
             } else {
                 displayApiError(error, data, response);
