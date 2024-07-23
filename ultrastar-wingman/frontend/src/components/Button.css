@@ -21,6 +21,13 @@
     color: var(--highlight-blue-light);
 }
 
+.button.disabled {
+    cursor: default;
+    background: var(--input-bg);
+    border-color: var(--color-darkerer);
+    color: var(--color-darkerer);
+}
+
 .input-field input::placeholder,
 .input-field select::placeholder {
     color: var(--color-dark);

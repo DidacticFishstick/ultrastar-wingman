@@ -56,6 +56,7 @@ const NewUnregisteredPlayer = ({
             >Cancel</Button>
             <Button
                 blue={true}
+                disabled={error || playerName === ""}
                 onClick={submit}
             >Add</Button>
         </div>

@@ -103,13 +103,28 @@ function PlayerSelection({
     };
 
     const start = () => {
-        const playerNames = selectedPlayers.reduce((acc, item) => {
-            acc[item?.name] = acc[item?.name] || [];
-            acc[item?.name].push(item?.name || "");
-            return acc;
-        }, {});
-        playSong(song, Object.values(playerNames).flat(), onClose);
+        const playerNames = Object.values(
+            selectedPlayers.reduce((acc, item) => {
+                acc[item?.name] = acc[item?.name] || [];
+                acc[item?.name].push(item?.name || "");
+                return acc;
+            }, {})
+        ).flat();
+
+        const nVacant = playerNames.filter(name => name === "").length;
+        if (nVacant === playerSetting.colors.length) {
+            alert("Song cannot be started without any players");
+            return;
+        } else if (nVacant > 0) {
+            if (!window.confirm("Are you sure you want to start the song with an incomplete player list?")) {
+                return;
+            }
+        }
+
+        playSong(song, playerNames, onClose);
     };
+
+    console.log(selectedPlayers);
 
     // TODO: button to insert last configuration
     // TODO: button to clear selection
@@ -166,6 +181,7 @@ function PlayerSelection({
                 >Cancel</Button>
                 <Button
                     blue={true}
+                    disabled={selectedPlayers.filter(player => player !== null).length === 0}
                     onClick={start}
                 >Play</Button>
             </div>
