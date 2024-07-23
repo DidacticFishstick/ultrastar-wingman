@@ -39,7 +39,7 @@ function PlayerSelection({
 
     useEffect(() => {
         setSelectedPlayers(new Array(playerSetting.colors.length).fill(null));
-    }, [playerSetting]);
+    }, [playerSetting.colors]);
 
     const players = [
         ...Object.values(playerSetting.players.registered),
