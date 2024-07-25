@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {AuthApi, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, WishlistApi} from "./api/src";
+import {AuthApi, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 import ApiClient from "./api/src/ApiClient";
 
@@ -9,6 +9,12 @@ const usdbApi = new USDBApi();
 const usdxApi = new UltraStarDeluxeApi();
 const playersApi = new PlayersApi();
 const authApi = new AuthApi();
+const usersApi = new UsersApi();
+
+// set previously saved access token
+if (localStorage.getItem('access_token')) {
+    ApiClient.instance.authentications.OAuth2PasswordBearer.accessToken = localStorage.getItem('access_token');
+}
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
@@ -348,20 +354,53 @@ export function usePlayerSettings() {
     return [playerSetting, setPlayerSettings];
 }
 
+export function useUser() {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        usersApi.usersCurrentUserUsersMeGet((error, data, response) => {
+            if (error) {
+                if (response.status !== 401) {
+                    displayApiError(error, data, response);
+                }
+            } else {
+                setUser(data);
+            }
+        });
+    }, []);
+
+    return [user, setUser];
+}
+
 // endregion
+// region auth
 
 export function login(username, password, callback) {
-    // TODO correct handling for wrong credentials
+    // TODO: correct handling for wrong credentials
     authApi.authJwtLoginAuthJwtLoginPost(username, password, undefined, apiCallback(data => {
-        console.log(data);
-
+        localStorage.setItem('access_token', data.access_token);
         ApiClient.instance.authentications.OAuth2PasswordBearer.accessToken = data.access_token;
+
+        usersApi.usersCurrentUserUsersMeGet(apiCallback(callback));
+
+    }));
+}
+
+export function register(username, password, callback) {
+    // TODO: correct handling for errors like name already exists
+    authApi.registerRegisterAuthRegisterPost(new UserCreate(username, password), apiCallback(data => {
+        login(username, password, callback)
+    }));
+}
+
+export function logout(callback) {
+    authApi.authJwtLogoutAuthJwtLogoutPost(apiCallback(data => {
+        localStorage.removeItem('access_token');
+        delete ApiClient.instance.authentications.OAuth2PasswordBearer.accessToken;
 
         callback(data);
     }));
 }
-
-// region auth
 
 // endregion
 
@@ -410,7 +449,7 @@ export function downloadFromUsdb(usdbId) {
     usdbApi.apiUsdbDownloadApiUsdbDownloadPost(JSON.stringify({id: usdbId}), apiCallback());
 }
 
-export function playSong(song, players, callback=undefined, force = false) {
+export function playSong(song, players, callback = undefined, force = false) {
     // TODO: pass the players (also in backend)
     songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {players: players, force: force}, (error, data, response) => {
         if (error) {

@@ -10,11 +10,11 @@ const Button = ({
                     blue,
                     props
                 }) => {
-    return <span onClick={() => {
-        if(!disabled) {
+    return <button onClick={() => {
+        if(!disabled && onClick !== undefined) {
             onClick();
         }
-    }} className={"button " + (disabled ? "disabled " : "") + (blue ? "blue " : "") + className} tabIndex={0}  {...props}>{children}</span>;
+    }} className={"button " + (disabled ? "disabled " : "") + (blue ? "blue " : "") + className} {...props}>{children}</button>;
 };
 
 export default Button;

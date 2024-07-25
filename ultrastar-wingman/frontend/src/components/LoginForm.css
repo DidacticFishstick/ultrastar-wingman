@@ -1,1 +1,27 @@
 /* components/LoginForm.css */
+.login-form form {
+    display: flex;
+    margin-top: 32px;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.login-form form .input-field {
+    width: 100%;
+}
+
+.login-form .error {
+    color: var(--highlight-red-light);
+    margin: 4px 0;
+}
+
+.login-form .register-mode span {
+    color: var(--highlight-blue-light);
+    cursor: pointer;
+}
+
+.login-form .register-mode span:hover {
+    text-decoration: underline;
+}

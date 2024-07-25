@@ -12,7 +12,8 @@ const Input = ({
                    setValue,
                    onFocus,
                    onEnter,
-                   className
+                   className,
+                   noClear
                }) => {
     const inputRef = useRef(null);
 
@@ -42,7 +43,9 @@ const Input = ({
                 setValue('');
                 inputRef.current.focus()
             }}>
-                <GiCancel/>
+                {!noClear &&
+                    <GiCancel/>
+                }
             </span>
         }
     </div>;
