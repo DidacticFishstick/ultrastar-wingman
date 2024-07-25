@@ -17,9 +17,30 @@ const LoginForm = ({
 
     // TODO: some password requirements
 
+    let errorText = null;
+    if (registerMode) {
+        if (username.length > 0 && !/^[A-Za-z0-9_-]+$/.test(username)) {
+            errorText = <p className={"error"}>Username must contain only letters, digits, underscores, or dashes.</p>;
+        } else if (username.length > 32) {
+            errorText = <p className={"error"}>Username must not exceed 32 characters.</p>;
+        } else if (password.length && (password.length < 8)) {
+            errorText = <p className={"error"}>The password has to be at least 8 characters long.</p>;
+        } else if (password !== password2) {
+            errorText = <p className={"error"}>The passwords do not match.</p>;
+        }
+    }
+
     const handleSubmit = async (e) => {
         if (e !== undefined) {
             e.preventDefault();
+        }
+
+        if (username === '' || password === '') {
+            return;
+        }
+
+        if (errorText !== null) {
+            return;
         }
 
         if (registerMode) {
@@ -28,13 +49,6 @@ const LoginForm = ({
             login(username, password, data => setUser(data));
         }
     };
-
-    let errorText = null;
-    if (registerMode && password.length && (password.length < 8)) {
-        errorText = <p className={"error"}>The password has to be at least 8 characters long.</p>;
-    } else if (registerMode && (password !== password2)) {
-        errorText = <p className={"error"}>The passwords do not match.</p>;
-    }
 
     return <div className={"login-form"}>
         {!registerMode &&
@@ -82,10 +96,10 @@ const LoginForm = ({
             {errorText && errorText}
 
             {!registerMode &&
-                <Button type={"submit"}>Log In</Button>
+                <Button type={"submit"} disabled={username === '' || password === '' || errorText !== null}>Log In</Button>
             }
             {registerMode &&
-                <Button type={"submit"}>Register</Button>
+                <Button type={"submit"} disabled={username === '' || password === '' || errorText !== null}>Register</Button>
             }
         </form>
         {!registerMode &&
