@@ -62,7 +62,7 @@ class UsernameStr:
 
     @staticmethod
     def has_valid_chars(s: str) -> bool:
-        return re.match(r'^[A-Za-z0-9_-]+$', s) is not None
+        return re.match(r'^[A-Za-z0-9_ -]+$', s) is not None
 
 
 class UserRead(schemas.BaseUser[uuid.UUID]):

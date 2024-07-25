@@ -19,7 +19,7 @@ const LoginForm = ({
 
     let errorText = null;
     if (registerMode) {
-        if (username.length > 0 && !/^[A-Za-z0-9_-]+$/.test(username)) {
+        if (username.length > 0 && !/^[A-Za-z0-9_ -]+$/.test(username)) {
             errorText = <p className={"error"}>Username must contain only letters, digits, underscores, or dashes.</p>;
         } else if (username.length > 32) {
             errorText = <p className={"error"}>Username must not exceed 32 characters.</p>;
