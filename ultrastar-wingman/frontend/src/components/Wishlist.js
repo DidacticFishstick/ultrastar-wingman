@@ -16,8 +16,6 @@ function Wishlist({
 
     const wishlist = globalScope ? Object.values(globalWishlist) : Object.values(clientWishlist);
 
-    console.log(wishlist);
-
     wishlist.sort((a, b) => {
         if (globalScope && (a.count < b.count)) return 1;
         if (globalScope && (a.count > b.count)) return -1;
@@ -25,8 +23,6 @@ function Wishlist({
         if (a.date > b.date) return 1;
         return 0;
     });
-
-    console.log(wishlist);
 
     const handleSongClick = (song) => {
         setSelectedSong(song);

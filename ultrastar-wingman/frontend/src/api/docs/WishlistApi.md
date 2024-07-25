@@ -23,6 +23,10 @@ Deletes a song form the clients wishlist.  :param request: The request used to d
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.WishlistApi();
 let songId = "songId_example"; // String | The id of the song to delete.
@@ -48,7 +52,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -68,6 +72,10 @@ Gets the songs on the wishlist for the current client.  :param request: The requ
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.WishlistApi();
 apiInstance.apiWishlistClientGetApiWishlistClientGet((error, data, response) => {
@@ -89,7 +97,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -103,12 +111,16 @@ No authorization required
 
 Adds the given song_id to the wishlist of the client
 
-Adds a new player name to the list.  :param request: The request used to determine the client :param add_to_wishlist: The information what to add to the wishlist
+Adds a song to the list.  :param request: The request used to determine the client :param add_to_wishlist: The information what to add to the wishlist
 
 ### Example
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.WishlistApi();
 let addToWishListModel = new UltraStarWingman.AddToWishListModel(); // AddToWishListModel | 
@@ -134,7 +146,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -148,12 +160,16 @@ No authorization required
 
 Get the global wishlist with the wishes for all players
 
-Gets all the data for the specified session id.
+Gets the global wishlist.
 
 ### Example
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.WishlistApi();
 apiInstance.apiWishlistGlobalGetApiWishlistGlobalGet((error, data, response) => {
@@ -175,7 +191,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 

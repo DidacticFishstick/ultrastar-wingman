@@ -22,6 +22,10 @@ Api Cover
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
@@ -47,7 +51,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -65,6 +69,10 @@ Retrieve the song with the given id. Use id &#39;random&#39; for a random song o
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
@@ -90,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -108,6 +116,10 @@ Api Mp3
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
@@ -133,7 +145,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -151,6 +163,10 @@ Starts UltraStar Deluxe and loads the song
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 let songId = null; // Object | 
@@ -178,7 +194,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -196,6 +212,10 @@ Retrieve all downloaded songs
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.SongsApi();
 apiInstance.apiSongsApiSongsGet((error, data, response) => {
@@ -217,7 +237,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 

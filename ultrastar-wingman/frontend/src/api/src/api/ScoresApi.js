@@ -66,7 +66,7 @@ export default class ScoresApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = ScoresModel;
@@ -109,7 +109,7 @@ export default class ScoresApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = ScoresModel;
@@ -146,7 +146,7 @@ export default class ScoresApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = SessionsListModel;

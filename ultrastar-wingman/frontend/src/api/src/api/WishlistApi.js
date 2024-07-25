@@ -69,7 +69,7 @@ export default class WishlistApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = BasicResponse;
@@ -106,7 +106,7 @@ export default class WishlistApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = WishlistModel;
@@ -127,7 +127,7 @@ export default class WishlistApi {
 
     /**
      * Adds the given song_id to the wishlist of the client
-     * Adds a new player name to the list.  :param request: The request used to determine the client :param add_to_wishlist: The information what to add to the wishlist
+     * Adds a song to the list.  :param request: The request used to determine the client :param add_to_wishlist: The information what to add to the wishlist
      * @param {module:model/AddToWishListModel} addToWishListModel 
      * @param {module:api/WishlistApi~apiWishlistClientPostApiWishlistClientPostCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/BasicResponse}
@@ -148,7 +148,7 @@ export default class WishlistApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = BasicResponse;
@@ -169,7 +169,7 @@ export default class WishlistApi {
 
     /**
      * Get the global wishlist with the wishes for all players
-     * Gets all the data for the specified session id.
+     * Gets the global wishlist.
      * @param {module:api/WishlistApi~apiWishlistGlobalGetApiWishlistGlobalGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/WishlistModel}
      */
@@ -185,7 +185,7 @@ export default class WishlistApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = WishlistModel;

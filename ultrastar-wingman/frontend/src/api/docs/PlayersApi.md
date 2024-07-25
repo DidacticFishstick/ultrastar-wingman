@@ -24,6 +24,10 @@ The default avatars (cat pictures)  :param color: The color
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
 let color = null; // Object | 
@@ -49,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -69,6 +73,10 @@ The avatar for the given player  :param player: The player name
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
 let player = null; // Object | 
@@ -94,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -114,6 +122,10 @@ Adds a new player name to the list.  - **name**: The name of the player to add. 
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
 let playerCreation = new UltraStarWingman.PlayerCreation(); // PlayerCreation | 
@@ -139,7 +151,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -159,6 +171,10 @@ Retrieves a list of all unique player names and the available colors.
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
 apiInstance.apiPlayersApiPlayersGet((error, data, response) => {
@@ -180,7 +196,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -200,6 +216,10 @@ Deletes a player name from the list.  - **name**: The name of the player to dele
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
 let name = "name_example"; // String | The name of the player to delete.
@@ -225,7 +245,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 

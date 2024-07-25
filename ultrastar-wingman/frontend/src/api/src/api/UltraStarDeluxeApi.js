@@ -59,84 +59,12 @@ export default class UltraStarDeluxeApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = BasicResponse;
       return this.apiClient.callApi(
         '/api/usdx/kill', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the apiUsdxRestartApiUsdxRestartPost operation.
-     * @callback module:api/UltraStarDeluxeApi~apiUsdxRestartApiUsdxRestartPostCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/BasicResponse} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Restarts UltraStar Deluxe without any parameters
-     * @param {module:api/UltraStarDeluxeApi~apiUsdxRestartApiUsdxRestartPostCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/BasicResponse}
-     */
-    apiUsdxRestartApiUsdxRestartPost(callback) {
-      let postBody = null;
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = BasicResponse;
-      return this.apiClient.callApi(
-        '/api/usdx/restart', 'POST',
-        pathParams, queryParams, headerParams, formParams, postBody,
-        authNames, contentTypes, accepts, returnType, null, callback
-      );
-    }
-
-    /**
-     * Callback function to receive the result of the apiUsdxStartApiUsdxStartPost operation.
-     * @callback module:api/UltraStarDeluxeApi~apiUsdxStartApiUsdxStartPostCallback
-     * @param {String} error Error message, if any.
-     * @param {module:model/BasicResponse} data The data returned by the service call.
-     * @param {String} response The complete HTTP response.
-     */
-
-    /**
-     * Starts UltraStar Deluxe without any parameters
-     * @param {module:api/UltraStarDeluxeApi~apiUsdxStartApiUsdxStartPostCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/BasicResponse}
-     */
-    apiUsdxStartApiUsdxStartPost(callback) {
-      let postBody = null;
-
-      let pathParams = {
-      };
-      let queryParams = {
-      };
-      let headerParams = {
-      };
-      let formParams = {
-      };
-
-      let authNames = [];
-      let contentTypes = [];
-      let accepts = ['application/json'];
-      let returnType = BasicResponse;
-      return this.apiClient.callApi(
-        '/api/usdx/start', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

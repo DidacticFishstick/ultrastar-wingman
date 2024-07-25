@@ -22,6 +22,10 @@ Gets all the data for the specified session id.
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.ScoresApi();
 let opts = {
@@ -49,7 +53,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -69,6 +73,10 @@ Gets all the data for the specified session id.
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.ScoresApi();
 let sessionId = 56; // Number | 
@@ -94,7 +102,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 
@@ -114,6 +122,10 @@ Gets all the sessions.
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.ScoresApi();
 apiInstance.apiSessionsGetApiSessionsGet((error, data, response) => {
@@ -135,7 +147,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
 
 ### HTTP request headers
 

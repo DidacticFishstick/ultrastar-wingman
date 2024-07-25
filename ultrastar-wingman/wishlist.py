@@ -5,6 +5,7 @@ import ws
 from song import Song
 
 
+# TODO: migrate wishlist to user if they log in
 class Wishlist:
     wishlists: Dict[str, 'Wishlist'] = {}
 

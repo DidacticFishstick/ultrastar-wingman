@@ -8,6 +8,7 @@ import Usdb from "./components/Usdb";
 import Players from "./components/PlayerSelection";
 import Scores from "./components/Scores";
 import './App.css';
+import User from "./components/User";
 
 
 const defaultClient = ApiClient.instance;
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/usdbList" element={<UsdbList/>}/>
                     <Route path="/usdb" element={<Usdb/>}/>
                     <Route path="/scores" element={<Scores/>}/>
+                    <Route path="/user" element={<User/>}/>
                 </Routes>
                 <BottomNav/>
             </BrowserRouter>

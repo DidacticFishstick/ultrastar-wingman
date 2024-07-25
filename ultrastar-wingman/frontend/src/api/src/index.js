@@ -15,6 +15,12 @@
 import ApiClient from './ApiClient';
 import AddToWishListModel from './model/AddToWishListModel';
 import BasicResponse from './model/BasicResponse';
+import BearerResponse from './model/BearerResponse';
+import BodyResetForgotPasswordAuthForgotPasswordPost from './model/BodyResetForgotPasswordAuthForgotPasswordPost';
+import BodyResetResetPasswordAuthResetPasswordPost from './model/BodyResetResetPasswordAuthResetPasswordPost';
+import BodyVerifyRequestTokenAuthRequestVerifyTokenPost from './model/BodyVerifyRequestTokenAuthRequestVerifyTokenPost';
+import BodyVerifyVerifyAuthVerifyPost from './model/BodyVerifyVerifyAuthVerifyPost';
+import ErrorModel from './model/ErrorModel';
 import HTTPValidationError from './model/HTTPValidationError';
 import OrderEnum from './model/OrderEnum';
 import Paging from './model/Paging';
@@ -36,14 +42,19 @@ import UdEnum from './model/UdEnum';
 import UnregisteredPlayerModel from './model/UnregisteredPlayerModel';
 import UsdbId from './model/UsdbId';
 import UsdbIdsList from './model/UsdbIdsList';
+import UserCreate from './model/UserCreate';
+import UserRead from './model/UserRead';
+import UserUpdate from './model/UserUpdate';
 import ValidationError from './model/ValidationError';
 import WishModel from './model/WishModel';
 import WishlistModel from './model/WishlistModel';
+import AuthApi from './api/AuthApi';
 import PlayersApi from './api/PlayersApi';
 import ScoresApi from './api/ScoresApi';
 import SongsApi from './api/SongsApi';
 import USDBApi from './api/USDBApi';
 import UltraStarDeluxeApi from './api/UltraStarDeluxeApi';
+import UsersApi from './api/UsersApi';
 import WishlistApi from './api/WishlistApi';
 
 
@@ -96,6 +107,42 @@ export {
      * @property {module:model/BasicResponse}
      */
     BasicResponse,
+
+    /**
+     * The BearerResponse model constructor.
+     * @property {module:model/BearerResponse}
+     */
+    BearerResponse,
+
+    /**
+     * The BodyResetForgotPasswordAuthForgotPasswordPost model constructor.
+     * @property {module:model/BodyResetForgotPasswordAuthForgotPasswordPost}
+     */
+    BodyResetForgotPasswordAuthForgotPasswordPost,
+
+    /**
+     * The BodyResetResetPasswordAuthResetPasswordPost model constructor.
+     * @property {module:model/BodyResetResetPasswordAuthResetPasswordPost}
+     */
+    BodyResetResetPasswordAuthResetPasswordPost,
+
+    /**
+     * The BodyVerifyRequestTokenAuthRequestVerifyTokenPost model constructor.
+     * @property {module:model/BodyVerifyRequestTokenAuthRequestVerifyTokenPost}
+     */
+    BodyVerifyRequestTokenAuthRequestVerifyTokenPost,
+
+    /**
+     * The BodyVerifyVerifyAuthVerifyPost model constructor.
+     * @property {module:model/BodyVerifyVerifyAuthVerifyPost}
+     */
+    BodyVerifyVerifyAuthVerifyPost,
+
+    /**
+     * The ErrorModel model constructor.
+     * @property {module:model/ErrorModel}
+     */
+    ErrorModel,
 
     /**
      * The HTTPValidationError model constructor.
@@ -224,6 +271,24 @@ export {
     UsdbIdsList,
 
     /**
+     * The UserCreate model constructor.
+     * @property {module:model/UserCreate}
+     */
+    UserCreate,
+
+    /**
+     * The UserRead model constructor.
+     * @property {module:model/UserRead}
+     */
+    UserRead,
+
+    /**
+     * The UserUpdate model constructor.
+     * @property {module:model/UserUpdate}
+     */
+    UserUpdate,
+
+    /**
      * The ValidationError model constructor.
      * @property {module:model/ValidationError}
      */
@@ -240,6 +305,12 @@ export {
      * @property {module:model/WishlistModel}
      */
     WishlistModel,
+
+    /**
+    * The AuthApi service constructor.
+    * @property {module:api/AuthApi}
+    */
+    AuthApi,
 
     /**
     * The PlayersApi service constructor.
@@ -270,6 +341,12 @@ export {
     * @property {module:api/UltraStarDeluxeApi}
     */
     UltraStarDeluxeApi,
+
+    /**
+    * The UsersApi service constructor.
+    * @property {module:api/UsersApi}
+    */
+    UsersApi,
 
     /**
     * The WishlistApi service constructor.

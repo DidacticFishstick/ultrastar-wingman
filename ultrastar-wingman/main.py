@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from typing import Optional
-from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends
 from fastapi.responses import FileResponse
 
 import config
@@ -18,6 +18,11 @@ import scores
 from song import Song
 from wishlist import Wishlist
 
+from users.db import User, create_db_and_tables
+from users.schemas import UserCreate, UserRead, UserUpdate
+from users.users import auth_backend, current_active_user, fastapi_users
+import users.permissions as permissions
+
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 
@@ -25,6 +30,7 @@ SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 async def lifespan(app: FastAPI):
     # start consumers for the download queue
     download_consumers = [asyncio.create_task(usdb.download_queue_consumer(download_queue)) for _ in range(config.usdb_downloader_count)]
+    await create_db_and_tables()
     yield
 
 
@@ -33,11 +39,38 @@ app = FastAPI(
     version="1.1.0",
     lifespan=lifespan
 )
-# app.mount("/static", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "static")), name="static")
-# templates = Jinja2Templates(directory=os.path.join(SCRIPT_BASE_PATH, "templates"))
 
 download_queue = asyncio.Queue()
 event_loop = asyncio.get_event_loop()
+
+# region users
+
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
+)
+app.include_router(
+    fastapi_users.get_register_router(UserRead, UserCreate),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_reset_password_router(),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_verify_router(UserRead),
+    prefix="/auth",
+    tags=["auth"],
+)
+app.include_router(
+    fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+
+
+# endregion
 
 
 @app.get('/openapi_no_anyOf.json', include_in_schema=False)
@@ -49,40 +82,50 @@ async def api_usdb_ids():
     Currently only removes anyOf from the ValidationError (components.schemas.ValidationError.properties.loc.items.anyOf)
     """
 
+    def replace_anyof_with_type(data):
+        if isinstance(data, dict):
+            if "anyOf" in data:
+                first_element = data["anyOf"][0]
+                if isinstance(first_element, dict) and "type" in first_element:
+                    data["type"] = first_element["type"]
+                del data["anyOf"]
+            for key in data:
+                replace_anyof_with_type(data[key])
+        elif isinstance(data, list):
+            for item in data:
+                replace_anyof_with_type(item)
+        return data
+
     openapi = app.openapi()
 
-    openapi["components"]["schemas"]["ValidationError"]["properties"]["loc"]["items"] = {
-        "type": "string"
-    }
-
-    return openapi
+    return replace_anyof_with_type(openapi)
 
 
-@app.post('/api/usdx/start', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Starts UltraStar Deluxe without any parameters")
-async def api_usdx_start():
-    await usdx.start()
-    return {"success": True}
+# @app.post('/api/usdx/start', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Starts UltraStar Deluxe without any parameters")
+# async def api_usdx_start():
+#     await usdx.start()
+#     return {"success": True}
 
 
-@app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe without any parameters")
-async def api_usdx_restart():
-    await usdx.start(kill_previous=True)
-    return {"success": True}
+# @app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe without any parameters")
+# async def api_usdx_restart():
+#     await usdx.start(kill_previous=True)
+#     return {"success": True}
 
 
 @app.post('/api/usdx/kill', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Kills any currently running Ultrastar Deluxe process")
-async def api_usdx_kill():
+async def api_usdx_kill(_: User = Depends(permissions.user_permissions(permissions.songs_stop))):
     await usdx.kill()
     return {"success": True}
 
 
 @app.get('/api/usdb/ids', response_model=models.UsdbIdsList, tags=["USDB"], summary="Gets the list of all downloaded USDB IDs")
-async def api_usdb_ids():
+async def api_usdb_ids(_: User = Depends(permissions.user_permissions(permissions.usdb_browse))):
     return {"ids": list(Song.usdb_ids)}
 
 
 @app.post('/api/usdb/download', response_model=models.BasicResponse, tags=["USDB"], summary="Downloads the song with the given USDB ID")
-async def api_usdb_download(usdb_id_model: models.UsdbId):
+async def api_usdb_download(usdb_id_model: models.UsdbId, _: User = Depends(permissions.user_permissions(permissions.usdb_download))):
     await download_queue.put(usdb_id_model.id)
 
     await ws.broadcast(ws.MessageType.download_queued, {
@@ -93,7 +136,7 @@ async def api_usdb_download(usdb_id_model: models.UsdbId):
 
 
 @app.api_route('/proxy/{path:path}', tags=["USDB Proxy"], methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'HEAD', 'PATCH', 'TRACE'], include_in_schema=False)
-async def proxy(request: Request, path: Optional[str] = ''):
+async def proxy(request: Request, path: Optional[str] = '', _: User = Depends(permissions.user_permissions(permissions.usdb_browse_proxy))):
     # Define the base URL for the proxied requests
     base_url = "https://usdb.animux.de"
 
@@ -102,8 +145,6 @@ async def proxy(request: Request, path: Optional[str] = ''):
     request_body = await request.body()
     request_query_params = request.query_params
     request_headers = dict(request.headers)
-
-    print(request_headers)
 
     # Ensure we don't accidentally forward Host headers as it could cause issues
     request_headers.pop("host", None)
@@ -138,7 +179,8 @@ async def api_usdb_songs(
         golden: bool = False,
         songcheck: bool = False,
         limit: int = Query(30, description="The number of songs to return per page."),
-        page: int = Query(1, description="Page number for pagination.")
+        page: int = Query(1, description="Page number for pagination."),
+        _: User = Depends(permissions.user_permissions(permissions.usdb_browse))
 ):
     songs = await usdb.get_songs(
         artist,
@@ -177,12 +219,12 @@ def get_client_identifier(request: Request) -> str:
 
 
 @app.get('/api/songs', response_model=models.SongsResponse, summary="Retrieve all downloaded songs", response_description="A list of songs", tags=["Songs"])
-async def api_songs():
+async def api_songs(_: User = Depends(permissions.user_permissions(permissions.songs_browse))):
     return {"songs": Song.song_list()}
 
 
 @app.get('/api/songs/{song_id}', response_model=models.Song, summary="Retrieve the song with the given id. Use id 'random' for a random song or 'current' for the currently playing song.", response_description="The song", tags=["Songs"])
-async def api_get_song_by_id(song_id):
+async def api_get_song_by_id(song_id, _: User = Depends(permissions.user_permissions(permissions.songs_browse))):
     song = Song.get_song_by_id(song_id)
 
     if song is None:
@@ -192,7 +234,7 @@ async def api_get_song_by_id(song_id):
 
 
 @app.get('/api/songs/{song_id}/cover', tags=["Songs"])
-async def api_cover(song_id):
+async def api_cover(song_id, _: User = Depends(permissions.user_permissions(permissions.songs_browse))):
     song = Song.get_song_by_id(song_id)
 
     if song is None:
@@ -206,7 +248,7 @@ async def api_cover(song_id):
 
 
 @app.get('/api/songs/{song_id}/mp3', tags=["Songs"])
-async def api_mp3(song_id):
+async def api_mp3(song_id, _: User = Depends(permissions.user_permissions(permissions.songs_browse))):
     song = Song.get_song_by_id(song_id)
 
     if song is None:
@@ -219,7 +261,7 @@ async def api_mp3(song_id):
 
 
 @app.post('/api/songs/{song_id}/sing', response_model=models.BasicResponse, tags=["Songs"], summary="Starts UltraStar Deluxe and loads the song")
-async def api_sing_song(song_id, sing_model: models.SingModel):
+async def api_sing_song(song_id, sing_model: models.SingModel, _: User = Depends(permissions.user_permissions(permissions.songs_play))):
     if Song.active_song is not None and Song.active_song.id == song_id:
         return {"success": True}
 
@@ -235,7 +277,7 @@ async def api_sing_song(song_id, sing_model: models.SingModel):
 
 
 @app.get('/api/players', response_model=models.PlayerConfig, summary="Retrieve Players", response_description="A list of unique player names", tags=["Players"])
-async def api_players():
+async def api_players(_: User = Depends(permissions.user_permissions(permissions.players_view))):
     """
     Retrieves a list of all unique player names and the available colors.
     """
@@ -266,7 +308,7 @@ async def api_players():
 
 
 @app.post('/api/players', response_model=models.PlayerList, status_code=status.HTTP_201_CREATED, summary="Add a New Player", response_description="Confirmation of player addition", tags=["Players"])
-async def api_players_add(player_data: models.PlayerCreation):
+async def api_players_add(player_data: models.PlayerCreation, _: User = Depends(permissions.user_permissions(permissions.players_add))):
     """
     Adds a new player name to the list.
 
@@ -288,7 +330,7 @@ async def api_players_add(player_data: models.PlayerCreation):
 
 
 @app.delete('/api/players', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
-async def api_players_delete(name: str = Query(..., description="The name of the player to delete.")):
+async def api_players_delete(name: str = Query(..., description="The name of the player to delete."), _: User = Depends(permissions.user_permissions(permissions.players_remove))):
     """
     Deletes a player name from the list.
 
@@ -317,7 +359,7 @@ async def api_players_delete(name: str = Query(..., description="The name of the
 
 
 @app.get('/api/players/avatars/default/{color}', tags=["Players"])
-async def api_get_default_avatar(color):
+async def api_get_default_avatar(color, _: User = Depends(permissions.user_permissions(permissions.players_view))):
     """
     The default avatars (cat pictures)
 
@@ -331,7 +373,7 @@ async def api_get_default_avatar(color):
 
 
 @app.get('/api/players/registered/{player}/avatar', tags=["Players"])
-async def api_get_player_avatar(player):
+async def api_get_player_avatar(player, _: User = Depends(permissions.user_permissions(permissions.players_view))):
     """
     The avatar for the given player
 
@@ -343,10 +385,12 @@ async def api_get_player_avatar(player):
 
 
 @app.get('/api/sessions', response_model=models.SessionsListModel, status_code=status.HTTP_200_OK, summary="Get all sessions", response_description="The sessions", tags=["Scores"])
-async def api_sessions_get():
+async def api_sessions_get(_: User = Depends(permissions.user_permissions(permissions.scores_view_current))):
     """
     Gets all the sessions.
     """
+
+    # TODO: check if the player is allowed to see more than the current session
 
     return {
         "sessions": scores.get_sessions()
@@ -355,10 +399,12 @@ async def api_sessions_get():
 
 @app.get('/api/scores', response_model=models.ScoresModel, status_code=status.HTTP_200_OK, summary="Get session scores", response_description="The scores", tags=["Scores"])
 @app.get('/api/scores/{session_id}', response_model=models.ScoresModel, status_code=status.HTTP_200_OK, summary="Get session scores", response_description="The scores", tags=["Scores"])
-async def api_scores_get(session_id: int = None):
+async def api_scores_get(session_id: int = None, _: User = Depends(permissions.user_permissions(permissions.scores_view_current))):
     """
     Gets all the data for the specified session id.
     """
+
+    # TODO: check if the player is allowed to see more than the current session
 
     data = scores.get_session_data(session_id)
 
@@ -369,7 +415,7 @@ async def api_scores_get(session_id: int = None):
 
 
 @app.get('/api/wishlist/client', response_model=models.WishlistModel, status_code=status.HTTP_200_OK, summary="Get the clients wishlist", response_description="The songs on the wishlist", tags=["Wishlist"])
-async def api_wishlist_client_get(request: Request):
+async def api_wishlist_client_get(request: Request, _: User = Depends(permissions.user_permissions(permissions.wishlist_edit))):
     """
     Gets the songs on the wishlist for the current client.
 
@@ -380,9 +426,9 @@ async def api_wishlist_client_get(request: Request):
 
 
 @app.post('/api/wishlist/client', response_model=models.BasicResponse, status_code=status.HTTP_201_CREATED, summary="Adds the given song_id to the wishlist of the client", response_description="Confirmation of wishlist addition", tags=["Wishlist"])
-async def api_wishlist_client_post(request: Request, add_to_wishlist: models.AddToWishListModel):
+async def api_wishlist_client_post(request: Request, add_to_wishlist: models.AddToWishListModel, _: User = Depends(permissions.user_permissions(permissions.wishlist_edit))):
     """
-    Adds a new player name to the list.
+    Adds a song to the list.
 
     :param request: The request used to determine the client
     :param add_to_wishlist: The information what to add to the wishlist
@@ -401,7 +447,7 @@ async def api_wishlist_client_post(request: Request, add_to_wishlist: models.Add
 
 
 @app.delete('/api/wishlist/client', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a song from the wishlist", response_description="Confirmation of wishlist deletion", tags=["Wishlist"])
-async def api_wishlist_client_delete(request: Request, song_id: str = Query(..., description="The id of the song to delete.")):
+async def api_wishlist_client_delete(request: Request, song_id: str = Query(..., description="The id of the song to delete."), _: User = Depends(permissions.user_permissions(permissions.wishlist_edit))):
     """
     Deletes a song form the clients wishlist.
 
@@ -417,9 +463,9 @@ async def api_wishlist_client_delete(request: Request, song_id: str = Query(...,
 
 
 @app.get('/api/wishlist/global', response_model=models.WishlistModel, status_code=status.HTTP_200_OK, summary="Get the global wishlist with the wishes for all players", response_description="The songs on the wishlist", tags=["Wishlist"])
-async def api_wishlist_global_get():
+async def api_wishlist_global_get(_: User = Depends(permissions.user_permissions(permissions.wishlist_view))):
     """
-    Gets all the data for the specified session id.
+    Gets the global wishlist.
     """
 
     return Wishlist.get_global_wishlist()
@@ -427,6 +473,7 @@ async def api_wishlist_global_get():
 
 @app.websocket("/ws")
 async def ws_endpoint(websocket: WebSocket):
+    # TODO: somehow include in permission management
     await websocket.accept()
     ws.ws_connections.add(websocket)
     logging.info("WebSocket client connected")

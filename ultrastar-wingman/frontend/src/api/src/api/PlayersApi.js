@@ -70,7 +70,7 @@ export default class PlayersApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Object;
@@ -113,7 +113,7 @@ export default class PlayersApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Object;
@@ -155,7 +155,7 @@ export default class PlayersApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = PlayerList;
@@ -192,7 +192,7 @@ export default class PlayersApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = PlayerConfig;
@@ -235,7 +235,7 @@ export default class PlayersApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = BasicResponse;

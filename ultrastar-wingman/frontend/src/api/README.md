@@ -102,8 +102,15 @@ Please follow the [installation](#installation) instruction and execute the foll
 var UltraStarWingman = require('ultra_star_wingman');
 
 
-var api = new UltraStarWingman.PlayersApi()
-var color = null; // {Object} 
+var api = new UltraStarWingman.AuthApi()
+var username = "username_example"; // {String} 
+var password = "password_example"; // {String} 
+var opts = {
+  'grantType': "grantType_example", // {String} 
+  'scope': "''", // {String} 
+  'clientId': "clientId_example", // {String} 
+  'clientSecret': "clientSecret_example" // {String} 
+};
 var callback = function(error, data, response) {
   if (error) {
     console.error(error);
@@ -111,7 +118,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet(color, callback);
+api.authJwtLoginAuthJwtLoginPost(username, password, opts, callback);
 
 ```
 
@@ -121,6 +128,13 @@ All URIs are relative to *http://localhost*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*UltraStarWingman.AuthApi* | [**authJwtLoginAuthJwtLoginPost**](docs/AuthApi.md#authJwtLoginAuthJwtLoginPost) | **POST** /auth/jwt/login | Auth:Jwt.Login
+*UltraStarWingman.AuthApi* | [**authJwtLogoutAuthJwtLogoutPost**](docs/AuthApi.md#authJwtLogoutAuthJwtLogoutPost) | **POST** /auth/jwt/logout | Auth:Jwt.Logout
+*UltraStarWingman.AuthApi* | [**registerRegisterAuthRegisterPost**](docs/AuthApi.md#registerRegisterAuthRegisterPost) | **POST** /auth/register | Register:Register
+*UltraStarWingman.AuthApi* | [**resetForgotPasswordAuthForgotPasswordPost**](docs/AuthApi.md#resetForgotPasswordAuthForgotPasswordPost) | **POST** /auth/forgot-password | Reset:Forgot Password
+*UltraStarWingman.AuthApi* | [**resetResetPasswordAuthResetPasswordPost**](docs/AuthApi.md#resetResetPasswordAuthResetPasswordPost) | **POST** /auth/reset-password | Reset:Reset Password
+*UltraStarWingman.AuthApi* | [**verifyRequestTokenAuthRequestVerifyTokenPost**](docs/AuthApi.md#verifyRequestTokenAuthRequestVerifyTokenPost) | **POST** /auth/request-verify-token | Verify:Request-Token
+*UltraStarWingman.AuthApi* | [**verifyVerifyAuthVerifyPost**](docs/AuthApi.md#verifyVerifyAuthVerifyPost) | **POST** /auth/verify | Verify:Verify
 *UltraStarWingman.PlayersApi* | [**apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet**](docs/PlayersApi.md#apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet) | **GET** /api/players/avatars/default/{color} | Api Get Default Avatar
 *UltraStarWingman.PlayersApi* | [**apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet**](docs/PlayersApi.md#apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet) | **GET** /api/players/registered/{player}/avatar | Api Get Player Avatar
 *UltraStarWingman.PlayersApi* | [**apiPlayersAddApiPlayersPost**](docs/PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
@@ -138,8 +152,11 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.USDBApi* | [**apiUsdbIdsApiUsdbIdsGet**](docs/USDBApi.md#apiUsdbIdsApiUsdbIdsGet) | **GET** /api/usdb/ids | Gets the list of all downloaded USDB IDs
 *UltraStarWingman.USDBApi* | [**apiUsdbSongsApiUsdbSongsGet**](docs/USDBApi.md#apiUsdbSongsApiUsdbSongsGet) | **GET** /api/usdb/songs | Search Songs
 *UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxKillApiUsdxKillPost**](docs/UltraStarDeluxeApi.md#apiUsdxKillApiUsdxKillPost) | **POST** /api/usdx/kill | Kills any currently running Ultrastar Deluxe process
-*UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxRestartApiUsdxRestartPost**](docs/UltraStarDeluxeApi.md#apiUsdxRestartApiUsdxRestartPost) | **POST** /api/usdx/restart | Restarts UltraStar Deluxe without any parameters
-*UltraStarWingman.UltraStarDeluxeApi* | [**apiUsdxStartApiUsdxStartPost**](docs/UltraStarDeluxeApi.md#apiUsdxStartApiUsdxStartPost) | **POST** /api/usdx/start | Starts UltraStar Deluxe without any parameters
+*UltraStarWingman.UsersApi* | [**usersCurrentUserUsersMeGet**](docs/UsersApi.md#usersCurrentUserUsersMeGet) | **GET** /users/me | Users:Current User
+*UltraStarWingman.UsersApi* | [**usersDeleteUserUsersIdDelete**](docs/UsersApi.md#usersDeleteUserUsersIdDelete) | **DELETE** /users/{id} | Users:Delete User
+*UltraStarWingman.UsersApi* | [**usersPatchCurrentUserUsersMePatch**](docs/UsersApi.md#usersPatchCurrentUserUsersMePatch) | **PATCH** /users/me | Users:Patch Current User
+*UltraStarWingman.UsersApi* | [**usersPatchUserUsersIdPatch**](docs/UsersApi.md#usersPatchUserUsersIdPatch) | **PATCH** /users/{id} | Users:Patch User
+*UltraStarWingman.UsersApi* | [**usersUserUsersIdGet**](docs/UsersApi.md#usersUserUsersIdGet) | **GET** /users/{id} | Users:User
 *UltraStarWingman.WishlistApi* | [**apiWishlistClientDeleteApiWishlistClientDelete**](docs/WishlistApi.md#apiWishlistClientDeleteApiWishlistClientDelete) | **DELETE** /api/wishlist/client | Delete a song from the wishlist
 *UltraStarWingman.WishlistApi* | [**apiWishlistClientGetApiWishlistClientGet**](docs/WishlistApi.md#apiWishlistClientGetApiWishlistClientGet) | **GET** /api/wishlist/client | Get the clients wishlist
 *UltraStarWingman.WishlistApi* | [**apiWishlistClientPostApiWishlistClientPost**](docs/WishlistApi.md#apiWishlistClientPostApiWishlistClientPost) | **POST** /api/wishlist/client | Adds the given song_id to the wishlist of the client
@@ -150,6 +167,12 @@ Class | Method | HTTP request | Description
 
  - [UltraStarWingman.AddToWishListModel](docs/AddToWishListModel.md)
  - [UltraStarWingman.BasicResponse](docs/BasicResponse.md)
+ - [UltraStarWingman.BearerResponse](docs/BearerResponse.md)
+ - [UltraStarWingman.BodyResetForgotPasswordAuthForgotPasswordPost](docs/BodyResetForgotPasswordAuthForgotPasswordPost.md)
+ - [UltraStarWingman.BodyResetResetPasswordAuthResetPasswordPost](docs/BodyResetResetPasswordAuthResetPasswordPost.md)
+ - [UltraStarWingman.BodyVerifyRequestTokenAuthRequestVerifyTokenPost](docs/BodyVerifyRequestTokenAuthRequestVerifyTokenPost.md)
+ - [UltraStarWingman.BodyVerifyVerifyAuthVerifyPost](docs/BodyVerifyVerifyAuthVerifyPost.md)
+ - [UltraStarWingman.ErrorModel](docs/ErrorModel.md)
  - [UltraStarWingman.HTTPValidationError](docs/HTTPValidationError.md)
  - [UltraStarWingman.OrderEnum](docs/OrderEnum.md)
  - [UltraStarWingman.Paging](docs/Paging.md)
@@ -171,6 +194,9 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.UnregisteredPlayerModel](docs/UnregisteredPlayerModel.md)
  - [UltraStarWingman.UsdbId](docs/UsdbId.md)
  - [UltraStarWingman.UsdbIdsList](docs/UsdbIdsList.md)
+ - [UltraStarWingman.UserCreate](docs/UserCreate.md)
+ - [UltraStarWingman.UserRead](docs/UserRead.md)
+ - [UltraStarWingman.UserUpdate](docs/UserUpdate.md)
  - [UltraStarWingman.ValidationError](docs/ValidationError.md)
  - [UltraStarWingman.WishModel](docs/WishModel.md)
  - [UltraStarWingman.WishlistModel](docs/WishlistModel.md)
@@ -178,5 +204,13 @@ Class | Method | HTTP request | Description
 
 ## Documentation for Authorization
 
-Endpoints do not require authorization.
+
+Authentication schemes defined for the API:
+### OAuth2PasswordBearer
+
+
+- **Type**: OAuth
+- **Flow**: password
+- **Authorization URL**: 
+- **Scopes**: N/A
 

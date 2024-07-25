@@ -70,7 +70,7 @@ export default class USDBApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = BasicResponse;
@@ -106,7 +106,7 @@ export default class USDBApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = UsdbIdsList;
@@ -166,7 +166,7 @@ export default class USDBApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = USDBSongsResponse;

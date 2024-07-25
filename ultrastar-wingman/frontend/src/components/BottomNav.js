@@ -23,7 +23,7 @@ function BottomNav() {
                     <BiSolidBarChartAlt2/>
                     <span>Scores</span>
                 </NavLink>
-                <NavLink to="/users" className={getActiveClass}>
+                <NavLink to="/user" className={getActiveClass}>
                     <FaUser/>
                     <span>User</span>
                 </NavLink>

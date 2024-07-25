@@ -5,11 +5,7 @@ import re
 import hashlib
 import shutil
 import sys
-import threading
 from typing import Optional
-
-import pyautogui
-import keyboard
 
 import config
 

@@ -69,7 +69,7 @@ export default class SongsApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Object;
@@ -111,7 +111,7 @@ export default class SongsApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Song;
@@ -153,7 +153,7 @@ export default class SongsApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Object;
@@ -200,7 +200,7 @@ export default class SongsApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
       let returnType = BasicResponse;
@@ -236,7 +236,7 @@ export default class SongsApi {
       let formParams = {
       };
 
-      let authNames = [];
+      let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = SongsResponse;

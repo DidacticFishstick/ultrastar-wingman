@@ -1,12 +1,14 @@
 import {useEffect, useState} from 'react';
-import {PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, WishlistApi} from "./api/src";
+import {AuthApi, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
+import ApiClient from "./api/src/ApiClient";
 
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
 const usdbApi = new USDBApi();
 const usdxApi = new UltraStarDeluxeApi();
 const playersApi = new PlayersApi();
+const authApi = new AuthApi();
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
@@ -16,6 +18,7 @@ const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws
 function displayApiError(error, data, response) {
     console.error(error, response.text);
     // TODO: better error handling
+    // TODO: different Error for 403/401
     alert(response.text);
 }
 
@@ -340,8 +343,25 @@ export function usePlayerSettings() {
         }));
     }, []);
 
+    // TODO: websocket
+
     return [playerSetting, setPlayerSettings];
 }
+
+// endregion
+
+export function login(username, password, callback) {
+    // TODO correct handling for wrong credentials
+    authApi.authJwtLoginAuthJwtLoginPost(username, password, undefined, apiCallback(data => {
+        console.log(data);
+
+        ApiClient.instance.authentications.OAuth2PasswordBearer.accessToken = data.access_token;
+
+        callback(data);
+    }));
+}
+
+// region auth
 
 // endregion
 
