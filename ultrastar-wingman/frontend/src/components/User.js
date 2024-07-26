@@ -8,8 +8,8 @@ import Button from "./Button"; // Importing the CSS for styling
 
 const User = () => {
     const [user, setUser] = useUser();
-    const [file, setFile] = useState(null);
 
+    const fileInputRef = useRef(null);
     const avatarRef = useRef(null);
 
     if (!user) {
@@ -35,12 +35,13 @@ const User = () => {
     };
 
     const handleButtonClick = () => {
-        document.getElementById('fileInput').click();
+        fileInputRef.current.click();
     };
 
     return <div className={"user-page"}>
         <div className={"profile"}>
             <input
+                ref={fileInputRef}
                 type="file"
                 id="fileInput"
                 accept="image/*"

@@ -8,6 +8,7 @@ import uvicorn
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
+from sqlalchemy import select, text
 
 import config
 import models
@@ -18,7 +19,7 @@ import scores
 from song import Song
 from wishlist import Wishlist
 
-from users.db import User, create_db_and_tables
+from users.db import User, create_db_and_tables, async_session_maker
 from users.schemas import UserCreate, UserRead, UserUpdate
 from users.users import auth_backend, current_active_user, fastapi_users
 import users.permissions as permissions
@@ -283,20 +284,26 @@ async def api_players(_: User = Depends(permissions.user_permissions(permissions
     """
 
     # TODO: actual implementation
+    # TODO: get last active time
+    # TODO: temporary users only in ram
+
+    async with async_session_maker() as session:
+        async with session.begin():
+            result = await session.execute(select(User))
+            users = result.scalars().all()
 
     try:
         with open(config.players_file, 'r', encoding="utf-8") as file:
             names = file.read().splitlines()
-        import random
         return {
             "players": {
                 "registered": [{
-                    "id": "TODO_ID",
-                    "name": name
-                } for i, name in enumerate(names) if i % 2 == 0],
+                    "id": str(user.id),
+                    "name": user.email
+                } for user in users],
                 "unregistered": [{
                     "name": name
-                } for i, name in enumerate(names) if i % 2 == 1]
+                } for name in names]
             },
             "colors": config.setup_colors
         }
