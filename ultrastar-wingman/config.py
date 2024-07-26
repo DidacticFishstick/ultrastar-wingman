@@ -66,11 +66,9 @@ usdb_downloader_count = int(_config.get("USDB", "downloader_count", fallback=4))
 setup_colors = _config.get("SETUP", "colors").split(",")
 
 if os.environ.get("IS_WINDOWS_INSTALLATION") == "true":
-    players_file = os.path.join(user_config_dir(), "Ultrastar Wingman", "players.txt")
     youtube_dl = os.path.join(SCRIPT_BASE_PATH, "executables", "yt-dlp.exe")
     ffmpeg = os.path.join(SCRIPT_BASE_PATH, "executables", "ffmpeg.exe")
 else:
-    players_file = _config.get("OTHER", "players_file")
     youtube_dl = _config.get("OTHER", "youtube_dl")
     ffmpeg = _config.get("OTHER", "ffmpeg")
 

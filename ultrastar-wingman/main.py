@@ -8,7 +8,6 @@ import uvicorn
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
-from sqlalchemy import select, text
 
 import config
 import models
@@ -22,6 +21,7 @@ from wishlist import Wishlist
 from users.db import User, create_db_and_tables, async_session_maker
 from users.schemas import UserCreate, UserRead, UserUpdate
 from users.users import auth_backend, current_active_user, fastapi_users
+from users.players import Player
 import users.permissions as permissions
 
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
@@ -283,84 +283,39 @@ async def api_players(_: User = Depends(permissions.user_permissions(permissions
     Retrieves a list of all unique player names and the available colors.
     """
 
-    # TODO: actual implementation
-    # TODO: get last active time
-    # TODO: temporary users only in ram
+    registered, unregistered = await Player.all_players()
 
-    async with async_session_maker() as session:
-        async with session.begin():
-            result = await session.execute(select(User))
-            users = result.scalars().all()
-
-    try:
-        with open(config.players_file, 'r', encoding="utf-8") as file:
-            names = file.read().splitlines()
-        return {
-            "players": {
-                "registered": [{
-                    "id": str(user.id),
-                    "name": user.email
-                } for user in users],
-                "unregistered": [{
-                    "name": name
-                } for name in names]
-            },
-            "colors": config.setup_colors
-        }
-    except FileNotFoundError:
-        return {
-            "players": [],
-            "colors": config.setup_colors
-        }
+    return {
+        "players": {
+            "registered": [player.to_json() for player in registered],
+            "unregistered": [player.to_json() for player in unregistered]
+        },
+        "colors": config.setup_colors
+    }
 
 
 @app.post('/api/players', response_model=models.PlayerList, status_code=status.HTTP_201_CREATED, summary="Add a New Player", response_description="Confirmation of player addition", tags=["Players"])
 async def api_players_add(player_data: models.PlayerCreation, _: User = Depends(permissions.user_permissions(permissions.players_add))):
     """
     Adds a new player name to the list.
-
-    - **name**: The name of the player to add. It is taken from the form data.
-
-    This endpoint writes the new player's name to the players file, appending it to the end.
     If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
     """
 
-    # TODO: player class for handling
-
-    logging.info(f"Adding player '{player_data.name}'")
     try:
-        with open(config.players_file, 'a', encoding="utf-8") as file:
-            file.write(player_data.name + '\n')
+        await Player.new_temporary(player_data.name)
         return {"success": True}
-    except IOError as e:
-        raise HTTPException(status_code=500, detail="Failed to write to file") from e
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @app.delete('/api/players', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
 async def api_players_delete(name: str = Query(..., description="The name of the player to delete."), _: User = Depends(permissions.user_permissions(permissions.players_remove))):
     """
     Deletes a player name from the list.
-
-    - **name**: The name of the player to delete.
-
-    This endpoint reads all player names, filters out the specified name, and rewrites the file without it.
     If the operation is successful, it returns a success message.
     """
 
-    # TODO: player class for handling
-
-    logging.info(f"Deleting player '{name}'")
-    try:
-        with open(config.players_file, 'r') as file:
-            names = file.read().splitlines()
-        with open(config.players_file, 'w') as file:
-            for name_item in names:
-                if name_item != name:
-                    file.write(name_item + '\n')
-    except FileNotFoundError:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Players file not found.")
-    except IOError as e:
-        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Failed to update the file") from e
+    Player.delete_temporary(name)
 
     return {"success": True}
 
@@ -379,34 +334,19 @@ async def api_get_default_avatar(color, _: User = Depends(permissions.user_permi
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
 
 
-# TODO: move to separate file
-possible_photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'heic']
-
-
-def find_photo_file(directory, filename):
-    for ext in possible_photo_extensions:
-        full_path = os.path.join(directory, filename + "." + ext)
-        if os.path.isfile(full_path):
-            return full_path
-    return None
-
-
 @app.get('/api/players/registered/{player}/avatar', tags=["Players"])
 async def api_get_player_avatar(player):
     """
     The avatar for the given player
 
-    :param player: The player name
+    :param player: The player id
     """
 
-    # TODO: move to separate file
+    player = await Player.get_by_id(player)
+    if player is None:
+        raise HTTPException(status_code=404, detail="Player does not exist")
 
-    avatar_file = find_photo_file(os.path.join(config.users_dir, "avatars"), player)
-
-    if avatar_file:
-        return FileResponse(avatar_file)
-    else:
-        raise HTTPException(status_code=404, detail="Player has no avatar")
+    return player.get_avatar(config.users_dir)
 
 
 @app.post("/api/players/registered/{player}/avatar", response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Upload an avatar for the player", response_description="Confirmation of file upload", tags=["Players"])
@@ -424,20 +364,8 @@ async def api_post_player_avatar(player, file: UploadFile = File(...), user: Use
     if not file.content_type.startswith('image/'):
         raise HTTPException(status_code=400, detail="File must be an image")
 
-    file_extension = file.filename.rsplit(".")[-1].lower()
-    if file_extension not in possible_photo_extensions:
-        raise HTTPException(status_code=400, detail=f"File must be one of {', '.join(possible_photo_extensions)}")
-
-    avatar_file = find_photo_file(os.path.join(config.users_dir, "avatars"), player)
-
-    if avatar_file:
-        os.remove(avatar_file)
-
-    path = os.path.join(config.users_dir, "avatars", f"{player}.{file_extension}")
-    logging.info(f"Saving player avatar to {avatar_file}")
-
-    with open(path, "wb") as buffer:
-        buffer.write(await file.read())
+    player = await Player.get_by_id(player)
+    await player.set_avatar(config.users_dir, file)
 
     return {"success": True}
 

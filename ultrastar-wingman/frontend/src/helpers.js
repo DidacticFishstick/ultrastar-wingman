@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {AuthApi, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
+import {AuthApi, PlayerCreation, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 import ApiClient from "./api/src/ApiClient";
 
@@ -403,6 +403,10 @@ export function logout(callback) {
 }
 
 // endregion
+
+export function addUnregisteredPlayer(name, callback) {
+    playersApi.apiPlayersAddApiPlayersPost(JSON.stringify({name: name}), apiCallback(callback));
+}
 
 export function getRandomSong(callback) {
     songsApi.apiGetSongByIdApiSongsSongIdGet("random", apiCallback(callback));

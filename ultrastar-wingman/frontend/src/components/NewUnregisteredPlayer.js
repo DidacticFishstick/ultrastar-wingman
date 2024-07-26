@@ -5,6 +5,7 @@ import Modal from "./Modal";
 import {FaSearch} from "react-icons/fa";
 import Input from "./Input";
 import Button from "./Button";
+import {addUnregisteredPlayer} from "../helpers";
 
 const NewUnregisteredPlayer = ({
                                    players,
@@ -15,18 +16,18 @@ const NewUnregisteredPlayer = ({
     const [error, setError] = useState('');
 
     const submit = () => {
-        // TODO: send to backend, check if available
-        setPlayerSettings(prevState => ({
-            ...prevState,
-            players: {
-                ...prevState.players,
-                unregistered: [...prevState.players.unregistered, {
-                    name: playerName
-                }]
-            }
-        }));
-
-        onClose();
+        addUnregisteredPlayer(playerName, data => {
+            setPlayerSettings(prevState => ({
+                ...prevState,
+                players: {
+                    ...prevState.players,
+                    unregistered: [...prevState.players.unregistered, {
+                        name: playerName
+                    }]
+                }
+            }));
+            onClose();
+        });
     }
 
     useEffect(() => {

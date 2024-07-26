@@ -15,8 +15,7 @@ const LoginForm = ({
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
 
-    // TODO: some password requirements
-
+    // TODO: same checks for temporary users
     let errorText = null;
     if (registerMode) {
         if (username.length > 0 && !/^[A-Za-z0-9_ -]+$/.test(username)) {

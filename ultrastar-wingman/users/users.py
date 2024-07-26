@@ -13,6 +13,8 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 
 from .db import User, get_user_db
 
+# TODO: first user should always be admin
+
 # TODO: change
 SECRET = "SECRET"
 

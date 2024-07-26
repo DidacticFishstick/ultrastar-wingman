@@ -1,6 +1,5 @@
-import logging
 from enum import Enum
-from typing import Optional, List
+from typing import Optional
 
 from fastapi import status, Depends, HTTPException
 
