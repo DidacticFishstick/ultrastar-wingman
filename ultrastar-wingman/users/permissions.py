@@ -178,14 +178,14 @@ scores_view_all = Permission(
 )
 
 settings_view = Permission(
-    "settings.all",
+    "settings.view",
     "View Settings",
     "Allows the user to see these settings",
     AccessLevel.manager
 )
 
 settings_edit = Permission(
-    "settings.all",
+    "settings.edit",
     "Edit Settings",
     "Allows the user to edit these settings and user permissions",
     AccessLevel.admin
