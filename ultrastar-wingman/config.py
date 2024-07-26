@@ -9,12 +9,15 @@ SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
 
 _parser = argparse.ArgumentParser(description="Ultrastar Wingman")
 
-_default_config = "./config.ini"
+config_dir = "."
 if os.environ.get("IS_WINDOWS_INSTALLATION") == "true":
-    os.makedirs(os.path.join(user_config_dir(), "Ultrastar Wingman"), exist_ok=True)
-    _default_config = os.path.join(user_config_dir(), "Ultrastar Wingman", "config.ini")
+    config_dir = os.path.join(user_config_dir(), "Ultrastar Wingman")
+    os.makedirs(config_dir, exist_ok=True)
 
-_parser.add_argument("-c", "--config", help="The config file (default: ./config.ini)", default=_default_config, required=False)
+users_dir = os.path.join(config_dir, "users")
+os.makedirs(os.path.join(users_dir, "avatars"), exist_ok=True)
+
+_parser.add_argument("-c", "--config", help="The config file (default: ./config.ini)", default=os.path.join(config_dir, "config.ini"), required=False)
 
 _args = _parser.parse_args()
 

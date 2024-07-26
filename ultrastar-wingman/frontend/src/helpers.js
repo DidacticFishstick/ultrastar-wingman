@@ -475,3 +475,7 @@ export function killUsdb() {
         usdxApi.apiUsdxKillApiUsdxKillPost(apiCallback());
     }
 }
+
+export function uploadAvatar(player, file, callback) {
+    playersApi.apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost(player, file, apiCallback(callback));
+}

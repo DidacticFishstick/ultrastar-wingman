@@ -113,7 +113,7 @@ export default class PlayersApi {
       let formParams = {
       };
 
-      let authNames = ['OAuth2PasswordBearer'];
+      let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
       let returnType = Object;
@@ -241,6 +241,55 @@ export default class PlayersApi {
       let returnType = BasicResponse;
       return this.apiClient.callApi(
         '/api/players', 'DELETE',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost operation.
+     * @callback module:api/PlayersApi~apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPostCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/BasicResponse} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Upload an avatar for the player
+     * Sets the avatar for the given player  :param player: The player name :param user: The current user
+     * @param {Object} player 
+     * @param {File} file 
+     * @param {module:api/PlayersApi~apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPostCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/BasicResponse}
+     */
+    apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost(player, file, callback) {
+      let postBody = null;
+      // verify the required parameter 'player' is set
+      if (player === undefined || player === null) {
+        throw new Error("Missing the required parameter 'player' when calling apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost");
+      }
+      // verify the required parameter 'file' is set
+      if (file === undefined || file === null) {
+        throw new Error("Missing the required parameter 'file' when calling apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost");
+      }
+
+      let pathParams = {
+        'player': player
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+        'file': file
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = ['multipart/form-data'];
+      let accepts = ['application/json'];
+      let returnType = BasicResponse;
+      return this.apiClient.callApi(
+        '/api/players/registered/{player}/avatar', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

@@ -6,7 +6,7 @@ from contextlib import asynccontextmanager
 
 import uvicorn
 from typing import Optional
-from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends
+from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
 
 import config
@@ -372,16 +372,67 @@ async def api_get_default_avatar(color, _: User = Depends(permissions.user_permi
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
 
 
+# TODO: move to separate file
+possible_photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'heic']
+
+
+def find_photo_file(directory, filename):
+    for ext in possible_photo_extensions:
+        full_path = os.path.join(directory, filename + "." + ext)
+        if os.path.isfile(full_path):
+            return full_path
+    return None
+
+
 @app.get('/api/players/registered/{player}/avatar', tags=["Players"])
-async def api_get_player_avatar(player, _: User = Depends(permissions.user_permissions(permissions.players_view))):
+async def api_get_player_avatar(player):
     """
     The avatar for the given player
 
     :param player: The player name
     """
 
-    # Use logo as default avatar
-    return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/public/logo.png"))
+    # TODO: move to separate file
+
+    avatar_file = find_photo_file(os.path.join(config.users_dir, "avatars"), player)
+
+    if avatar_file:
+        return FileResponse(avatar_file)
+    else:
+        raise HTTPException(status_code=404, detail="Player has no avatar")
+
+
+@app.post("/api/players/registered/{player}/avatar", response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Upload an avatar for the player", response_description="Confirmation of file upload", tags=["Players"])
+async def api_post_player_avatar(player, file: UploadFile = File(...), user: User = Depends(current_active_user)):
+    """
+    Sets the avatar for the given player
+
+    :param player: The player id
+    :param user: The current user
+    """
+
+    if str(user.id) != player:
+        raise HTTPException(status_code=403, detail="You are not allowed to change other players avatars")
+
+    if not file.content_type.startswith('image/'):
+        raise HTTPException(status_code=400, detail="File must be an image")
+
+    file_extension = file.filename.rsplit(".")[-1].lower()
+    if file_extension not in possible_photo_extensions:
+        raise HTTPException(status_code=400, detail=f"File must be one of {', '.join(possible_photo_extensions)}")
+
+    avatar_file = find_photo_file(os.path.join(config.users_dir, "avatars"), player)
+
+    if avatar_file:
+        os.remove(avatar_file)
+
+    path = os.path.join(config.users_dir, "avatars", f"{player}.{file_extension}")
+    logging.info(f"Saving player avatar to {avatar_file}")
+
+    with open(path, "wb") as buffer:
+        buffer.write(await file.read())
+
+    return {"success": True}
 
 
 @app.get('/api/sessions', response_model=models.SessionsListModel, status_code=status.HTTP_200_OK, summary="Get all sessions", response_description="The sessions", tags=["Scores"])

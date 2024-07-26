@@ -140,6 +140,7 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.PlayersApi* | [**apiPlayersAddApiPlayersPost**](docs/PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 *UltraStarWingman.PlayersApi* | [**apiPlayersDeleteApiPlayersDelete**](docs/PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
+*UltraStarWingman.PlayersApi* | [**apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost**](docs/PlayersApi.md#apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost) | **POST** /api/players/registered/{player}/avatar | Upload an avatar for the player
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresGet**](docs/ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresSessionIdGet**](docs/ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions

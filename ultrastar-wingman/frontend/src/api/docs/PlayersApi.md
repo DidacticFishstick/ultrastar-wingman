@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**apiPlayersAddApiPlayersPost**](PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 [**apiPlayersApiPlayersGet**](PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 [**apiPlayersDeleteApiPlayersDelete**](PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
+[**apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost**](PlayersApi.md#apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost) | **POST** /api/players/registered/{player}/avatar | Upload an avatar for the player
 
 
 
@@ -73,10 +74,6 @@ The avatar for the given player  :param player: The player name
 
 ```javascript
 import UltraStarWingman from 'ultra_star_wingman';
-let defaultClient = UltraStarWingman.ApiClient.instance;
-// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
-let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
-OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
 let player = null; // Object | 
@@ -102,7 +99,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+No authorization required
 
 ### HTTP request headers
 
@@ -250,5 +247,56 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost
+
+> BasicResponse apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost(player, file)
+
+Upload an avatar for the player
+
+Sets the avatar for the given player  :param player: The player name :param user: The current user
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let player = null; // Object | 
+let file = "/path/to/file"; // File | 
+apiInstance.apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost(player, file, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **player** | [**Object**](.md)|  | 
+ **file** | **File**|  | 
+
+### Return type
+
+[**BasicResponse**](BasicResponse.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
 - **Accept**: application/json
 
