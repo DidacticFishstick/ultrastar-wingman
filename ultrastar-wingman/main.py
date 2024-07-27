@@ -485,7 +485,6 @@ async def alias_routes():
     return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/build", "index.html"))
 
 
-# TODO: error when not build yet, option to let build, check if build is current build
 app.mount("/", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "frontend/build"), html=True), name="static")
 
 

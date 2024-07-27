@@ -12,7 +12,6 @@ from .db import User as UserModel, async_session_maker
 
 from .users import User
 
-# TODO: move to separate file
 possible_photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'heic']
 
 

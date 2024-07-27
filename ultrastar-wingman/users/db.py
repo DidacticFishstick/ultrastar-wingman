@@ -6,8 +6,7 @@ from sqlalchemy import Integer
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-# TODO: change
-DATABASE_URL = "sqlite+aiosqlite:///./test3.db"
+DATABASE_URL = "sqlite+aiosqlite:///./wingman.db"
 
 
 class Base(DeclarativeBase):

@@ -15,8 +15,8 @@ from .db import User, get_user_db
 
 # TODO: first user should always be admin
 
-# TODO: change
-SECRET = "SECRET"
+# I know... but the data stays locally on your device, so I do not care that much
+SECRET = "WINGMAN"
 
 
 class UserManager(UUIDIDMixin, BaseUserManager[User, uuid.UUID]):
