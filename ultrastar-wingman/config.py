@@ -15,7 +15,8 @@ if os.environ.get("IS_WINDOWS_INSTALLATION") == "true":
     os.makedirs(config_dir, exist_ok=True)
 
 users_dir = os.path.join(config_dir, "users")
-os.makedirs(os.path.join(users_dir, "avatars"), exist_ok=True)
+users_avatars_dir = os.path.join(users_dir, "avatars")
+os.makedirs(users_avatars_dir, exist_ok=True)
 
 _parser.add_argument("-c", "--config", help="The config file (default: ./config.ini)", default=os.path.join(config_dir, "config.ini"), required=False)
 

@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import uuid
 from typing import Dict, Optional, List, Tuple
 
 from fastapi import HTTPException
@@ -63,23 +64,23 @@ class Player:
 
         player = Player(name=name)
 
-        cls._unregistered[name] = player
+        cls._unregistered[player.id] = player
 
         return player
 
     @classmethod
-    def delete_temporary(cls, name: str) -> Optional['Player']:
+    def delete_temporary(cls, id: str) -> Optional['Player']:
         """
         Removes a temporary player
         Does nothing if the player does not exist
 
-        :param name: The name of the player
+        :param id: The id of the player
         :return: The user if it existed
         """
 
-        logging.info(f"Removing temporary player '{name}'")
+        logging.info(f"Removing temporary player '{id}'")
 
-        return cls._unregistered.pop(name)
+        return cls._unregistered.pop(id)
 
     @classmethod
     async def all_players(cls) -> Tuple[List['Player'], List['Player']]:
@@ -98,11 +99,13 @@ class Player:
                 users = result.scalars().all()
 
         for user in users:
-            if user.email in cls._unregistered:
-                player = cls._unregistered.pop(user.email)
-                player.set_user(user)
-                cls._registered[str(user.id)] = player
-            else:
+            player = None
+            for player in cls._unregistered.values():
+                if user.email == player.name:
+                    cls._unregistered.pop(player.id)
+                    player.set_user(user)
+                    cls._registered[str(user.id)] = player
+            if player is None:
                 cls.from_user(user)
 
         return list(cls._registered.values()), list(cls._unregistered.values())
@@ -116,16 +119,22 @@ class Player:
         :return: The player or None
         """
 
-        player = cls._registered.get(id)
+        if not id:
+            return None
+
+        player = cls._registered.get(id) or cls._unregistered.get(id)
 
         if player is None:
             async with async_session_maker() as session:
                 async with session.begin():
-                    result = await session.execute(select(UserModel).where(UserModel.id == id))
-                    users = result.scalars().all()
+                    try:
+                        result = await session.execute(select(UserModel).where(UserModel.id == id))
+                        users = result.scalars().all()
 
-                    if users:
-                        player = cls.from_user(users[0])
+                        if users:
+                            player = cls.from_user(users[0])
+                    except Exception as e:
+                        logging.exception("Failed to look up user by id")
 
         return player
 
@@ -139,6 +148,10 @@ class Player:
 
         self._name = name
         self._user = user
+        if self._user is None:
+            self._id = str(uuid.uuid4())
+        else:
+            self._id = str(self.user.id)
 
     @property
     def name(self) -> str:
@@ -146,9 +159,7 @@ class Player:
 
     @property
     def id(self) -> Optional[str]:
-        if self._user is None:
-            return None
-        return str(self.user.id)
+        return self._id
 
     @property
     def user(self) -> Optional[User]:
@@ -162,43 +173,42 @@ class Player:
         """
 
         self._user = user
+        self._id = str(user.id)
 
     def to_json(self) -> Dict[str, str]:
         data = {
-            "name": self._name
+            "name": self._name,
+            "id": self._id
         }
-
-        if self._user is not None:
-            data['id'] = str(self._user.id)
 
         return data
 
-    def get_avatar(self, users_dir) -> FileResponse:
+    def get_avatar_file_response(self, avatars_dir) -> FileResponse:
         """
-        Returns the avatar of the user
+        Returns the avatar of the user as a file response
 
         :return: A file response
         :raises HTTPException if the user has no avatar
         """
 
-        avatar_file = find_photo_file(os.path.join(users_dir, "avatars"), self.id)
+        avatar_file = find_photo_file(avatars_dir, self.id)
 
         if avatar_file is not None:
             return FileResponse(avatar_file)
         else:
             raise HTTPException(status_code=404, detail="Player has no avatar")
 
-    async def set_avatar(self, users_dir, file):
+    async def set_avatar(self, avatars_dir, file):
         file_extension = file.filename.rsplit(".")[-1].lower()
         if file_extension not in possible_photo_extensions:
             raise HTTPException(status_code=400, detail=f"File must be one of {', '.join(possible_photo_extensions)}")
 
-        avatar_file = find_photo_file(os.path.join(users_dir, "avatars"), self.id)
+        avatar_file = find_photo_file(avatars_dir, self.id)
 
         if avatar_file:
             os.remove(avatar_file)
 
-        path = os.path.join(users_dir, "avatars", f"{self.id}.{file_extension}")
+        path = os.path.join(avatars_dir, f"{self.id}.{file_extension}")
         logging.info(f"Saving player avatar to {avatar_file}")
 
         with open(path, "wb") as buffer:

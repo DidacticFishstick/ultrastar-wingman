@@ -41,6 +41,13 @@ function PlayerSelection({
         setSelectedPlayers(new Array(playerSetting.colors.length).fill(null));
     }, [playerSetting.colors]);
 
+
+    for (const player of playerSetting.players.registered) {
+        player.registered = true;
+     }
+    for (const player of playerSetting.players.unregistered) {
+        player.registered = false;
+    }
     const players = [
         ...Object.values(playerSetting.players.registered),
         ...Object.values(playerSetting.players.unregistered),
@@ -55,25 +62,25 @@ function PlayerSelection({
         setSelectedPlayers(newArray);
     };
 
-    const selectPlayerAtIndex = (name, index) => {
-        if (selectedPlayers[index]?.name === name) {
+    const selectPlayerAtIndex = (id, index) => {
+        if (selectedPlayers[index]?.id === id) {
             return;
         }
 
-        const newArray = selectedPlayers.map(p => (p?.name === name ? null : p));
-        newArray[index] = players.find(p => p.name === name);
+        const newArray = selectedPlayers.map(p => (p?.id === id ? null : p));
+        newArray[index] = players.find(p => p.id === id);
         setSelectedPlayers(newArray);
     };
 
     const unSelectPlayer = player => {
-        const index = selectedPlayers.findIndex(p => p?.name === player.name);
+        const index = selectedPlayers.findIndex(p => p?.id === player.id);
         const newArray = [...selectedPlayers];
         newArray[index] = null;
         setSelectedPlayers(newArray);
     };
 
     const isSelected = player => {
-        return selectedPlayers.filter(p => p?.name === player.name).length > 0;
+        return selectedPlayers.filter(p => p?.id === player.id).length > 0;
     };
 
     const createPlayerDiv = player => {
@@ -87,31 +94,31 @@ function PlayerSelection({
 
         const className = "player" + (isSelected(player) ? " selected" : "");
 
-        if (player.id === undefined) {
-            // unregistered
-            // TODO: option to remove
-            return <div className={className} onClick={onClick}>
-                <label className={"name"}>{player.name}</label>
-            </div>
-        } else {
+        if (player.registered) {
             // registered
             return <div className={className} onClick={onClick}>
                 <span className={"avatar"} style={{backgroundImage: `url('/api/players/registered/${player.id}/avatar')`}}></span>
+                <label className={"name"}>{player.name}</label>
+            </div>
+        } else {
+            // unregistered
+            // TODO: option to remove
+            return <div className={className} onClick={onClick}>
                 <label className={"name"}>{player.name}</label>
             </div>
         }
     };
 
     const start = () => {
-        const playerNames = Object.values(
+        const playerIds = Object.values(
             selectedPlayers.reduce((acc, item) => {
-                acc[item?.name] = acc[item?.name] || [];
-                acc[item?.name].push(item?.name || "");
+                acc[item?.id] = acc[item?.id] || [];
+                acc[item?.id].push(item?.id || "");
                 return acc;
             }, {})
         ).flat();
 
-        const nVacant = playerNames.filter(name => name === "").length;
+        const nVacant = playerIds.filter(id => id === "").length;
         if (nVacant === playerSetting.colors.length) {
             alert("Song cannot be started without any players");
             return;
@@ -121,7 +128,7 @@ function PlayerSelection({
             }
         }
 
-        playSong(song, playerNames, onClose);
+        playSong(song, playerIds, onClose);
     };
 
     console.log(selectedPlayers);
@@ -148,11 +155,10 @@ function PlayerSelection({
                             {selectedPlayers[index]?.id &&
                                 <span className={"avatar"} style={{backgroundImage: `url('/api/players/registered/${selectedPlayers[index].id}/avatar')`}}></span>
                             }
-                            {/*<label className={"name"}>{player.name}</label>*/}
-                            <select className={"name"} value={selectedPlayers[index]?.name || "unset"} onChange={(e) => selectPlayerAtIndex(e.target.value, constIndex)}>
+                            <select className={"name"} value={selectedPlayers[index]?.id || "unset"} onChange={(e) => selectPlayerAtIndex(e.target.value, constIndex)}>
                                 <option key={-1} disabled={true} value={"unset"}>{`Player ${index + 1}`}</option>
                                 {players.map((p, index) => (
-                                    <option key={index} value={p.name}>
+                                    <option key={index} value={p.id}>
                                         {p.name}
                                     </option>
                                 ))}

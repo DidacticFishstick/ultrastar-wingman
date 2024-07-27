@@ -26,7 +26,6 @@ import OrderEnum from './model/OrderEnum';
 import Paging from './model/Paging';
 import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
-import PlayerList from './model/PlayerList';
 import PlayersModel from './model/PlayersModel';
 import RegisteredPlayerModel from './model/RegisteredPlayerModel';
 import Score from './model/Score';
@@ -173,12 +172,6 @@ export {
      * @property {module:model/PlayerCreation}
      */
     PlayerCreation,
-
-    /**
-     * The PlayerList model constructor.
-     * @property {module:model/PlayerList}
-     */
-    PlayerList,
 
     /**
      * The PlayersModel model constructor.

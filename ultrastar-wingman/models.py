@@ -63,6 +63,7 @@ class RegisteredPlayerModel(BaseModel):
 
 
 class UnregisteredPlayerModel(BaseModel):
+    id: str = Field(None, description="The id for the player.")
     name: str = Field(None, description="The name of the player.")
 
 
@@ -74,10 +75,6 @@ class PlayersModel(BaseModel):
 class PlayerConfig(BaseModel):
     colors: List[str] = Field(None, description="The available colors")
     players: PlayersModel = Field(None, description="All available players")
-
-
-class PlayerList(BaseModel):
-    players: List[str] = Field(None, example=["Alice", "Bob", "Charlie"], description="List of player names.")
 
 
 class Score(BaseModel):
@@ -108,7 +105,7 @@ class ScoresModel(BaseModel):
 
 class SingModel(BaseModel):
     force: bool = Field(False, description="Force a song change if another song is currently playing.")
-    players: List[str] = Field(None, description="List of player names.")
+    player_ids: List[str] = Field(None, description="List of player ids.")
 
 
 class WishModel(BaseModel):

@@ -16,14 +16,12 @@ const NewUnregisteredPlayer = ({
     const [error, setError] = useState('');
 
     const submit = () => {
-        addUnregisteredPlayer(playerName, data => {
+        addUnregisteredPlayer(playerName, player => {
             setPlayerSettings(prevState => ({
                 ...prevState,
                 players: {
                     ...prevState.players,
-                    unregistered: [...prevState.players.unregistered, {
-                        name: playerName
-                    }]
+                    unregistered: [...prevState.players.unregistered, player]
                 }
             }));
             onClose();

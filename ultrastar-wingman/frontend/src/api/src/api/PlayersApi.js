@@ -17,7 +17,7 @@ import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
 import PlayerConfig from '../model/PlayerConfig';
 import PlayerCreation from '../model/PlayerCreation';
-import PlayerList from '../model/PlayerList';
+import UnregisteredPlayerModel from '../model/UnregisteredPlayerModel';
 
 /**
 * Players service.
@@ -91,7 +91,7 @@ export default class PlayersApi {
 
     /**
      * Api Get Player Avatar
-     * The avatar for the given player  :param player: The player name
+     * The avatar for the given player  :param player: The player id
      * @param {Object} player 
      * @param {module:api/PlayersApi~apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link Object}
@@ -128,16 +128,16 @@ export default class PlayersApi {
      * Callback function to receive the result of the apiPlayersAddApiPlayersPost operation.
      * @callback module:api/PlayersApi~apiPlayersAddApiPlayersPostCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/PlayerList} data The data returned by the service call.
+     * @param {module:model/UnregisteredPlayerModel} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
      * Add a New Player
-     * Adds a new player name to the list.  - **name**: The name of the player to add. It is taken from the form data.  This endpoint writes the new player's name to the players file, appending it to the end. If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
+     * Adds a new temporary player name to the list. If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
      * @param {module:model/PlayerCreation} playerCreation 
      * @param {module:api/PlayersApi~apiPlayersAddApiPlayersPostCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/PlayerList}
+     * data is of type: {@link module:model/UnregisteredPlayerModel}
      */
     apiPlayersAddApiPlayersPost(playerCreation, callback) {
       let postBody = playerCreation;
@@ -158,7 +158,7 @@ export default class PlayersApi {
       let authNames = ['OAuth2PasswordBearer'];
       let contentTypes = ['application/json'];
       let accepts = ['application/json'];
-      let returnType = PlayerList;
+      let returnType = UnregisteredPlayerModel;
       return this.apiClient.callApi(
         '/api/players', 'POST',
         pathParams, queryParams, headerParams, formParams, postBody,
@@ -213,22 +213,22 @@ export default class PlayersApi {
 
     /**
      * Delete a Player
-     * Deletes a player name from the list.  - **name**: The name of the player to delete.  This endpoint reads all player names, filters out the specified name, and rewrites the file without it. If the operation is successful, it returns a success message.
-     * @param {String} name The name of the player to delete.
+     * Deletes a player name from the list. If the operation is successful, it returns a success message.
+     * @param {String} id The id of the player to delete.
      * @param {module:api/PlayersApi~apiPlayersDeleteApiPlayersDeleteCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/BasicResponse}
      */
-    apiPlayersDeleteApiPlayersDelete(name, callback) {
+    apiPlayersDeleteApiPlayersDelete(id, callback) {
       let postBody = null;
-      // verify the required parameter 'name' is set
-      if (name === undefined || name === null) {
-        throw new Error("Missing the required parameter 'name' when calling apiPlayersDeleteApiPlayersDelete");
+      // verify the required parameter 'id' is set
+      if (id === undefined || id === null) {
+        throw new Error("Missing the required parameter 'id' when calling apiPlayersDeleteApiPlayersDelete");
       }
 
       let pathParams = {
       };
       let queryParams = {
-        'name': name
+        'id': id
       };
       let headerParams = {
       };
@@ -256,7 +256,7 @@ export default class PlayersApi {
 
     /**
      * Upload an avatar for the player
-     * Sets the avatar for the given player  :param player: The player name :param user: The current user
+     * Sets the avatar for the given player  :param player: The player id :param user: The current user
      * @param {Object} player 
      * @param {File} file 
      * @param {module:api/PlayersApi~apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPostCallback} callback The callback function, accepting three arguments: error, data, response

@@ -179,7 +179,6 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.Paging](docs/Paging.md)
  - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
- - [UltraStarWingman.PlayerList](docs/PlayerList.md)
  - [UltraStarWingman.PlayersModel](docs/PlayersModel.md)
  - [UltraStarWingman.RegisteredPlayerModel](docs/RegisteredPlayerModel.md)
  - [UltraStarWingman.Score](docs/Score.md)

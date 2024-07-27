@@ -17,8 +17,8 @@ if (localStorage.getItem('access_token')) {
 }
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
-// const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
-const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
+const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
+// const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
 
 
 function displayApiError(error, data, response) {
@@ -345,6 +345,7 @@ export function usePlayerSettings() {
 
     useEffect(() => {
         playersApi.apiPlayersApiPlayersGet(apiCallback(data => {
+            console.log(data)
             setPlayerSettings(data);
         }));
     }, []);
@@ -455,7 +456,7 @@ export function downloadFromUsdb(usdbId) {
 
 export function playSong(song, players, callback = undefined, force = false) {
     // TODO: pass the players (also in backend)
-    songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {players: players, force: force}, (error, data, response) => {
+    songsApi.apiSingSongApiSongsSongIdSingPost(song.id, {player_ids: players, force: force}, (error, data, response) => {
         if (error) {
             if (response.status === 409) {
                 // TODO: custom modal

@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 
 Api Get Player Avatar
 
-The avatar for the given player  :param player: The player name
+The avatar for the given player  :param player: The player id
 
 ### Example
 
@@ -109,11 +109,11 @@ No authorization required
 
 ## apiPlayersAddApiPlayersPost
 
-> PlayerList apiPlayersAddApiPlayersPost(playerCreation)
+> UnregisteredPlayerModel apiPlayersAddApiPlayersPost(playerCreation)
 
 Add a New Player
 
-Adds a new player name to the list.  - **name**: The name of the player to add. It is taken from the form data.  This endpoint writes the new player&#39;s name to the players file, appending it to the end. If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
+Adds a new temporary player name to the list. If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
 
 ### Example
 
@@ -144,7 +144,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**PlayerList**](PlayerList.md)
+[**UnregisteredPlayerModel**](UnregisteredPlayerModel.md)
 
 ### Authorization
 
@@ -203,11 +203,11 @@ This endpoint does not need any parameter.
 
 ## apiPlayersDeleteApiPlayersDelete
 
-> BasicResponse apiPlayersDeleteApiPlayersDelete(name)
+> BasicResponse apiPlayersDeleteApiPlayersDelete(id)
 
 Delete a Player
 
-Deletes a player name from the list.  - **name**: The name of the player to delete.  This endpoint reads all player names, filters out the specified name, and rewrites the file without it. If the operation is successful, it returns a success message.
+Deletes a player name from the list. If the operation is successful, it returns a success message.
 
 ### Example
 
@@ -219,8 +219,8 @@ let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer']
 OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
 
 let apiInstance = new UltraStarWingman.PlayersApi();
-let name = "name_example"; // String | The name of the player to delete.
-apiInstance.apiPlayersDeleteApiPlayersDelete(name, (error, data, response) => {
+let id = "id_example"; // String | The id of the player to delete.
+apiInstance.apiPlayersDeleteApiPlayersDelete(id, (error, data, response) => {
   if (error) {
     console.error(error);
   } else {
@@ -234,7 +234,7 @@ apiInstance.apiPlayersDeleteApiPlayersDelete(name, (error, data, response) => {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **name** | **String**| The name of the player to delete. | 
+ **id** | **String**| The id of the player to delete. | 
 
 ### Return type
 
@@ -256,7 +256,7 @@ Name | Type | Description  | Notes
 
 Upload an avatar for the player
 
-Sets the avatar for the given player  :param player: The player name :param user: The current user
+Sets the avatar for the given player  :param player: The player id :param user: The current user
 
 ### Example
 

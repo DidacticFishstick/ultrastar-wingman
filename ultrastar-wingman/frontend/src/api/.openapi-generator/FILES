@@ -16,7 +16,6 @@ docs/OrderEnum.md
 docs/Paging.md
 docs/PlayerConfig.md
 docs/PlayerCreation.md
-docs/PlayerList.md
 docs/PlayersApi.md
 docs/PlayersModel.md
 docs/RegisteredPlayerModel.md
@@ -71,7 +70,6 @@ src/model/OrderEnum.js
 src/model/Paging.js
 src/model/PlayerConfig.js
 src/model/PlayerCreation.js
-src/model/PlayerList.js
 src/model/PlayersModel.js
 src/model/RegisteredPlayerModel.js
 src/model/Score.js

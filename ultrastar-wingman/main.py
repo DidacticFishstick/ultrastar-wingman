@@ -8,6 +8,7 @@ import uvicorn
 from typing import Optional
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 import config
 import models
@@ -271,7 +272,7 @@ async def api_sing_song(song_id, sing_model: models.SingModel, _: User = Depends
     if song is None:
         raise HTTPException(status_code=404, detail="Song not found")
 
-    if await song.sing(sing_model.players, force=sing_model.force):
+    if await song.sing([await Player.get_by_id(id) for id in sing_model.player_ids], force=sing_model.force):
         return {"success": True}
     else:
         raise HTTPException(status_code=409, detail="Another song is already playing")
@@ -294,28 +295,28 @@ async def api_players(_: User = Depends(permissions.user_permissions(permissions
     }
 
 
-@app.post('/api/players', response_model=models.PlayerList, status_code=status.HTTP_201_CREATED, summary="Add a New Player", response_description="Confirmation of player addition", tags=["Players"])
+@app.post('/api/players', response_model=models.UnregisteredPlayerModel, status_code=status.HTTP_201_CREATED, summary="Add a New Player", response_description="Confirmation of player addition", tags=["Players"])
 async def api_players_add(player_data: models.PlayerCreation, _: User = Depends(permissions.user_permissions(permissions.players_add))):
     """
-    Adds a new player name to the list.
+    Adds a new temporary player name to the list.
     If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
     """
 
     try:
-        await Player.new_temporary(player_data.name)
-        return {"success": True}
+        player = await Player.new_temporary(player_data.name)
+        return player.to_json()
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e)) from e
 
 
 @app.delete('/api/players', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
-async def api_players_delete(name: str = Query(..., description="The name of the player to delete."), _: User = Depends(permissions.user_permissions(permissions.players_remove))):
+async def api_players_delete(id: str = Query(..., description="The id of the player to delete."), _: User = Depends(permissions.user_permissions(permissions.players_remove))):
     """
     Deletes a player name from the list.
     If the operation is successful, it returns a success message.
     """
 
-    Player.delete_temporary(name)
+    Player.delete_temporary(id)
 
     return {"success": True}
 
@@ -346,7 +347,7 @@ async def api_get_player_avatar(player):
     if player is None:
         raise HTTPException(status_code=404, detail="Player does not exist")
 
-    return player.get_avatar(config.users_dir)
+    return player.get_avatar_file_response(config.users_avatars_dir)
 
 
 @app.post("/api/players/registered/{player}/avatar", response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Upload an avatar for the player", response_description="Confirmation of file upload", tags=["Players"])
@@ -365,7 +366,7 @@ async def api_post_player_avatar(player, file: UploadFile = File(...), user: Use
         raise HTTPException(status_code=400, detail="File must be an image")
 
     player = await Player.get_by_id(player)
-    await player.set_avatar(config.users_dir, file)
+    await player.set_avatar(config.users_avatars_dir, file)
 
     return {"success": True}
 
@@ -471,6 +472,15 @@ async def ws_endpoint(websocket: WebSocket):
         ws.ws_connections.remove(websocket)
 
 
+# region UI
+
+# TODO: error when not build yet, option to let build, check if build is current build
+app.mount("/", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "frontend/build"), html=True), name="static")
+# TODO: Everything is in the index.html but the URL changes to /songs and stuff -> reload leads to 404
+
+# endregion
+
+
 async def main():
     # login to usdb.animux.de
     await usdb.login()
@@ -480,10 +490,6 @@ async def main():
 
     # load all downloaded songs
     Song.load_songs()
-
-    # TODO: move to the place where sing ist started
-    # configure usdx
-    usdx.change_config(config.setup_colors)
 
     # start the server
     server_config = uvicorn.Config(app="main:app", host="0.0.0.0", port=8080, log_level="info")

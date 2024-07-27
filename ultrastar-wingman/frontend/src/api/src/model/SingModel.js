@@ -50,8 +50,8 @@ class SingModel {
             if (data.hasOwnProperty('force')) {
                 obj['force'] = ApiClient.convertToType(data['force'], 'Boolean');
             }
-            if (data.hasOwnProperty('players')) {
-                obj['players'] = ApiClient.convertToType(data['players'], ['String']);
+            if (data.hasOwnProperty('player_ids')) {
+                obj['player_ids'] = ApiClient.convertToType(data['player_ids'], ['String']);
             }
         }
         return obj;
@@ -64,8 +64,8 @@ class SingModel {
      */
     static validateJSON(data) {
         // ensure the json data is an array
-        if (!Array.isArray(data['players'])) {
-            throw new Error("Expected the field `players` to be an array in the JSON data but got " + data['players']);
+        if (!Array.isArray(data['player_ids'])) {
+            throw new Error("Expected the field `player_ids` to be an array in the JSON data but got " + data['player_ids']);
         }
 
         return true;
@@ -84,10 +84,10 @@ class SingModel {
 SingModel.prototype['force'] = false;
 
 /**
- * List of player names.
- * @member {Array.<String>} players
+ * List of player ids.
+ * @member {Array.<String>} player_ids
  */
-SingModel.prototype['players'] = undefined;
+SingModel.prototype['player_ids'] = undefined;
 
 
 
