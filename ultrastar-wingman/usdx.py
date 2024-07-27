@@ -61,7 +61,6 @@ async def start(song: Optional['Song'] = None, kill_previous=False, callback=Non
 
     params = []
     if song is not None:
-        # TODO: does not work if the directory has some special characters in it
         params = ["-SongPath", str(song.directory)]
 
     async with process_lock:

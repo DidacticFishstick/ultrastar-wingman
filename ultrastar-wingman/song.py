@@ -84,7 +84,7 @@ class Song:
     def load_songs(cls):
         start_time = time.time()
         for subdir in tqdm(os.listdir(config.usdx_songs_dir), desc="Loading songs"):
-            subdir_path = os.path.join(config.usdx_songs_dir, subdir)
+            subdir_path = str(os.path.join(config.usdx_songs_dir, subdir))
 
             if not os.path.isdir(subdir_path):
                 continue
@@ -123,9 +123,9 @@ class Song:
                         logging.warning(f"No artist for {subdir_path}")
                         continue
 
-                    song = cls(directory=subdir_path, usdb_id=usdb_id, **txt_data)
-                    # save the data to skip loading everything again next time
-                    song.save_metadata()
+                song = cls(directory=subdir_path, usdb_id=usdb_id, **txt_data)
+                # save the data to skip loading everything again next time
+                song.save_metadata()
             except:
                 logging.exception(f"Could not process song in '{subdir_path}'")
 
@@ -147,9 +147,9 @@ class Song:
             with open(path, "r") as file:
                 data = json.load(file)
 
-                # that check that all the required data is present
-                if all({key: (key in data) for key in ["title", "artist", "cover", "mp3"]}.values()):
-                    return cls(directory=directory, **data)
+            # that check that all the required data is present
+            if all({key: (key in data) for key in ["title", "artist", "cover", "mp3"]}.values()):
+                return cls(directory=directory, **data)
 
     @classmethod
     def load_deprecated_usdb_id(cls, directory) -> Optional[str]:
@@ -408,7 +408,7 @@ class Song:
         :param kwargs: Additional arguments passed to the song constructor (not used currently)
         """
 
-        self.directory = directory
+        self.directory = self.sanitize_path(directory)
         self.title = title
         self.artist = artist
         self.usdb_id = usdb_id
@@ -437,6 +437,50 @@ class Song:
         if self.usdb_id is not None:
             return f"[Song '{self.title} - {self.artist}' ({self.usdb_id})]"
         return f"[Song '{self.title} - {self.artist}']"
+
+    def sanitize_path(self, directory: str) -> str:
+        """
+        Check that the directory only has allowed characters and renames it otherwise
+        TODO: mention this as a warning in the readme
+
+        :return: The new directory
+        """
+
+        # Define the regex pattern for allowed characters
+        pattern = re.compile(r'[^a-zA-Z0-9.,-_()+ ]')
+
+        # Get the directory name and parent directory
+        parent_dir = os.path.dirname(directory)
+        dir_name = os.path.basename(directory)
+
+        # Remove non-ASCII characters
+        new_dir_name = pattern.sub('', dir_name)
+
+        # Ensure the new directory name is not empty
+        if not new_dir_name:
+            return directory
+
+        if new_dir_name == dir_name:
+            return directory
+
+        new_path = os.path.join(parent_dir, new_dir_name)
+
+        # Append a number if the directory already exists
+        counter = 1
+        while os.path.exists(new_path):
+            new_path = os.path.join(parent_dir, f"{new_dir_name} ({counter})")
+            counter += 1
+
+        logging.info(f"Renaming '{directory}' to '{new_path}' to remove special characters")
+
+        try:
+            # Rename the directory
+            os.rename(directory, new_path)
+        except PermissionError as e:
+            logging.exception("Failed to rename directory")
+            return directory
+
+        return new_path
 
     def to_json(self):
         return {
