@@ -5,7 +5,6 @@ import Home from './components/Home';
 import Songs from './components/Songs';
 import UsdbList from './components/UsdbList';
 import Usdb from "./components/Usdb";
-import Players from "./components/PlayerSelection";
 import Scores from "./components/Scores";
 import './App.css';
 import User from "./components/User";
@@ -32,6 +31,4 @@ function App() {
     );
 }
 
-
 export default App;
-

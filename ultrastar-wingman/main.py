@@ -474,9 +474,20 @@ async def ws_endpoint(websocket: WebSocket):
 
 # region UI
 
+# Everything is in the index.html but the URL changes as this is a single page application.
+# fastAPI does not like this -> custom routes
+@app.get("/songs")
+@app.get("/UsdbList")
+@app.get("/usdb")
+@app.get("/scores")
+@app.get("/user")
+async def alias_routes():
+    return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/build", "index.html"))
+
+
 # TODO: error when not build yet, option to let build, check if build is current build
 app.mount("/", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "frontend/build"), html=True), name="static")
-# TODO: Everything is in the index.html but the URL changes to /songs and stuff -> reload leads to 404
+
 
 # endregion
 
