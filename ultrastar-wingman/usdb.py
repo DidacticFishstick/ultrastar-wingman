@@ -63,7 +63,7 @@ async def login():
                 username, password = new_username, new_password
 
         if await login_request(username, password):
-            print(f"Login as {username} on https://usdb.animux.de successful")
+            logging.info(f"Login as {username} on https://usdb.animux.de successful")
             break
         else:
             print("Invalid credentials. Please try again.")

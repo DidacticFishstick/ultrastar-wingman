@@ -83,51 +83,54 @@ class Song:
     @classmethod
     def load_songs(cls):
         start_time = time.time()
-        for subdir in tqdm(os.listdir(config.usdx_songs_dir), desc="Loading songs"):
-            subdir_path = str(os.path.join(config.usdx_songs_dir, subdir))
 
-            if not os.path.isdir(subdir_path):
-                continue
+        for song_dir in [config.usdx_songs_dir] + usdx.get_additional_song_dirs(config.usdx_config_file):
+            logging.info(f"Loading songs from {song_dir}")
+            for subdir in tqdm(os.listdir(song_dir)):
+                subdir_path = str(os.path.join(song_dir, subdir))
 
-            try:
-                # if a wingman.json exists, use the data from there
-                if cls.song_from_metadata(subdir_path):
+                if not os.path.isdir(subdir_path):
                     continue
 
-                # maybe get the usdb_id from the deprecated usdb_data.json if it exists
-                usdb_id = cls.load_deprecated_usdb_id(subdir_path)
-
-                # search for txt files
-                txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
-
-                if not txt_files:
-                    continue
-
-                txt_path = os.path.join(subdir_path, txt_files[0])
-
-                with open(txt_path, 'rb') as file:
-                    encoding = chardet.detect(file.read())['encoding']
-
-                # if encoding != 'utf-8':
-                #     logging.warning(f"Wrong encoding. Is {encoding} instead of utf-8 for '{os.path.join(subdir_path, txt_files[0])}'")
-
-                with open(txt_path, 'r', encoding=encoding) as file:
-                    txt = file.read()
-
-                    txt_data = cls.get_data_from_txt(txt)
-
-                    if txt_data["title"] is None:
-                        logging.warning(f"No title for {subdir_path}")
-                        continue
-                    if txt_data["artist"] is None:
-                        logging.warning(f"No artist for {subdir_path}")
+                try:
+                    # if a wingman.json exists, use the data from there
+                    if cls.song_from_metadata(subdir_path):
                         continue
 
-                song = cls(directory=subdir_path, usdb_id=usdb_id, **txt_data)
-                # save the data to skip loading everything again next time
-                song.save_metadata()
-            except:
-                logging.exception(f"Could not process song in '{subdir_path}'")
+                    # maybe get the usdb_id from the deprecated usdb_data.json if it exists
+                    usdb_id = cls.load_deprecated_usdb_id(subdir_path)
+
+                    # search for txt files
+                    txt_files = [f for f in os.listdir(subdir_path) if f.endswith('.txt')]
+
+                    if not txt_files:
+                        continue
+
+                    txt_path = os.path.join(subdir_path, txt_files[0])
+
+                    with open(txt_path, 'rb') as file:
+                        encoding = chardet.detect(file.read())['encoding']
+
+                    # if encoding != 'utf-8':
+                    #     logging.warning(f"Wrong encoding. Is {encoding} instead of utf-8 for '{os.path.join(subdir_path, txt_files[0])}'")
+
+                    with open(txt_path, 'r', encoding=encoding) as file:
+                        txt = file.read()
+
+                        txt_data = cls.get_data_from_txt(txt)
+
+                        if txt_data["title"] is None:
+                            logging.warning(f"No title for {subdir_path}")
+                            continue
+                        if txt_data["artist"] is None:
+                            logging.warning(f"No artist for {subdir_path}")
+                            continue
+
+                    song = cls(directory=subdir_path, usdb_id=usdb_id, **txt_data)
+                    # save the data to skip loading everything again next time
+                    song.save_metadata()
+                except:
+                    logging.exception(f"Could not process song in '{subdir_path}'")
 
         logging.info(f"Finished loading all songs in {round(time.time() - start_time, 2)} seconds")
 

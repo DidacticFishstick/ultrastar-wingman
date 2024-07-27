@@ -129,8 +129,21 @@ def calculate_md5(file_path):
     return hash_md5.hexdigest().upper()
 
 
-def replace_in_config(file_path, replace):
-    with open(file_path, "r") as file:
+def get_additional_song_dirs(config_file_path):
+    """
+    Gets the SongDir<N>=<Path> from the config.ini
+
+    :param config_file_path: The path to the config.ini
+    :return: All song dirs
+    """
+
+    with open(config_file_path, "r") as file:
+        content = file.read()
+
+    return re.findall(r'SongDir\d*=([^ \n]+)', content)
+
+def replace_in_config(config_file_path, replace):
+    with open(config_file_path, "r") as file:
         content = file.read()
 
     for header, settings in replace.items():
@@ -140,7 +153,7 @@ def replace_in_config(file_path, replace):
 
             content = re.sub(rf'(\[{header}\][^\[]*{key}=)[^\n]*', replacer, content, count=1)
 
-    with open(file_path, "w") as file:
+    with open(config_file_path, "w") as file:
         file.write(content)
 
 
