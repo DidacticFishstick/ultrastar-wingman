@@ -96,14 +96,14 @@ songs_play = Permission(
     "songs.play",
     "Start Songs",
     "Allows the user to start a song",
-    AccessLevel.trusted
+    AccessLevel.unregistered
 )
 
 songs_stop = Permission(
     "songs.stop",
     "Stop Song",
     "Allows the user to stop a song by exiting Ultrastar Deluxe",
-    AccessLevel.trusted
+    AccessLevel.unregistered
 )
 
 wishlist_edit = Permission(
@@ -131,14 +131,14 @@ usdb_browse_proxy = Permission(
     "usdb.browse_proxy",
     "Browse usdb.animux.de Directly",
     "Allows the user to browse the default usdb.animux.de site (the user will have access to the configured USDB account!)",
-    AccessLevel.manager
+    AccessLevel.trusted
 )
 
 usdb_download = Permission(
     "usdb.download",
     "Download Songs from usdb.animux.de",
     "Allows the user to browse usdb.animux.de",
-    AccessLevel.trusted
+    AccessLevel.unregistered
 )
 
 players_view = Permission(
