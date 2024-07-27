@@ -28,12 +28,13 @@ class Permission:
         :param default_min_access_level: The default minimum access level the user has to have (-1 for unregistered)
         """
 
-        # TODO: get current settings
-
         self.permission_id = permission_id
         self.title = title
         self.description = description
-        self.default_min_access_level = default_min_access_level
+        self.default_min_access_level = default_min_access_level.value if isinstance(default_min_access_level, AccessLevel) else default_min_access_level
+
+        # TODO: get current settings
+        self.min_access_level = default_min_access_level
 
         self.permissions[self.permission_id] = self
 
@@ -51,8 +52,20 @@ class Permission:
         :raises: HTTPException if the permission is not given
         """
 
-        if (user is None and self.default_min_access_level > -1) or (user is not None and user.access_level < self.default_min_access_level):
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Missing Permission '{self.permission_id}' (requires access level '{self.default_min_access_level.name}')")
+        if (user is None and self.min_access_level > -1) or (user is not None and user.access_level < self.min_access_level):
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Missing Permission '{self.permission_id}' (requires access level '{self.min_access_level.name}')")
+
+    def to_json(self) -> dict:
+        return {
+            "id": self.permission_id,
+            "title": self.title,
+            "description": self.description,
+            "min_access_level": self.min_access_level,
+        }
+
+    def set_min_access_level(self, access_level):
+        # TODO: write this to some file or something
+        self.min_access_level = access_level
 
 
 def check(user: User, *permissions: Permission):
@@ -194,5 +207,12 @@ settings_edit = Permission(
     "settings.edit",
     "Edit Settings",
     "Allows the user to edit these settings and user permissions",
+    AccessLevel.admin
+)
+
+permissions_edit = Permission(
+    "permissions.edit",
+    "Edit Permissions",
+    "Allows the user to edit the required permission for different stuff if the given permission is not currently out of the users reach.",
     AccessLevel.admin
 )

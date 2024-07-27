@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 from pydantic import BaseModel, Field
 
@@ -92,6 +92,36 @@ class RegisteredPlayersPatchModel(BaseModel):
 class PlayerConfig(BaseModel):
     colors: List[str] = Field(None, description="The available colors")
     players: PlayersModel = Field(None, description="All available players")
+
+
+class AccessLevel(BaseModel):
+    value: int = Field(None, description="The value for the access level.")
+    title: str = Field(None, description="The title of the access level.")
+
+
+class PermissionModel(BaseModel):
+    id: str = Field(None, description="An id for the permission.")
+    title: str = Field(None, description="The title for the permission.")
+    description: str = Field(None, description="The description for the permission.")
+    min_access_level: int = Field(None, description="The minimum access level for the permission.")
+
+
+class PermissionPatchModel(BaseModel):
+    id: str = Field(None, description="The id for the permission.")
+    min_access_level: int = Field(None, description="The minimum access level for the permission.")
+
+
+class PermissionsModel(BaseModel):
+    access_levels: List[AccessLevel] = Field(None, description="All available access levels.")
+    permissions: List[PermissionModel] = Field(None, description="All available permissions.")
+
+
+class PermissionsPatchModel(BaseModel):
+    permissions: List[PermissionPatchModel] = Field(None, description="Permissions to patch.")
+
+
+class PermissionsPatchResponseModel(BaseModel):
+    permissions: List[PermissionModel] = Field(None, description="Patched permissions.")
 
 
 class Score(BaseModel):

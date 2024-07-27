@@ -5,7 +5,7 @@ import os.path
 from contextlib import asynccontextmanager
 
 import uvicorn
-from typing import Optional
+from typing import Optional, Dict
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -362,7 +362,7 @@ async def api_registered_players(players_patch_data: models.RegisteredPlayersPat
         player = await Player.get_by_id(player_patch_data.id)
 
         if player is None:
-            raise HTTPException(status_code=404, detail="Player {} does not exist.")
+            raise HTTPException(status_code=404, detail=f"Player {player} does not exist.")
 
         players[player.id] = player
 
@@ -441,6 +441,51 @@ async def api_post_player_avatar(player, file: UploadFile = File(...), user: Use
     await player.set_avatar(config.users_avatars_dir, file)
 
     return {"success": True}
+
+
+@app.get('/api/permissions', response_model=models.PermissionsModel, status_code=status.HTTP_200_OK, summary="Get all permissions", response_description="The permissions", tags=["Permissions"])
+async def api_permissions_get():
+    """
+    Gets all the permissions.
+    """
+
+    return {
+        "access_levels": [{
+            "value": access_level.value,
+            "title": access_level.name
+        } for access_level in permissions.AccessLevel],
+        "permissions": [permission.to_json() for permission in permissions.Permission.permissions.values()]
+    }
+
+
+@app.patch('/api/permissions', response_model=models.PermissionsPatchResponseModel, status_code=status.HTTP_200_OK, summary="Patch data for permissions", response_description="The edited permissions", tags=["Permissions"])
+async def api_permissions_patch(permissions_patch_data: models.PermissionsPatchModel, user: User = Depends(permissions.user_permissions(permissions.permissions_edit))):
+    """
+    Patch permissions.
+    """
+
+    patched_permissions: Dict[str, permissions.Permission] = {}
+    for permission_patch_data in permissions_patch_data.permissions:
+        if permission_patch_data.min_access_level > user.access_level:
+            raise HTTPException(status_code=403, detail="You are not allowed to edit permissions that you do not poses.")
+
+        permission = permissions.Permission.permissions.get(permission_patch_data.id)
+
+        if permission is None:
+            raise HTTPException(status_code=404, detail=f"Permission {permission} does not exist.")
+
+        patched_permissions[permission.permission_id] = permission
+
+    for permission_patch_data in permissions_patch_data.permissions:
+        patched_permissions[permission_patch_data.id].set_min_access_level(permission_patch_data.min_access_level)
+
+    return {
+        "access_levels": [{
+            "value": access_level.value,
+            "title": access_level.name
+        } for access_level in permissions.AccessLevel],
+        "permissions": [permission.to_json() for permission in patched_permissions.values()]
+    }
 
 
 @app.get('/api/sessions', response_model=models.SessionsListModel, status_code=status.HTTP_200_OK, summary="Get all sessions", response_description="The sessions", tags=["Scores"])
