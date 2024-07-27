@@ -148,15 +148,22 @@ players_view = Permission(
     AccessLevel.unregistered
 )
 
-players_add = Permission(
-    "players.add",
+players_edit = Permission(
+    "players.edit",
+    "Edit Player Permissions",
+    "Allows the user to edit the access level for any player to a maximum of the own access level",
+    AccessLevel.trusted
+)
+
+players_add_temp = Permission(
+    "players.add_temp",
     "Add Player",
     "Allows the user to add a new temporary player",
     AccessLevel.unregistered
 )
 
-players_remove = Permission(
-    "players.remove",
+players_remove_temp = Permission(
+    "players.remove_temp",
     "Remove Player",
     "Allows the user to remove a temporary player",
     AccessLevel.unregistered

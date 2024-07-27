@@ -296,7 +296,7 @@ async def api_players(_: User = Depends(permissions.user_permissions(permissions
 
 
 @app.post('/api/players', response_model=models.UnregisteredPlayerModel, status_code=status.HTTP_201_CREATED, summary="Add a New Player", response_description="Confirmation of player addition", tags=["Players"])
-async def api_players_add(player_data: models.PlayerCreation, _: User = Depends(permissions.user_permissions(permissions.players_add))):
+async def api_players_add(player_data: models.PlayerCreation, _: User = Depends(permissions.user_permissions(permissions.players_add_temp))):
     """
     Adds a new temporary player name to the list.
     If the operation is successful, it returns a success message. Otherwise, it raises an HTTPException.
@@ -310,7 +310,7 @@ async def api_players_add(player_data: models.PlayerCreation, _: User = Depends(
 
 
 @app.delete('/api/players', response_model=models.BasicResponse, status_code=status.HTTP_200_OK, summary="Delete a Player", response_description="Confirmation of player deletion", tags=["Players"])
-async def api_players_delete(id: str = Query(..., description="The id of the player to delete."), _: User = Depends(permissions.user_permissions(permissions.players_remove))):
+async def api_players_delete(id: str = Query(..., description="The id of the player to delete."), _: User = Depends(permissions.user_permissions(permissions.players_remove_temp))):
     """
     Deletes a player name from the list.
     If the operation is successful, it returns a success message.
@@ -333,6 +333,78 @@ async def api_get_default_avatar(color, _: User = Depends(permissions.user_permi
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", f"cat_{color}.jpg"))
     except FileNotFoundError:
         return FileResponse(os.path.join(SCRIPT_BASE_PATH, "avatars", "cat_rainbow.jpg"))
+
+
+@app.get('/api/players/registered', response_model=models.RegisteredPlayersModel, summary="Retrieve all registered Players", response_description="A list of all registered players", tags=["Players"])
+async def api_registered_players(_: User = Depends(permissions.user_permissions(permissions.players_view))):
+    """
+    Retrieves a list of all registered players.
+    """
+
+    registered = await Player.all_registered_players()
+
+    return {
+        "registered": [player.to_json() for player in registered]
+    }
+
+
+@app.patch('/api/players/registered', response_model=models.RegisteredPlayersModel, summary="Patch data for registered Players", response_description="A list of all modified registered players", tags=["Players"])
+async def api_registered_players(players_patch_data: models.RegisteredPlayersPatchModel, user: User = Depends(permissions.user_permissions(permissions.players_edit))):
+    """
+    Patches a list of registered players.
+    """
+
+    players = {}
+    for player_patch_data in players_patch_data.registered:
+        if player_patch_data.access_level > user.access_level:
+            raise HTTPException(status_code=403, detail="You can't assign access levels higher than yours.")
+
+        player = await Player.get_by_id(player_patch_data.id)
+
+        if player is None:
+            raise HTTPException(status_code=404, detail="Player {} does not exist.")
+
+        players[player.id] = player
+
+    for player_patch_data in players_patch_data.registered:
+        await players[player_patch_data.id].set_access_level(player_patch_data.access_level)
+
+    return {
+        "registered": [player.to_json() for player in players.values()]
+    }
+
+
+@app.get('/api/players/registered/{player}', response_model=models.RegisteredPlayerModel, summary="Retrieve a specific registered Players", response_description="The registered player", tags=["Players"])
+async def api_registered_players(player, _: User = Depends(permissions.user_permissions(permissions.players_view))):
+    """
+    Retrieves a registered players.
+    """
+
+    player = await Player.get_by_id(player)
+
+    if player is None:
+        raise HTTPException(status_code=404, detail="Player does not exist")
+
+    return player.to_json()
+
+
+@app.patch('/api/players/registered/{player}', response_model=models.RegisteredPlayerModel, summary="Patch data for a specific player", response_description="The player", tags=["Players"])
+async def api_registered_players(player, player_patch_data: models.RegisteredPlayerPatchModel, user: User = Depends(permissions.user_permissions(permissions.players_edit))):
+    """
+    Retrieves a registered players.
+    """
+
+    p = await Player.get_by_id(player)
+
+    if p is None:
+        raise HTTPException(status_code=404, detail="Player does not exist.")
+
+    if player_patch_data.access_level > user.access_level:
+        raise HTTPException(status_code=403, detail="You can't assign access levels higher than yours.")
+
+    await p.set_access_level(player_patch_data.access_level)
+
+    return p.to_json()
 
 
 @app.get('/api/players/registered/{player}/avatar', tags=["Players"])

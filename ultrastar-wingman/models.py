@@ -60,6 +60,15 @@ class PlayerCreation(BaseModel):
 class RegisteredPlayerModel(BaseModel):
     id: str = Field(None, description="The id for the player.")
     name: str = Field(None, description="The name of the player.")
+    access_level: int = Field(None, description="The access level for the player.")
+
+
+class RegisteredPlayerPatchModel(BaseModel):
+    access_level: Optional[int] = Field(None, description="The access level for the player.")
+
+
+class RegisteredPlayerWithIdPatchModel(RegisteredPlayerPatchModel):
+    id: str = Field(None, description="The id for the player.")
 
 
 class UnregisteredPlayerModel(BaseModel):
@@ -70,6 +79,14 @@ class UnregisteredPlayerModel(BaseModel):
 class PlayersModel(BaseModel):
     registered: List[RegisteredPlayerModel] = Field(None, description="List of registered players.")
     unregistered: List[UnregisteredPlayerModel] = Field(None, description="List of unregistered players.")
+
+
+class RegisteredPlayersModel(BaseModel):
+    registered: List[RegisteredPlayerModel] = Field(None, description="List of registered players.")
+
+
+class RegisteredPlayersPatchModel(BaseModel):
+    registered: List[RegisteredPlayerWithIdPatchModel] = Field(None, description="List of registered player patches.")
 
 
 class PlayerConfig(BaseModel):

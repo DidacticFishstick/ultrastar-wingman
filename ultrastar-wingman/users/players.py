@@ -6,11 +6,11 @@ from typing import Dict, Optional, List, Tuple
 
 from fastapi import HTTPException
 from fastapi.responses import FileResponse
-from sqlalchemy import select
+from sqlalchemy import select, update
 
 from .db import User as UserModel, async_session_maker
-
 from .users import User
+from .permissions import AccessLevel
 
 possible_photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'heic']
 
@@ -82,13 +82,13 @@ class Player:
         return cls._unregistered.pop(id)
 
     @classmethod
-    async def all_players(cls) -> Tuple[List['Player'], List['Player']]:
+    async def all_registered_players(cls) -> List['Player']:
         """
         Gets all registered players from the db.
         For every unregistered player that has a registered player with the name,
         the unregistered player will be removed and a registered player will be added.
 
-        :return: Two lists of registered players and unregistered players
+        :return: Two lists of registered players
         """
 
         # TODO: get last active time
@@ -107,7 +107,19 @@ class Player:
             if player is None:
                 cls.from_user(user)
 
-        return list(cls._registered.values()), list(cls._unregistered.values())
+        return list(cls._registered.values())
+
+    @classmethod
+    async def all_players(cls) -> Tuple[List['Player'], List['Player']]:
+        """
+        Gets all registered players from the db.
+        For every unregistered player that has a registered player with the name,
+        the unregistered player will be removed and a registered player will be added.
+
+        :return: Two lists of registered players and unregistered players
+        """
+
+        return await cls.all_registered_players(), list(cls._unregistered.values())
 
     @classmethod
     async def get_by_id(cls, id: str) -> Optional['Player']:
@@ -152,6 +164,12 @@ class Player:
         else:
             self._id = str(self.user.id)
 
+    def __str__(self) -> str:
+        return self._name
+
+    def __repr__(self) -> str:
+        return f"[{'unregistered' if self._user is None else 'registered'} Player '{self._name}']"
+
     @property
     def name(self) -> str:
         return self._name
@@ -179,6 +197,9 @@ class Player:
             "name": self._name,
             "id": self._id
         }
+
+        if self.user is not None:
+            data["access_level"] = self.user.access_level
 
         return data
 
@@ -212,3 +233,28 @@ class Player:
 
         with open(path, "wb") as buffer:
             buffer.write(await file.read())
+
+    async def set_access_level(self, access_level: int):
+        """
+        Sets the access level for this player in the db
+
+        :param access_level: The new access level
+        :raises: ValueError if the player is not registered / has no user
+        """
+
+        if self._user is None:
+            raise ValueError("User is not registered and has no access level")
+
+        self._user.access_level = access_level
+
+        async with async_session_maker() as session:
+            async with session.begin():
+                try:
+                    await session.execute(
+                        update(UserModel)
+                        .where(UserModel.id == self.id)
+                        .values(access_level=access_level)
+                        .values(is_superuser=(access_level == AccessLevel.admin))
+                    )
+                except Exception as e:
+                    logging.exception(f"Failed to set access level for {self}")
