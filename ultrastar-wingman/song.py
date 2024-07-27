@@ -86,6 +86,9 @@ class Song:
 
         for song_dir in [config.usdx_songs_dir] + usdx.get_additional_song_dirs(config.usdx_config_file):
             logging.info(f"Loading songs from {song_dir}")
+            if not (os.path.exists(song_dir) and os.path.isdir(song_dir)):
+                logging.warning(f"{song_dir} is not a directory")
+                continue
             for subdir in tqdm(os.listdir(song_dir)):
                 subdir_path = str(os.path.join(song_dir, subdir))
 
