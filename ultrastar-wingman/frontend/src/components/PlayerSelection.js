@@ -131,8 +131,6 @@ function PlayerSelection({
         playSong(song, playerIds, onClose);
     };
 
-    console.log(selectedPlayers);
-
     // TODO: button to insert last configuration
     // TODO: button to clear selection
 

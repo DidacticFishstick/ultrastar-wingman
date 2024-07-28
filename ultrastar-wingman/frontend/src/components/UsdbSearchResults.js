@@ -12,9 +12,6 @@ import {IoTimerOutline} from "react-icons/io5";
 const UsdbSearchResults = ({songs}) => {
     const [downloadQueue, setDownloadQueue] = useDownloadQueue();
 
-    console.log(downloadQueue);
-    console.log("4531" in downloadQueue)
-
     const getButton = (song) => {
         if (song.downloaded || downloadQueue.finished.includes(song.id)) return <FaCheck className={"finished"}/>;
         if (song.id in downloadQueue.failed) return <MdError className={"failed"}/>;

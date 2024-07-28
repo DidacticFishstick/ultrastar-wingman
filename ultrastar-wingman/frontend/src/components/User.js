@@ -47,8 +47,6 @@ const User = () => {
         fileInputRef.current.click();
     };
 
-    console.log(permissions);
-
     return <div className={"user-page"}>
         <div className={"profile"}>
             <input

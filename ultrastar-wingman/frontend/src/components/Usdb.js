@@ -50,8 +50,6 @@ function Usdb() {
                     if (error) {
                         console.error(error, response.text);
                     } else {
-                        console.log(data);
-
                         // language=JavaScript
                         iframeRef.current.contentWindow.eval(
                             `let downloaded_ids = ${JSON.stringify(data.ids)};` +

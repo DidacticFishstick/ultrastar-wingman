@@ -346,7 +346,6 @@ export function usePlayerSettings() {
 
     useEffect(() => {
         playersApi.apiPlayersApiPlayersGet(apiCallback(data => {
-            console.log(data)
             setPlayerSettings(data);
         }));
     }, []);
