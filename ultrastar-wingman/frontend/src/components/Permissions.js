@@ -2,7 +2,7 @@
 
 import React from 'react';
 import './Permissions.css';
-import Permission from "./Permission"; // Importing the CSS for styling
+import Permission from "./Permission";
 
 const Permissions = ({
                          permissions,

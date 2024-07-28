@@ -1,7 +1,7 @@
 /* components/Permissions.css */
 
 .permissions table {
-    margin: 0 16px;
+    margin: 0 16px calc(64px + env(safe-area-inset-bottom)) 16px;
     border-collapse: collapse;
     border: none;
 }

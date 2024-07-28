@@ -5,11 +5,13 @@ import './User.css';
 import LoginForm from "./LoginForm";
 import {logout, uploadAvatar, usePermissions, useUser} from "../helpers";
 import Button from "./Button";
-import Permissions from "./Permissions"; // Importing the CSS for styling
+import Permissions from "./Permissions";
+import Modal from "./Modal"; // Importing the CSS for styling
 
 const User = () => {
     const [user, setUser] = useUser();
     const [permissions, setPermissions] = usePermissions()
+    const [editPermissionsOpen, setEditPermissionsOpen] = useState(false);
 
     const fileInputRef = useRef(null);
     const avatarRef = useRef(null);
@@ -64,12 +66,19 @@ const User = () => {
             <Button onClick={() => logout(() => setUser(null))}>Log Out</Button>
         </div>
 
-        {user.access_level >= permissions.permissions["permissions.edit"].min_access_level &&
-            <Permissions
-                permissions={permissions}
-                setPermissions={setPermissions}
-                accessLevels={permissions.access_levels}
-            />
+        <Button onClick={() => setEditPermissionsOpen(true)}>Edit Permissions</Button>
+
+        {editPermissionsOpen && user.access_level >= permissions.permissions["permissions.edit"].min_access_level &&
+            <Modal
+                fullscreen={true}
+                onClose={() => setEditPermissionsOpen(false)}
+            >
+                <Permissions
+                    permissions={permissions}
+                    setPermissions={setPermissions}
+                    accessLevels={permissions.access_levels}
+                />
+            </Modal>
         }
     </div>;
 };

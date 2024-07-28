@@ -53,7 +53,7 @@ class Permission:
         """
 
         if (user is None and self.min_access_level > -1) or (user is not None and user.access_level < self.min_access_level):
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Missing Permission '{self.permission_id}' (requires access level '{self.min_access_level.name}')")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail=f"Missing Permission '{self.permission_id}' (requires access level '{AccessLevel(self.min_access_level).name}')")
 
     def to_json(self) -> dict:
         return {
