@@ -135,12 +135,23 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.AuthApi* | [**resetResetPasswordAuthResetPasswordPost**](docs/AuthApi.md#resetResetPasswordAuthResetPasswordPost) | **POST** /auth/reset-password | Reset:Reset Password
 *UltraStarWingman.AuthApi* | [**verifyRequestTokenAuthRequestVerifyTokenPost**](docs/AuthApi.md#verifyRequestTokenAuthRequestVerifyTokenPost) | **POST** /auth/request-verify-token | Verify:Request-Token
 *UltraStarWingman.AuthApi* | [**verifyVerifyAuthVerifyPost**](docs/AuthApi.md#verifyVerifyAuthVerifyPost) | **POST** /auth/verify | Verify:Verify
+*UltraStarWingman.DefaultApi* | [**aliasRoutesScoresGet**](docs/DefaultApi.md#aliasRoutesScoresGet) | **GET** /scores | Alias Routes
+*UltraStarWingman.DefaultApi* | [**aliasRoutesSongsGet**](docs/DefaultApi.md#aliasRoutesSongsGet) | **GET** /songs | Alias Routes
+*UltraStarWingman.DefaultApi* | [**aliasRoutesUsdbGet**](docs/DefaultApi.md#aliasRoutesUsdbGet) | **GET** /usdb | Alias Routes
+*UltraStarWingman.DefaultApi* | [**aliasRoutesUsdbListGet**](docs/DefaultApi.md#aliasRoutesUsdbListGet) | **GET** /UsdbList | Alias Routes
+*UltraStarWingman.DefaultApi* | [**aliasRoutesUserGet**](docs/DefaultApi.md#aliasRoutesUserGet) | **GET** /user | Alias Routes
+*UltraStarWingman.PermissionsApi* | [**apiPermissionsGetApiPermissionsGet**](docs/PermissionsApi.md#apiPermissionsGetApiPermissionsGet) | **GET** /api/permissions | Get all permissions
+*UltraStarWingman.PermissionsApi* | [**apiPermissionsPatchApiPermissionsPatch**](docs/PermissionsApi.md#apiPermissionsPatchApiPermissionsPatch) | **PATCH** /api/permissions | Patch data for permissions
 *UltraStarWingman.PlayersApi* | [**apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet**](docs/PlayersApi.md#apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet) | **GET** /api/players/avatars/default/{color} | Api Get Default Avatar
 *UltraStarWingman.PlayersApi* | [**apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet**](docs/PlayersApi.md#apiGetPlayerAvatarApiPlayersRegisteredPlayerAvatarGet) | **GET** /api/players/registered/{player}/avatar | Api Get Player Avatar
 *UltraStarWingman.PlayersApi* | [**apiPlayersAddApiPlayersPost**](docs/PlayersApi.md#apiPlayersAddApiPlayersPost) | **POST** /api/players | Add a New Player
 *UltraStarWingman.PlayersApi* | [**apiPlayersApiPlayersGet**](docs/PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 *UltraStarWingman.PlayersApi* | [**apiPlayersDeleteApiPlayersDelete**](docs/PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 *UltraStarWingman.PlayersApi* | [**apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost**](docs/PlayersApi.md#apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost) | **POST** /api/players/registered/{player}/avatar | Upload an avatar for the player
+*UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredGet**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredGet) | **GET** /api/players/registered | Retrieve all registered Players
+*UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredPatch**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPatch) | **PATCH** /api/players/registered | Patch data for registered Players
+*UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredPlayerGet**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPlayerGet) | **GET** /api/players/registered/{player} | Retrieve a specific registered Players
+*UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredPlayerPatch**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPlayerPatch) | **PATCH** /api/players/registered/{player} | Patch data for a specific player
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresGet**](docs/ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresSessionIdGet**](docs/ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
@@ -166,6 +177,7 @@ Class | Method | HTTP request | Description
 
 ## Documentation for Models
 
+ - [UltraStarWingman.AccessLevel](docs/AccessLevel.md)
  - [UltraStarWingman.AddToWishListModel](docs/AddToWishListModel.md)
  - [UltraStarWingman.BasicResponse](docs/BasicResponse.md)
  - [UltraStarWingman.BearerResponse](docs/BearerResponse.md)
@@ -177,10 +189,19 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.HTTPValidationError](docs/HTTPValidationError.md)
  - [UltraStarWingman.OrderEnum](docs/OrderEnum.md)
  - [UltraStarWingman.Paging](docs/Paging.md)
+ - [UltraStarWingman.PermissionModel](docs/PermissionModel.md)
+ - [UltraStarWingman.PermissionPatchModel](docs/PermissionPatchModel.md)
+ - [UltraStarWingman.PermissionsModel](docs/PermissionsModel.md)
+ - [UltraStarWingman.PermissionsPatchModel](docs/PermissionsPatchModel.md)
+ - [UltraStarWingman.PermissionsPatchResponseModel](docs/PermissionsPatchResponseModel.md)
  - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
  - [UltraStarWingman.PlayersModel](docs/PlayersModel.md)
  - [UltraStarWingman.RegisteredPlayerModel](docs/RegisteredPlayerModel.md)
+ - [UltraStarWingman.RegisteredPlayerPatchModel](docs/RegisteredPlayerPatchModel.md)
+ - [UltraStarWingman.RegisteredPlayerWithIdPatchModel](docs/RegisteredPlayerWithIdPatchModel.md)
+ - [UltraStarWingman.RegisteredPlayersModel](docs/RegisteredPlayersModel.md)
+ - [UltraStarWingman.RegisteredPlayersPatchModel](docs/RegisteredPlayersPatchModel.md)
  - [UltraStarWingman.Score](docs/Score.md)
  - [UltraStarWingman.ScoresModel](docs/ScoresModel.md)
  - [UltraStarWingman.SessionModel](docs/SessionModel.md)

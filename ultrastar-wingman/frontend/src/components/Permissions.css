@@ -1,0 +1,7 @@
+/* components/Permissions.css */
+
+.permissions table {
+    margin: 0 16px;
+    border-collapse: collapse;
+    border: none;
+}

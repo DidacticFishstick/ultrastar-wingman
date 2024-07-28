@@ -32,6 +32,7 @@
     white-space: nowrap;
 }
 
-.user-page .profile .info {
-    font-size: 1rem;
+.user-page .profile .role {
+    font-size: 1em;
+    font-weight: normal;
 }

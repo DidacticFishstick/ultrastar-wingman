@@ -1,0 +1,60 @@
+/* components/Permission.css */
+
+.permission {
+    display: contents;
+}
+
+.permission label {
+    display: block;
+}
+
+.permission .title {
+    font-size: 1em;
+    color: var(--color)
+}
+
+.permission .id {
+    font-size: 0.75em;
+    color: var(--color-darker)
+}
+
+.permission .access-level {
+    color: var(--highlight-blue-light);
+    float: right;
+    font-size: 1em;
+}
+
+.permission .access-level select {
+    display: inline-block;
+    background: transparent;
+    color: inherit;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    text-align: right;
+    font-size: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 32px;
+}
+
+.permission .access-level option {
+    background: var(--input-bg);
+    cursor: pointer;
+}
+
+.permission .access-level .expand {
+    display: inline-block;
+    pointer-events: none;
+    font-size: 1.5em;
+    transform: translateY(0.275em);
+    margin-left: -32px;
+}
+
+.permission .description td {
+    font-size: 0.8em;
+    color: var(--color-dark);
+    padding-top: 4px;
+    padding-bottom: 32px;
+}

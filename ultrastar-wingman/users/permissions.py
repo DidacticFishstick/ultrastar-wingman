@@ -136,7 +136,7 @@ wishlist_view = Permission(
 usdb_browse = Permission(
     "usdb.browse",
     "Browse usdb.animux.de",
-    "Allows the user to browse usdb.animux.de",
+    "Allows the user to browse songs from usdb.animux.de in a restricted view",
     AccessLevel.unregistered
 )
 

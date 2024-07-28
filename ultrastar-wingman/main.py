@@ -454,7 +454,7 @@ async def api_permissions_get():
             "value": access_level.value,
             "title": access_level.name
         } for access_level in permissions.AccessLevel],
-        "permissions": [permission.to_json() for permission in permissions.Permission.permissions.values()]
+        "permissions": {permission.permission_id: permission.to_json() for permission in permissions.Permission.permissions.values()}
     }
 
 
@@ -465,26 +465,29 @@ async def api_permissions_patch(permissions_patch_data: models.PermissionsPatchM
     """
 
     patched_permissions: Dict[str, permissions.Permission] = {}
-    for permission_patch_data in permissions_patch_data.permissions:
+    for permission_id, permission_patch_data in permissions_patch_data.permissions.items():
         if permission_patch_data.min_access_level > user.access_level:
-            raise HTTPException(status_code=403, detail="You are not allowed to edit permissions that you do not poses.")
+            raise HTTPException(status_code=403, detail="You are not allowed to set permissions to levels you do not poses.")
 
-        permission = permissions.Permission.permissions.get(permission_patch_data.id)
+        permission = permissions.Permission.permissions.get(permission_id)
 
         if permission is None:
             raise HTTPException(status_code=404, detail=f"Permission {permission} does not exist.")
 
+        if permission.min_access_level > user.access_level:
+            raise HTTPException(status_code=403, detail="You are not allowed to edit permissions that you do not poses.")
+
         patched_permissions[permission.permission_id] = permission
 
-    for permission_patch_data in permissions_patch_data.permissions:
-        patched_permissions[permission_patch_data.id].set_min_access_level(permission_patch_data.min_access_level)
+    for permission_id, permission_patch_data in permissions_patch_data.permissions.items():
+        patched_permissions[permission_id].set_min_access_level(permission_patch_data.min_access_level)
 
     return {
         "access_levels": [{
             "value": access_level.value,
             "title": access_level.name
         } for access_level in permissions.AccessLevel],
-        "permissions": [permission.to_json() for permission in patched_permissions.values()]
+        "permissions": {permission.permission_id: permission.to_json() for permission in patched_permissions.values()}
     }
 
 

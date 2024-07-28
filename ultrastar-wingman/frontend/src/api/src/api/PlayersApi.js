@@ -17,6 +17,10 @@ import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
 import PlayerConfig from '../model/PlayerConfig';
 import PlayerCreation from '../model/PlayerCreation';
+import RegisteredPlayerModel from '../model/RegisteredPlayerModel';
+import RegisteredPlayerPatchModel from '../model/RegisteredPlayerPatchModel';
+import RegisteredPlayersModel from '../model/RegisteredPlayersModel';
+import RegisteredPlayersPatchModel from '../model/RegisteredPlayersPatchModel';
 import UnregisteredPlayerModel from '../model/UnregisteredPlayerModel';
 
 /**
@@ -290,6 +294,176 @@ export default class PlayersApi {
       let returnType = BasicResponse;
       return this.apiClient.callApi(
         '/api/players/registered/{player}/avatar', 'POST',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiRegisteredPlayersApiPlayersRegisteredGet operation.
+     * @callback module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/RegisteredPlayersModel} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Retrieve all registered Players
+     * Retrieves a list of all registered players.
+     * @param {module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/RegisteredPlayersModel}
+     */
+    apiRegisteredPlayersApiPlayersRegisteredGet(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = RegisteredPlayersModel;
+      return this.apiClient.callApi(
+        '/api/players/registered', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiRegisteredPlayersApiPlayersRegisteredPatch operation.
+     * @callback module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredPatchCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/RegisteredPlayersModel} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Patch data for registered Players
+     * Patches a list of registered players.
+     * @param {module:model/RegisteredPlayersPatchModel} registeredPlayersPatchModel 
+     * @param {module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredPatchCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/RegisteredPlayersModel}
+     */
+    apiRegisteredPlayersApiPlayersRegisteredPatch(registeredPlayersPatchModel, callback) {
+      let postBody = registeredPlayersPatchModel;
+      // verify the required parameter 'registeredPlayersPatchModel' is set
+      if (registeredPlayersPatchModel === undefined || registeredPlayersPatchModel === null) {
+        throw new Error("Missing the required parameter 'registeredPlayersPatchModel' when calling apiRegisteredPlayersApiPlayersRegisteredPatch");
+      }
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = RegisteredPlayersModel;
+      return this.apiClient.callApi(
+        '/api/players/registered', 'PATCH',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiRegisteredPlayersApiPlayersRegisteredPlayerGet operation.
+     * @callback module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredPlayerGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/RegisteredPlayerModel} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Retrieve a specific registered Players
+     * Retrieves a registered players.
+     * @param {Object} player 
+     * @param {module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredPlayerGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/RegisteredPlayerModel}
+     */
+    apiRegisteredPlayersApiPlayersRegisteredPlayerGet(player, callback) {
+      let postBody = null;
+      // verify the required parameter 'player' is set
+      if (player === undefined || player === null) {
+        throw new Error("Missing the required parameter 'player' when calling apiRegisteredPlayersApiPlayersRegisteredPlayerGet");
+      }
+
+      let pathParams = {
+        'player': player
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = RegisteredPlayerModel;
+      return this.apiClient.callApi(
+        '/api/players/registered/{player}', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiRegisteredPlayersApiPlayersRegisteredPlayerPatch operation.
+     * @callback module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredPlayerPatchCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/RegisteredPlayerModel} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Patch data for a specific player
+     * Retrieves a registered players.
+     * @param {Object} player 
+     * @param {module:model/RegisteredPlayerPatchModel} registeredPlayerPatchModel 
+     * @param {module:api/PlayersApi~apiRegisteredPlayersApiPlayersRegisteredPlayerPatchCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/RegisteredPlayerModel}
+     */
+    apiRegisteredPlayersApiPlayersRegisteredPlayerPatch(player, registeredPlayerPatchModel, callback) {
+      let postBody = registeredPlayerPatchModel;
+      // verify the required parameter 'player' is set
+      if (player === undefined || player === null) {
+        throw new Error("Missing the required parameter 'player' when calling apiRegisteredPlayersApiPlayersRegisteredPlayerPatch");
+      }
+      // verify the required parameter 'registeredPlayerPatchModel' is set
+      if (registeredPlayerPatchModel === undefined || registeredPlayerPatchModel === null) {
+        throw new Error("Missing the required parameter 'registeredPlayerPatchModel' when calling apiRegisteredPlayersApiPlayersRegisteredPlayerPatch");
+      }
+
+      let pathParams = {
+        'player': player
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = ['application/json'];
+      let accepts = ['application/json'];
+      let returnType = RegisteredPlayerModel;
+      return this.apiClient.callApi(
+        '/api/players/registered/{player}', 'PATCH',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

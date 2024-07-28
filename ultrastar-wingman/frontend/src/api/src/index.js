@@ -13,6 +13,7 @@
 
 
 import ApiClient from './ApiClient';
+import AccessLevel from './model/AccessLevel';
 import AddToWishListModel from './model/AddToWishListModel';
 import BasicResponse from './model/BasicResponse';
 import BearerResponse from './model/BearerResponse';
@@ -24,10 +25,19 @@ import ErrorModel from './model/ErrorModel';
 import HTTPValidationError from './model/HTTPValidationError';
 import OrderEnum from './model/OrderEnum';
 import Paging from './model/Paging';
+import PermissionModel from './model/PermissionModel';
+import PermissionPatchModel from './model/PermissionPatchModel';
+import PermissionsModel from './model/PermissionsModel';
+import PermissionsPatchModel from './model/PermissionsPatchModel';
+import PermissionsPatchResponseModel from './model/PermissionsPatchResponseModel';
 import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
 import PlayersModel from './model/PlayersModel';
 import RegisteredPlayerModel from './model/RegisteredPlayerModel';
+import RegisteredPlayerPatchModel from './model/RegisteredPlayerPatchModel';
+import RegisteredPlayerWithIdPatchModel from './model/RegisteredPlayerWithIdPatchModel';
+import RegisteredPlayersModel from './model/RegisteredPlayersModel';
+import RegisteredPlayersPatchModel from './model/RegisteredPlayersPatchModel';
 import Score from './model/Score';
 import ScoresModel from './model/ScoresModel';
 import SessionModel from './model/SessionModel';
@@ -48,6 +58,8 @@ import ValidationError from './model/ValidationError';
 import WishModel from './model/WishModel';
 import WishlistModel from './model/WishlistModel';
 import AuthApi from './api/AuthApi';
+import DefaultApi from './api/DefaultApi';
+import PermissionsApi from './api/PermissionsApi';
 import PlayersApi from './api/PlayersApi';
 import ScoresApi from './api/ScoresApi';
 import SongsApi from './api/SongsApi';
@@ -94,6 +106,12 @@ export {
      * @property {module:ApiClient}
      */
     ApiClient,
+
+    /**
+     * The AccessLevel model constructor.
+     * @property {module:model/AccessLevel}
+     */
+    AccessLevel,
 
     /**
      * The AddToWishListModel model constructor.
@@ -162,6 +180,36 @@ export {
     Paging,
 
     /**
+     * The PermissionModel model constructor.
+     * @property {module:model/PermissionModel}
+     */
+    PermissionModel,
+
+    /**
+     * The PermissionPatchModel model constructor.
+     * @property {module:model/PermissionPatchModel}
+     */
+    PermissionPatchModel,
+
+    /**
+     * The PermissionsModel model constructor.
+     * @property {module:model/PermissionsModel}
+     */
+    PermissionsModel,
+
+    /**
+     * The PermissionsPatchModel model constructor.
+     * @property {module:model/PermissionsPatchModel}
+     */
+    PermissionsPatchModel,
+
+    /**
+     * The PermissionsPatchResponseModel model constructor.
+     * @property {module:model/PermissionsPatchResponseModel}
+     */
+    PermissionsPatchResponseModel,
+
+    /**
      * The PlayerConfig model constructor.
      * @property {module:model/PlayerConfig}
      */
@@ -184,6 +232,30 @@ export {
      * @property {module:model/RegisteredPlayerModel}
      */
     RegisteredPlayerModel,
+
+    /**
+     * The RegisteredPlayerPatchModel model constructor.
+     * @property {module:model/RegisteredPlayerPatchModel}
+     */
+    RegisteredPlayerPatchModel,
+
+    /**
+     * The RegisteredPlayerWithIdPatchModel model constructor.
+     * @property {module:model/RegisteredPlayerWithIdPatchModel}
+     */
+    RegisteredPlayerWithIdPatchModel,
+
+    /**
+     * The RegisteredPlayersModel model constructor.
+     * @property {module:model/RegisteredPlayersModel}
+     */
+    RegisteredPlayersModel,
+
+    /**
+     * The RegisteredPlayersPatchModel model constructor.
+     * @property {module:model/RegisteredPlayersPatchModel}
+     */
+    RegisteredPlayersPatchModel,
 
     /**
      * The Score model constructor.
@@ -304,6 +376,18 @@ export {
     * @property {module:api/AuthApi}
     */
     AuthApi,
+
+    /**
+    * The DefaultApi service constructor.
+    * @property {module:api/DefaultApi}
+    */
+    DefaultApi,
+
+    /**
+    * The PermissionsApi service constructor.
+    * @property {module:api/PermissionsApi}
+    */
+    PermissionsApi,
 
     /**
     * The PlayersApi service constructor.

@@ -53,6 +53,9 @@ class RegisteredPlayerModel {
             if (data.hasOwnProperty('name')) {
                 obj['name'] = ApiClient.convertToType(data['name'], 'String');
             }
+            if (data.hasOwnProperty('access_level')) {
+                obj['access_level'] = ApiClient.convertToType(data['access_level'], 'Number');
+            }
         }
         return obj;
     }
@@ -91,6 +94,12 @@ RegisteredPlayerModel.prototype['id'] = undefined;
  * @member {String} name
  */
 RegisteredPlayerModel.prototype['name'] = undefined;
+
+/**
+ * The access level for the player.
+ * @member {Number} access_level
+ */
+RegisteredPlayerModel.prototype['access_level'] = undefined;
 
 
 

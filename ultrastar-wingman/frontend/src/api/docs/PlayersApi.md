@@ -10,6 +10,10 @@ Method | HTTP request | Description
 [**apiPlayersApiPlayersGet**](PlayersApi.md#apiPlayersApiPlayersGet) | **GET** /api/players | Retrieve Players
 [**apiPlayersDeleteApiPlayersDelete**](PlayersApi.md#apiPlayersDeleteApiPlayersDelete) | **DELETE** /api/players | Delete a Player
 [**apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost**](PlayersApi.md#apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost) | **POST** /api/players/registered/{player}/avatar | Upload an avatar for the player
+[**apiRegisteredPlayersApiPlayersRegisteredGet**](PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredGet) | **GET** /api/players/registered | Retrieve all registered Players
+[**apiRegisteredPlayersApiPlayersRegisteredPatch**](PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPatch) | **PATCH** /api/players/registered | Patch data for registered Players
+[**apiRegisteredPlayersApiPlayersRegisteredPlayerGet**](PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPlayerGet) | **GET** /api/players/registered/{player} | Retrieve a specific registered Players
+[**apiRegisteredPlayersApiPlayersRegisteredPlayerPatch**](PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPlayerPatch) | **PATCH** /api/players/registered/{player} | Patch data for a specific player
 
 
 
@@ -298,5 +302,199 @@ Name | Type | Description  | Notes
 ### HTTP request headers
 
 - **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+
+## apiRegisteredPlayersApiPlayersRegisteredGet
+
+> RegisteredPlayersModel apiRegisteredPlayersApiPlayersRegisteredGet()
+
+Retrieve all registered Players
+
+Retrieves a list of all registered players.
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+apiInstance.apiRegisteredPlayersApiPlayersRegisteredGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**RegisteredPlayersModel**](RegisteredPlayersModel.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiRegisteredPlayersApiPlayersRegisteredPatch
+
+> RegisteredPlayersModel apiRegisteredPlayersApiPlayersRegisteredPatch(registeredPlayersPatchModel)
+
+Patch data for registered Players
+
+Patches a list of registered players.
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let registeredPlayersPatchModel = new UltraStarWingman.RegisteredPlayersPatchModel(); // RegisteredPlayersPatchModel | 
+apiInstance.apiRegisteredPlayersApiPlayersRegisteredPatch(registeredPlayersPatchModel, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **registeredPlayersPatchModel** | [**RegisteredPlayersPatchModel**](RegisteredPlayersPatchModel.md)|  | 
+
+### Return type
+
+[**RegisteredPlayersModel**](RegisteredPlayersModel.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+
+## apiRegisteredPlayersApiPlayersRegisteredPlayerGet
+
+> RegisteredPlayerModel apiRegisteredPlayersApiPlayersRegisteredPlayerGet(player)
+
+Retrieve a specific registered Players
+
+Retrieves a registered players.
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let player = null; // Object | 
+apiInstance.apiRegisteredPlayersApiPlayersRegisteredPlayerGet(player, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **player** | [**Object**](.md)|  | 
+
+### Return type
+
+[**RegisteredPlayerModel**](RegisteredPlayerModel.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiRegisteredPlayersApiPlayersRegisteredPlayerPatch
+
+> RegisteredPlayerModel apiRegisteredPlayersApiPlayersRegisteredPlayerPatch(player, registeredPlayerPatchModel)
+
+Patch data for a specific player
+
+Retrieves a registered players.
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new UltraStarWingman.PlayersApi();
+let player = null; // Object | 
+let registeredPlayerPatchModel = new UltraStarWingman.RegisteredPlayerPatchModel(); // RegisteredPlayerPatchModel | 
+apiInstance.apiRegisteredPlayersApiPlayersRegisteredPlayerPatch(player, registeredPlayerPatchModel, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **player** | [**Object**](.md)|  | 
+ **registeredPlayerPatchModel** | [**RegisteredPlayerPatchModel**](RegisteredPlayerPatchModel.md)|  | 
+
+### Return type
+
+[**RegisteredPlayerModel**](RegisteredPlayerModel.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 

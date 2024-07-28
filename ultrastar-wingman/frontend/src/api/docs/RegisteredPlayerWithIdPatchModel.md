@@ -1,11 +1,10 @@
-# UltraStarWingman.RegisteredPlayerModel
+# UltraStarWingman.RegisteredPlayerWithIdPatchModel
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **String** | The id for the player. | [optional] 
-**name** | **String** | The name of the player. | [optional] 
 **accessLevel** | **Number** | The access level for the player. | [optional] 
+**id** | **String** | The id for the player. | [optional] 
 
 

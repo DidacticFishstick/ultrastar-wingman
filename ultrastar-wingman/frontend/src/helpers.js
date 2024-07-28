@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {AuthApi, PlayerCreation, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
+import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 import ApiClient from "./api/src/ApiClient";
 
@@ -10,6 +10,7 @@ const usdxApi = new UltraStarDeluxeApi();
 const playersApi = new PlayersApi();
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
+const permissionsApi = new PermissionsApi()
 
 // set previously saved access token
 if (localStorage.getItem('access_token')) {
@@ -373,6 +374,21 @@ export function useUser() {
     return [user, setUser];
 }
 
+export function usePermissions() {
+    const [permissions, setPermissions] = useState({
+        access_levels: [],
+        permissions: []
+    });
+
+    useEffect(() => {
+        permissionsApi.apiPermissionsGetApiPermissionsGet(apiCallback(data => {
+            setPermissions(data);
+        }));
+    }, []);
+
+    return [permissions, setPermissions];
+}
+
 // endregion
 // region auth
 
@@ -483,4 +499,8 @@ export function killUsdb() {
 
 export function uploadAvatar(player, file, callback) {
     playersApi.apiPostPlayerAvatarApiPlayersRegisteredPlayerAvatarPost(player, file, apiCallback(callback));
+}
+
+export function patchPermissions(permissions, callback) {
+    permissionsApi.apiPermissionsPatchApiPermissionsPatch({permissions: permissions}, apiCallback(callback));
 }
