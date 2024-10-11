@@ -6,11 +6,12 @@ import Wishlist from "./Wishlist";
 import RandomSongSelector from "./RandomSongSelector";
 import React, {useState} from "react";
 import SongDetailsModal from "./SongDetailsModal";
-import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useGlobalWishlist} from "../helpers";
+import {useClientWishlist, useCurrentlyPlayingSong, useFavoriteIds, useGlobalWishlist, useUltrastarWingmanState} from "../helpers";
 import CurrentlyPlayingSong from "./CurrentlyPlayingSong";
 import PlayerSelection from "./PlayerSelection";
 
 function Home() {
+    const [ultrastarWingmanState, setUltrastarWingmanState] = useUltrastarWingmanState();
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useCurrentlyPlayingSong();
     const [selectedSong, setSelectedSong] = useState(null);
     const [playerSelectionSong, setPlayerSelectionSong] = useState(null);
@@ -24,11 +25,13 @@ function Home() {
             <Tile className={"title"} span>
                 <span className={"logo"}></span>
                 <label>Ultrastar Wingman</label>
-                {/*TODO: Fill with correct version, show if update available*/}
                 <div className={"info"}>
-                    <span className={"version"}>Version 1.1.0</span>
+                    <span className={"version"}>{`Version ${ultrastarWingmanState.version ? ultrastarWingmanState.version : ''}`}</span>
                     <a href={"https://github.com/DidacticFishstick/ultrastar-wingman"} target="_blank" rel="noopener noreferrer" className={"git"}><FaGithub/> GitHub</a>
                 </div>
+                {ultrastarWingmanState.new_version &&
+                    <a href={"https://github.com/DidacticFishstick/ultrastar-wingman/releases"} className={"new-version"}>{`New version available: ${ultrastarWingmanState.new_version}`}</a>
+                }
             </Tile>
         </div>
 

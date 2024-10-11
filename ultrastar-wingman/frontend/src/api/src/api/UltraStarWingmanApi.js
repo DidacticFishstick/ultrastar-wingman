@@ -13,18 +13,18 @@
 
 
 import ApiClient from "../ApiClient";
-import BasicResponse from '../model/BasicResponse';
+import UltrastarWingmanState from '../model/UltrastarWingmanState';
 
 /**
-* UltraStarDeluxe service.
-* @module api/UltraStarDeluxeApi
+* UltraStarWingman service.
+* @module api/UltraStarWingmanApi
 * @version 2.0.0
 */
-export default class UltraStarDeluxeApi {
+export default class UltraStarWingmanApi {
 
     /**
-    * Constructs a new UltraStarDeluxeApi. 
-    * @alias module:api/UltraStarDeluxeApi
+    * Constructs a new UltraStarWingmanApi. 
+    * @alias module:api/UltraStarWingmanApi
     * @class
     * @param {module:ApiClient} [apiClient] Optional API client implementation to use,
     * default to {@link module:ApiClient#instance} if unspecified.
@@ -35,19 +35,19 @@ export default class UltraStarDeluxeApi {
 
 
     /**
-     * Callback function to receive the result of the apiUsdxKillApiUsdxKillPost operation.
-     * @callback module:api/UltraStarDeluxeApi~apiUsdxKillApiUsdxKillPostCallback
+     * Callback function to receive the result of the apiUwStateApiUwStateGet operation.
+     * @callback module:api/UltraStarWingmanApi~apiUwStateApiUwStateGetCallback
      * @param {String} error Error message, if any.
-     * @param {module:model/BasicResponse} data The data returned by the service call.
+     * @param {module:model/UltrastarWingmanState} data The data returned by the service call.
      * @param {String} response The complete HTTP response.
      */
 
     /**
-     * Kills any currently running Ultrastar Deluxe process
-     * @param {module:api/UltraStarDeluxeApi~apiUsdxKillApiUsdxKillPostCallback} callback The callback function, accepting three arguments: error, data, response
-     * data is of type: {@link module:model/BasicResponse}
+     * The state of Ultrastar Wingman - new available version etc.
+     * @param {module:api/UltraStarWingmanApi~apiUwStateApiUwStateGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/UltrastarWingmanState}
      */
-    apiUsdxKillApiUsdxKillPost(callback) {
+    apiUwStateApiUwStateGet(callback) {
       let postBody = null;
 
       let pathParams = {
@@ -59,12 +59,12 @@ export default class UltraStarDeluxeApi {
       let formParams = {
       };
 
-      let authNames = ['OAuth2PasswordBearer'];
+      let authNames = [];
       let contentTypes = [];
       let accepts = ['application/json'];
-      let returnType = BasicResponse;
+      let returnType = UltrastarWingmanState;
       return this.apiClient.callApi(
-        '/api/usdx/kill', 'POST',
+        '/api/uw/state', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

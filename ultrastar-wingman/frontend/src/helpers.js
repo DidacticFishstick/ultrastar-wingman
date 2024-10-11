@@ -1,8 +1,9 @@
 import {useEffect, useState} from 'react';
-import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, SongsApi, UltraStarDeluxeApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
+import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, SongsApi, UltraStarDeluxeApi, UltraStarWingmanApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 import ApiClient from "./api/src/ApiClient";
 
+const ultraStarWingmanApi = new UltraStarWingmanApi();
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
 const usdbApi = new USDBApi();
@@ -18,8 +19,8 @@ if (localStorage.getItem('access_token')) {
 }
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
-const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
-// const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
+// const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
+const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
 
 
 function displayApiError(error, data, response) {
@@ -55,6 +56,18 @@ class Lock {
 }
 
 // region States
+
+export function useUltrastarWingmanState() {
+    const [ultrastarWingmanState, setUltrastarWingmanState] = useState({});
+
+    useEffect(() => {
+        ultraStarWingmanApi.apiUwStateApiUwStateGet(apiCallback(data => {
+            setUltrastarWingmanState(data);
+        }));
+    }, []);
+
+    return [ultrastarWingmanState, setUltrastarWingmanState];
+}
 
 export function useCurrentlyPlayingSong() {
     const [currentlyPlayingSong, setCurrentlyPlayingSong] = useState(null);

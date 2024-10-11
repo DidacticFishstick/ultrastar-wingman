@@ -3,6 +3,11 @@ from typing import List, Optional, Dict
 from pydantic import BaseModel, Field
 
 
+class UltrastarWingmanState(BaseModel):
+    version: Optional[str] = Field(None, description="The current version of Ultrastar Wingman")
+    new_version: Optional[str] = Field(None, description="The new version if one is available")
+
+
 class BasicResponse(BaseModel):
     success: bool = Field(None, example=True, description="Success response")
 

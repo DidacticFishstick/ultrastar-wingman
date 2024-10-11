@@ -3,6 +3,8 @@ import asyncio
 import logging
 import os.path
 from contextlib import asynccontextmanager
+from functools import lru_cache
+from packaging import version
 
 import uvicorn
 from typing import Optional, Dict
@@ -18,14 +20,29 @@ import ws
 import scores
 from song import Song
 from wishlist import Wishlist
+from github import check_new_release
 
-from users.db import User, create_db_and_tables, async_session_maker
+from users.db import User, create_db_and_tables
 from users.schemas import UserCreate, UserRead, UserUpdate
 from users.users import auth_backend, current_active_user, fastapi_users
 from users.players import Player
 import users.permissions as permissions
 
+__version__ = "2.0.0"
+
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))
+
+
+@lru_cache
+def get_new_version() -> Optional[str]:
+    info = check_new_release("DidacticFishstick/ultrastar-wingman", __version__)
+    new_version = info.new_version.lstrip('v')
+
+    if new_version is None:
+        return None
+
+    if version.parse(new_version) > version.parse(__version__):
+        return new_version
 
 
 @asynccontextmanager
@@ -38,7 +55,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="UltraStar Wingman",
-    version="1.1.0",
+    version=__version__,
     lifespan=lifespan
 )
 
@@ -76,7 +93,7 @@ app.include_router(
 
 
 @app.get('/openapi_no_anyOf.json', include_in_schema=False)
-async def api_usdb_ids():
+async def get_openapi_no_any_of():
     """
     This should not be necessary but https://www.npmjs.com/package/@openapitools/openapi-generator-cli has a problem
     with generating code for models with a type set to anyOf. Therefor this endpoint will remove those anyOf sections.
@@ -103,16 +120,12 @@ async def api_usdb_ids():
     return replace_anyof_with_type(openapi)
 
 
-# @app.post('/api/usdx/start', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Starts UltraStar Deluxe without any parameters")
-# async def api_usdx_start():
-#     await usdx.start()
-#     return {"success": True}
-
-
-# @app.post('/api/usdx/restart', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Restarts UltraStar Deluxe without any parameters")
-# async def api_usdx_restart():
-#     await usdx.start(kill_previous=True)
-#     return {"success": True}
+@app.get('/api/uw/state', response_model=models.UltrastarWingmanState, tags=["UltraStar Wingman"], summary="The state of Ultrastar Wingman - new available version etc.")
+async def api_uw_state():
+    return {
+        "version": __version__,
+        "new_version": get_new_version()
+    }
 
 
 @app.post('/api/usdx/kill', response_model=models.BasicResponse, tags=["UltraStar Deluxe"], summary="Kills any currently running Ultrastar Deluxe process")
@@ -615,7 +628,7 @@ async def main():
     # login to usdb.animux.de
     await usdb.login()
 
-    # load all session
+    # load all sessions
     scores.init_sessions()
 
     # load all downloaded songs

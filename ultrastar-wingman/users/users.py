@@ -14,6 +14,8 @@ from fastapi_users.db import SQLAlchemyUserDatabase
 from .db import User, get_user_db
 
 # TODO: first user should always be admin
+# TODO: number users with the same name
+# TODO: extra flag for temporary users
 
 # I know... but the data stays locally on your device, so I do not care that much
 SECRET = "WINGMAN"

@@ -34,6 +34,14 @@
     margin-bottom: -0.12em;
 }
 
+.home .tile.title .new-version {
+    margin-bottom: 1em;
+    display: block;
+    color: var(--highlight-blue-light);
+    text-align: center;
+    text-decoration: none;
+}
+
 .home .tile-container > a {
     text-decoration: none;
 }

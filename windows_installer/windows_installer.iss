@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Ultrastar Wingman"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "2.0.0"
 #define MyAppPublisher "Didactic Fishstick"
 #define MyAppURL "https://github.com/DidacticFishstick/ultrastar-wingman"
 #define MyAppExeName "ultrastar-wingman.exe"
