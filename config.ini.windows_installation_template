@@ -5,7 +5,7 @@ password = <password>
 downloader_count = 4
 
 [USDX]
-usdx_base_path = C:/Program Files (x86)/UltraStar Deluxe/
+base_path = C:/Program Files (x86)/UltraStar Deluxe/
 
 [SETUP]
 ; available colors: blue, brown, cyan, dark_blue, flame, gray, green, green_yellow, harlequin, orange, orchid, pink, rainbow, red, sky, violet, yellow

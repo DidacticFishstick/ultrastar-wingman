@@ -1,5 +1,4 @@
 import asyncio
-import filecmp
 import glob
 import logging
 import os.path
@@ -77,6 +76,7 @@ async def start(song: Optional['Song'] = None, kill_previous=False, callback=Non
                 except:
                     logging.exception("Failed to kill USDX")
 
+            logging.info(f"Starting USDX: {[str(config.usdx_path)] + params}")
             # start the new process
             process = await asyncio.create_subprocess_exec(
                 str(config.usdx_path),
@@ -128,19 +128,6 @@ def calculate_md5(file_path):
     # Return the hex representation of the digest
     return hash_md5.hexdigest().upper()
 
-
-def get_additional_song_dirs(config_file_path):
-    """
-    Gets the SongDir<N>=<Path> from the config.ini
-
-    :param config_file_path: The path to the config.ini
-    :return: All song dirs
-    """
-
-    with open(config_file_path, "r") as file:
-        content = file.read()
-
-    return re.findall(r'SongDir\d*=([^ \n]+)', content)
 
 def replace_in_config(config_file_path, replace):
     with open(config_file_path, "r") as file:

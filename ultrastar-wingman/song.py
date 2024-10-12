@@ -84,7 +84,7 @@ class Song:
     def load_songs(cls):
         start_time = time.time()
 
-        for song_dir in [config.usdx_songs_dir] + usdx.get_additional_song_dirs(config.usdx_config_file):
+        for song_dir in [config.usdx_songs_dir] + config.usdx_additional_songs_dirs:
             logging.info(f"Loading songs from {song_dir}")
             if not (os.path.exists(song_dir) and os.path.isdir(song_dir)):
                 logging.warning(f"{song_dir} is not a directory")
