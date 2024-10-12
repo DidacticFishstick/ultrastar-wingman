@@ -35,7 +35,7 @@
     right: 24px;
     color: var(--color-darker);
     font-size: 2rem;
-    pointer-events: none;
+    z-index: 10000;
 }
 
 .modal-content {

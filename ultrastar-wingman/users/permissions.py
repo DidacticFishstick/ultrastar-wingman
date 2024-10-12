@@ -143,7 +143,7 @@ usdb_browse = Permission(
 usdb_browse_proxy = Permission(
     "usdb.browse_proxy",
     "Browse usdb.animux.de Directly",
-    "Allows the user to browse the default usdb.animux.de site (the user will have access to the configured USDB account!)",
+    "Allows the user to browse the default usdb.animux.de site (the user will have direct access to the configured USDB account!)",
     AccessLevel.trusted
 )
 

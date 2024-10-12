@@ -150,7 +150,7 @@ function PlayerSelection({
                         <span className={"avatar"} style={{backgroundImage: `url('/api/players/avatars/default/${color}')`}}></span>
 
                         <div className={"player"}>
-                            {selectedPlayers[index]?.id &&
+                            {selectedPlayers[index]?.registered &&
                                 <span className={"avatar"} style={{backgroundImage: `url('/api/players/registered/${selectedPlayers[index].id}/avatar')`}}></span>
                             }
                             <select className={"name"} value={selectedPlayers[index]?.id || "unset"} onChange={(e) => selectPlayerAtIndex(e.target.value, constIndex)}>

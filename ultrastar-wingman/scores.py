@@ -193,10 +193,8 @@ def get_new_latest_scores() -> Optional[List[dict]]:
     """
 
     scores = Session.current_session.get_scores(just_latest=True)
-    print(scores)
     if scores:
         global _latest_new_score_fetched
-        print(_latest_new_score_fetched)
 
         if _latest_new_score_fetched != scores[0]["date"]:
             _latest_new_score_fetched = scores[0]["date"]

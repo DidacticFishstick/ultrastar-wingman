@@ -23,7 +23,7 @@ const Modal = forwardRef(({
     return (
         <div ref={ref} className={"modal-backdrop " + (fullscreen ? "fullscreen " : "") + className} onClick={close} {...props}>
             {fullscreen && (onClose !== undefined) &&
-                <IoMdClose className={"close"}/>
+                <IoMdClose className={"close"} onClick={close}/>
             }
             <div className={"modal-content"} onClick={fullscreen ? close : () => { }}>
                 {children}

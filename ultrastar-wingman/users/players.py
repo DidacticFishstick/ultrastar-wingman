@@ -256,5 +256,5 @@ class Player:
                         .values(access_level=access_level)
                         .values(is_superuser=(access_level == AccessLevel.admin))
                     )
-                except Exception as e:
+                except:
                     logging.exception(f"Failed to set access level for {self}")

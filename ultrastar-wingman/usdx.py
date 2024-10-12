@@ -61,7 +61,7 @@ async def start(song: Optional['Song'] = None, kill_previous=False, callback=Non
 
     params = []
     if song is not None:
-        params = ["-SongPath", str(song.directory)]
+        params = ["-SongPath", str(song.directory), "-SingleSong"]
 
     async with process_lock:
         try:
@@ -220,8 +220,8 @@ def change_config(players: List[Optional['Player']]):
         "Name": {},
         "PlayerColor": {},
         "PlayerAvatar": {},
-        "Advanced": {
-            "OnSongClick": "Select Players"
+        "Graphics": {
+            "FullScreen": "On"
         }
     }
 
@@ -241,7 +241,10 @@ def change_config(players: List[Optional['Player']]):
             custom_avatar_path = _copy_and_replace_avatar(players[i].id, config.users_avatars_dir, config.usdx_avatars_dir)
 
         if player is not None:
-            settings["Name"][f"P{i + 1}"] = player.name
+            if player.user is None:
+                settings["Name"][f"P{i + 1}"] = f"[{player.name}]"
+            else:
+                settings["Name"][f"P{i + 1}"] = player.name
         else:
             settings["Name"][f"P{i + 1}"] = "-"
 
