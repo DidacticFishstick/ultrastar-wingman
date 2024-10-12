@@ -416,7 +416,7 @@ class Song:
         :param kwargs: Additional arguments passed to the song constructor (not used currently)
         """
 
-        self.directory = self.sanitize_path(directory)
+        self.directory = directory
         self.title = title
         self.artist = artist
         self.usdb_id = usdb_id
@@ -446,9 +446,10 @@ class Song:
             return f"[Song '{self.title} - {self.artist}' ({self.usdb_id})]"
         return f"[Song '{self.title} - {self.artist}']"
 
-    def sanitize_path(self, directory: str) -> str:
+    def sanitize_path(self) -> str:
         """
-        Check that the directory only has allowed characters and renames it otherwise
+        Check that the directory only has allowed characters and renames it otherwise.
+        This is needed as USDX does not do well with special characters in song dirs.
         TODO: mention this as a warning in the readme
 
         :return: The new directory
@@ -458,18 +459,18 @@ class Song:
         pattern = re.compile(r'[^a-zA-Z0-9.,-_()+ ]')
 
         # Get the directory name and parent directory
-        parent_dir = os.path.dirname(directory)
-        dir_name = os.path.basename(directory)
+        parent_dir = os.path.dirname(self.directory)
+        dir_name = os.path.basename(self.directory)
 
         # Remove non-ASCII characters
         new_dir_name = pattern.sub('', dir_name)
 
         # Ensure the new directory name is not empty
         if not new_dir_name:
-            return directory
+            return self.directory
 
         if new_dir_name == dir_name:
-            return directory
+            return self.directory
 
         new_path = os.path.join(parent_dir, new_dir_name)
 
@@ -479,15 +480,16 @@ class Song:
             new_path = os.path.join(parent_dir, f"{new_dir_name} ({counter})")
             counter += 1
 
-        logging.info(f"Renaming '{directory}' to '{new_path}' to remove special characters")
+        logging.info(f"Renaming '{self.directory}' to '{new_path}' to remove special characters")
 
         try:
             # Rename the directory
-            os.rename(directory, new_path)
+            os.rename(self.directory, new_path)
         except PermissionError as e:
             logging.exception("Failed to rename directory")
-            return directory
+            return self.directory
 
+        self.directory = new_path
         return new_path
 
     def to_json(self):
@@ -524,5 +526,7 @@ class Song:
         :param force: If set to True, any currently playing song will be canceled
         :return: True if the given song was started, False otherwise
         """
+
+        self.sanitize_path()
 
         return await self._sing_song(self, players, force=force)
