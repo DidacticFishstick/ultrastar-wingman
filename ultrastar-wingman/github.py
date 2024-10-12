@@ -42,7 +42,7 @@ def check_new_release(repo: str, current_version: Optional[str] = None, asset_na
 
         return ReleaseInfo(new_version=latest_version, download_url=download_url)
 
-    except httpx.HTTPStatusError as e:
+    except Exception as e:
         logging.error(f"Error fetching newest release version for {url}: {e}")
         return None
 

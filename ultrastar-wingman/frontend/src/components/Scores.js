@@ -13,6 +13,7 @@ import RadioButton from "./RadioButton";
 import {FaSearch} from "react-icons/fa";
 import Input from "./Input";
 import Histogramm from "./Histogramm";
+import {wsService} from "../helpers";
 
 function Scores() {
     const [sessions, setSessions] = useState([]);
@@ -50,6 +51,12 @@ function Scores() {
                 setLoading(false);
             });
         };
+
+        wsService.registerCallback("new_scores", async message => {
+            // TODO: only if in current session
+            console.log("New Scores:", message)
+            setScores(prevState => [...prevState, ...message]);
+        })
 
         fetchSessions();
         fetchCurrentScores();

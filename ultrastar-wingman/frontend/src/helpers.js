@@ -20,7 +20,7 @@ if (localStorage.getItem('access_token')) {
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
 // const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
-const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
+export const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
 
 
 function displayApiError(error, data, response) {

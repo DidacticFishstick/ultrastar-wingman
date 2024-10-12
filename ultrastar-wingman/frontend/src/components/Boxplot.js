@@ -69,7 +69,9 @@ function Boxplot({rawData}) {
             name: 'Score',
             nameLocation: 'middle',
             nameGap: 30,
-            scale: true
+            scale: true,
+            min: 0,
+            max: 10000
         },
         yAxis: {
             type: 'category',

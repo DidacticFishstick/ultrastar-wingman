@@ -1,6 +1,6 @@
 import logging
 from enum import Enum
-from typing import Set
+from typing import Set, Optional
 from fastapi import WebSocket
 
 ws_connections: Set[WebSocket] = set()
@@ -14,9 +14,10 @@ class MessageType(str, Enum):
     active_song = "active_song"
     wish_added = "wish_added"
     wish_removed = "wish_removed"
+    new_scores = "new_scores"
 
 
-async def broadcast(message_type: MessageType, message: dict):
+async def broadcast(message_type: MessageType, message: Optional[dict]):
     """
     Broadcast a message to all connected websockets
 

@@ -356,6 +356,8 @@ class Song:
             if cls.active_song is not None and song.id == cls.active_song.id:
                 cls.active_song = None
                 await ws.broadcast(ws.MessageType.active_song, {})
+                import scores
+                await ws.broadcast(ws.MessageType.new_scores, scores.get_new_latest_scores())
 
     @classmethod
     async def _sing_song(cls, song: 'Song', players: List[Optional['Player']], force=False) -> bool:

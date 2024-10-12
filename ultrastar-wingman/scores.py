@@ -88,28 +88,38 @@ class Session:
     def __repr__(self):
         return str(self)
 
-    def get_scores(self) -> List[dict]:
+    def get_scores(self, just_latest=False) -> List[dict]:
         """
         Get the scores for this session
 
+        :param just_latest: If only the scores for the latest song should be gotten
         :return: The colors
         """
 
         # Create a cursor object using the cursor() method
         cursor = self._conn.cursor()
 
-        # Define your SQL query
-        query = """
-            SELECT ID, Artist, Title, Difficulty, Player, Score, Date
-            FROM us_songs
-            JOIN us_scores ON us_songs.ID = us_scores.SongID
-            WHERE Date >= ? and Date <= ?
-            ORDER BY Date;
-        """
-
+        if just_latest:
+            # Get only the latest score in the session
+            query = """
+                SELECT ID, Artist, Title, Difficulty, Player, Score, Date
+                FROM us_songs
+                JOIN us_scores ON us_songs.ID = us_scores.SongID
+                WHERE Date = (SELECT MAX(Date) FROM us_scores WHERE Date >= ? and Date <= ?)
+                ORDER BY Date DESC;
+            """
+        else:
+            # Get all scores in the session
+            query = """
+                SELECT ID, Artist, Title, Difficulty, Player, Score, Date
+                FROM us_songs
+                JOIN us_scores ON us_songs.ID = us_scores.SongID
+                WHERE Date >= ? and Date <= ?
+                ORDER BY Date;
+            """
         try:
             # Execute the SQL query
-            cursor.execute(query, (self.start_date, self.end_date or int(time.time())))
+            cursor.execute(query, (self.start_date, self.end_date or int(2 * time.time())))
 
             # Fetch all results
             rows = cursor.fetchall()
@@ -169,6 +179,28 @@ def get_session_data(session_id: Optional[int] = None) -> Optional[dict]:
         "session": session.to_json(),
         "scores": session.get_scores()
     }
+
+
+_latest_new_score_fetched = -1
+
+
+def get_new_latest_scores() -> Optional[List[dict]]:
+    """
+    Gets the latest scores for the current session.
+    If no new scores are available, None will be returned.
+
+    :return: The scores
+    """
+
+    scores = Session.current_session.get_scores(just_latest=True)
+    print(scores)
+    if scores:
+        global _latest_new_score_fetched
+        print(_latest_new_score_fetched)
+
+        if _latest_new_score_fetched != scores[0]["date"]:
+            _latest_new_score_fetched = scores[0]["date"]
+            return scores
 
 
 def init_sessions():
