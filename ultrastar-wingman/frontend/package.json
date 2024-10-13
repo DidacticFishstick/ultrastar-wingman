@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@openapitools/openapi-generator-cli": "^2.13.1",
     "@babel/plugin-proposal-private-property-in-object": "~7.21.11",
+    "@openapitools/openapi-generator-cli": "^2.13.1",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -18,6 +18,7 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.1",
+    "react-qr-code": "^2.0.15",
     "react-router-dom": "^6.22.3",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",

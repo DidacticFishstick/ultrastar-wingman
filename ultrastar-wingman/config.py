@@ -50,7 +50,7 @@ if _usdx_songs_dir_raw := _config.get("USDX", "songs_dir", fallback=None):
 else:
     usdx_songs_dir = usdx_base_path / "songs"
 
-# I know... This is a string of just "'
+# I know... :) This is a string of just "'
 usdx_additional_songs_dirs = [p.strip().strip(""""'""") for p in _config.get("USDX", "additional_songs_dirs", fallback="").split("\n") if p.strip()]
 
 if _usdx_avatars_dir_raw := _config.get("USDX", "avatars_dir", fallback=None):
@@ -68,6 +68,8 @@ usdb_pass = _config.get("USDB", "password")
 usdb_downloader_count = int(_config.get("USDB", "downloader_count", fallback=4))
 
 setup_colors = _config.get("SETUP", "colors").split(",")
+
+client_url = _config.get("SETUP", "client_url")
 
 if os.environ.get("IS_WINDOWS_INSTALLATION") == "true":
     youtube_dl = os.path.join(SCRIPT_BASE_PATH, "executables", "yt-dlp.exe")

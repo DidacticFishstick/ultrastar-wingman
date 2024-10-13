@@ -1,0 +1,51 @@
+/* components/HostUI.css */
+.hostui-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vw;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+    ". header qr"
+    ". . .";
+}
+
+.hostui-page .header {
+    grid-area: header;
+}
+
+.hostui-page .header .logo {
+    display: block;
+    height: 25vh;
+    background-image: url("../../public/logo.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.hostui-page .header label {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    color: var(--color);
+    font-size: 4vh;
+}
+
+.hostui-page .qr {
+    grid-area: qr;
+    position: relative;
+}
+
+.hostui-page .qr > svg {
+    position: absolute;
+    top: 20%;
+    right: 20%;
+    box-sizing: border-box;
+    height: 60%;
+    width: auto;
+    background-color: #fff;
+    padding: 2%;
+}

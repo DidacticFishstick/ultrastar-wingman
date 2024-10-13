@@ -2,6 +2,7 @@ import os
 import asyncio
 import logging
 import os.path
+import webbrowser
 from contextlib import asynccontextmanager
 from functools import lru_cache
 from packaging import version
@@ -124,7 +125,8 @@ async def get_openapi_no_any_of():
 async def api_uw_state():
     return {
         "version": __version__,
-        "new_version": get_new_version()
+        "new_version": get_new_version(),
+        "client_url": config.client_url
     }
 
 
@@ -605,6 +607,26 @@ async def ws_endpoint(websocket: WebSocket):
         ws.ws_connections.remove(websocket)
 
 
+# region host UI
+
+# TODO: merge this with the other verify - localhost should always be admin
+# TODO: the first one connecting as localhost should create some ID for identification so noone else can say they are localhost
+def verify_localhost(request: Request):
+    # Check the X-Forwarded-For header first if the app is behind a proxy
+    forwarded_for = request.headers.get("X-Forwarded-For")
+    client_ip = forwarded_for.split(",")[0].strip() if forwarded_for else request.client.host
+
+    # Check both the forwarded_for IP and the direct client IP
+    if client_ip not in ["127.0.0.1", "localhost"] and request.client.host not in ["127.0.0.1", "localhost"]:
+        raise HTTPException(status_code=403, detail="Access to the host UI is only allowed from the host")
+
+
+@app.get("/host_ui", dependencies=[Depends(verify_localhost)], include_in_schema=False)
+async def host_ui():
+    return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/build", "index.html"))
+
+
+# endregion
 # region UI
 
 # Everything is in the index.html but the URL changes as this is a single page application.
@@ -623,6 +645,14 @@ app.mount("/", StaticFiles(directory=os.path.join(SCRIPT_BASE_PATH, "frontend/bu
 
 # endregion
 
+async def open_browser():
+    """
+    Opens the UI in the default browser
+    """
+
+    await asyncio.sleep(2)
+    webbrowser.open("http://localhost:8080/host_ui")
+
 
 async def main():
     # login to usdb.animux.de
@@ -633,6 +663,9 @@ async def main():
 
     # load all downloaded songs
     Song.load_songs()
+
+    # Open browser
+    asyncio.create_task(open_browser())
 
     # start the server
     server_config = uvicorn.Config(app="main:app", host="0.0.0.0", port=8080, log_level="info")

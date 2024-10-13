@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 class UltrastarWingmanState(BaseModel):
     version: Optional[str] = Field(None, description="The current version of Ultrastar Wingman")
     new_version: Optional[str] = Field(None, description="The new version if one is available")
+    client_url: str = Field(None, description="The url for the clients to use (to be shown as a QR code)")
 
 
 class BasicResponse(BaseModel):

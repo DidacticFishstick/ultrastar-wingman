@@ -119,5 +119,3 @@ src/model/UserUpdate.js
 src/model/ValidationError.js
 src/model/WishModel.js
 src/model/WishlistModel.js
-test/api/UltraStarWingmanApi.spec.js
-test/model/UltrastarWingmanState.spec.js

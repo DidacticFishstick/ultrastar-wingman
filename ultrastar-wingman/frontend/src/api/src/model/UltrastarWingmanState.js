@@ -53,6 +53,9 @@ class UltrastarWingmanState {
             if (data.hasOwnProperty('new_version')) {
                 obj['new_version'] = ApiClient.convertToType(data['new_version'], 'String');
             }
+            if (data.hasOwnProperty('client_url')) {
+                obj['client_url'] = ApiClient.convertToType(data['client_url'], 'String');
+            }
         }
         return obj;
     }
@@ -70,6 +73,10 @@ class UltrastarWingmanState {
         // ensure the json data is a string
         if (data['new_version'] && !(typeof data['new_version'] === 'string' || data['new_version'] instanceof String)) {
             throw new Error("Expected the field `new_version` to be a primitive type in the JSON string but got " + data['new_version']);
+        }
+        // ensure the json data is a string
+        if (data['client_url'] && !(typeof data['client_url'] === 'string' || data['client_url'] instanceof String)) {
+            throw new Error("Expected the field `client_url` to be a primitive type in the JSON string but got " + data['client_url']);
         }
 
         return true;
@@ -91,6 +98,12 @@ UltrastarWingmanState.prototype['version'] = undefined;
  * @member {String} new_version
  */
 UltrastarWingmanState.prototype['new_version'] = undefined;
+
+/**
+ * The url for the clients to use (to be shown as a QR code)
+ * @member {String} client_url
+ */
+UltrastarWingmanState.prototype['client_url'] = undefined;
 
 
 

@@ -14,8 +14,8 @@ ultrastar_db = ~/Library/Application Support/UltraStarDeluxe1.3/Ultrastar.db
 [SETUP]
 ; available colors: blue, brown, cyan, dark_blue, flame, gray, green, green_yellow, harlequin, orange, orchid, pink, rainbow, red, sky, violet, yellow
 colors = gray,dark_blue,yellow,flame
+client_url = http://192.168.178.42:8080
 
 [OTHER]
-players_file = players.txt
 youtube_dl = yt-dlp
 ffmpeg = ffmpeg

@@ -10,8 +10,8 @@ base_path = C:/Program Files (x86)/UltraStar Deluxe/
 [SETUP]
 ; available colors: blue, brown, cyan, dark_blue, flame, gray, green, green_yellow, harlequin, orange, orchid, pink, rainbow, red, sky, violet, yellow
 colors = gray,dark_blue,yellow,flame
+client_url = http://192.168.178.42:8080
 
 [OTHER]
-players_file = players.txt
 youtube_dl = executables/yt-dlp.exe
 ffmpeg = executables/ffmpeg.exe
