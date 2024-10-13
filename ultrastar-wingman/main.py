@@ -536,6 +536,23 @@ async def api_scores_get(session_id: int = None, _: User = Depends(permissions.u
     return data
 
 
+@app.get('/api/latest_scores', response_model=models.LatestScore, status_code=status.HTTP_200_OK, summary="Get latest scores and the song they belong to", response_description="The song and the scores", tags=["Scores"])
+async def api_latest_scores_get():
+    """
+    Gets the latest scores and the song they belong to.
+    """
+
+    song, song_scores = scores.latest_score
+
+    if song is None or song_scores is None:
+        raise HTTPException(status_code=404, detail="No scores yet")
+
+    return {
+        "song": song.to_json(),
+        "scores": song_scores
+    }
+
+
 @app.get('/api/wishlist/client', response_model=models.WishlistModel, status_code=status.HTTP_200_OK, summary="Get the clients wishlist", response_description="The songs on the wishlist", tags=["Wishlist"])
 async def api_wishlist_client_get(request: Request, _: User = Depends(permissions.user_permissions(permissions.wishlist_edit))):
     """

@@ -156,6 +156,17 @@ class ScoresModel(BaseModel):
     scores: List[Score] = Field(None, description="List of scores.")
 
 
+class PlayerScore(BaseModel):
+    player_id: str = Field(None, description="The id for the player.")
+    name: str = Field(None, description="The name of the player.")
+    registered: bool = Field(None, description="Whether the player is registered.")
+    score: int = Field(None, description="The score of the player.")
+
+class LatestScore(BaseModel):
+    song: Song
+    scores: List[PlayerScore] = Field(None, description="List of scores.")
+
+
 class SingModel(BaseModel):
     force: bool = Field(False, description="Force a song change if another song is currently playing.")
     player_ids: List[str] = Field(None, description="List of player ids.")

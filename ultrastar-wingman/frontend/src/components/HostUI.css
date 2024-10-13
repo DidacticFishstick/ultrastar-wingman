@@ -3,14 +3,17 @@
     position: fixed;
     top: 0;
     left: 0;
+    box-sizing: border-box;
     width: 100vw;
     height: 100vw;
     display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas:
-    ". header qr"
-    ". . .";
+    "qr header ."
+    "latest-scores . .";
+    padding: 20px;
+    gap: 20px;
 }
 
 .hostui-page .header {
@@ -42,10 +45,14 @@
 .hostui-page .qr > svg {
     position: absolute;
     top: 20%;
-    right: 20%;
+    left: 20%;
     box-sizing: border-box;
     height: 60%;
     width: auto;
     background-color: #fff;
     padding: 2%;
+}
+
+.hostui-page .latest-scores {
+    grid-area: latest-scores;
 }

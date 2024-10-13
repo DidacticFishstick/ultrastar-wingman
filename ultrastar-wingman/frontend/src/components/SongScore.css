@@ -1,0 +1,110 @@
+/* components/SongScore.css */
+.song-score .song {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.song-score .song label {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.song-score .song .title {
+    color: var(--color);
+    font-size: 1.2em;
+    margin-bottom: 0.5em;
+}
+
+.song-score .song .artist {
+    color: var(--color-dark);
+}
+
+.song-score .cover,
+.song-score .cover span {
+    display: block;
+    width: 5em;
+    height: 5em;
+    background-image: url("../../public/logo.png");;
+    background-color: #000;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.song-score .player-scores {
+    margin-top: 2em;
+}
+
+.song-score .player-scores > div {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    width: 100%;
+    height: 50px;
+    gap: 1em;
+    margin-top: 1em;
+}
+
+.song-score .player-score {
+    width: 100%;
+    position: relative;
+    background: var(--input-bg);
+    padding: 0.5em 1em;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.song-score .avatar,
+.song-score .avatar span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url("../../public/logo.png");;
+    background-color: #000;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    border-radius: 5px;
+}
+
+@keyframes expandWidth {
+    from {
+        width: 0;
+    }
+    to {}
+}
+
+.song-score .player-score .percent {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: var(--highlight-pink-dark);
+    animation: expandWidth 2s ease-in-out forwards;
+    transition: width 2s;
+}
+
+.song-score .player-score label {
+    font-size: 1em;
+    position: relative;
+}
+
+.song-score .player-score .name {
+    color: var(--color);
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.song-score .player-score .score {
+    color: var(--color-dark);
+}

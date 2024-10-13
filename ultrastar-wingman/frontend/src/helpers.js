@@ -1,11 +1,12 @@
 import {useEffect, useState} from 'react';
-import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, SongsApi, UltraStarDeluxeApi, UltraStarWingmanApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
+import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, ScoresApi, SongsApi, UltraStarDeluxeApi, UltraStarWingmanApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 import ApiClient from "./api/src/ApiClient";
 
 const ultraStarWingmanApi = new UltraStarWingmanApi();
 const wishlistApi = new WishlistApi();
 const songsApi = new SongsApi();
+const scoresApi = new ScoresApi();
 const usdbApi = new USDBApi();
 const usdxApi = new UltraStarDeluxeApi();
 const playersApi = new PlayersApi();
@@ -19,8 +20,14 @@ if (localStorage.getItem('access_token')) {
 }
 
 // TODO: fix the websocket (first line should work on build stuff where everything is on the same host)
-export const wsService = new WebSocketService(`ws://${window.location.host}/ws`);
-// export const wsService = new WebSocketService(`ws://${window.location.hostname}:8080/ws`);
+let ws_url;
+if (window.location.port === "3000") {
+    // dev
+    ws_url = `ws://${window.location.hostname}:8080/ws`;
+} else {
+    ws_url = `ws://${window.location.host}/ws`;
+}
+export const wsService = new WebSocketService(ws_url);
 
 
 function displayApiError(error, data, response) {
@@ -346,6 +353,26 @@ export function useDownloadQueue() {
     }, []);
 
     return [downloadQueue, setDownloadQueue];
+}
+
+export function useLastScore() {
+    const [lastScore, setLastScore] = useState({});
+
+    useEffect(() => {
+        scoresApi.apiLatestScoresGetApiLatestScoresGet((error, data, response) => {
+            if (error) {
+                if (response.status !== 404) {
+                    displayApiError(error, data, response);
+                }
+            } else {
+                setLastScore(data);
+            }
+        });
+    }, []);
+
+    wsService.registerCallback("new_scores", data => setLastScore(data));
+
+    return [lastScore, setLastScore];
 }
 
 export function usePlayerSettings() {

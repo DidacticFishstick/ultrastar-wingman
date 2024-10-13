@@ -14,6 +14,7 @@
 
 import ApiClient from "../ApiClient";
 import HTTPValidationError from '../model/HTTPValidationError';
+import LatestScore from '../model/LatestScore';
 import ScoresModel from '../model/ScoresModel';
 import SessionsListModel from '../model/SessionsListModel';
 
@@ -35,6 +36,43 @@ export default class ScoresApi {
         this.apiClient = apiClient || ApiClient.instance;
     }
 
+
+    /**
+     * Callback function to receive the result of the apiLatestScoresGetApiLatestScoresGet operation.
+     * @callback module:api/ScoresApi~apiLatestScoresGetApiLatestScoresGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/LatestScore} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * Get latest scores and the song they belong to
+     * Gets the latest scores and the song they belong to.
+     * @param {module:api/ScoresApi~apiLatestScoresGetApiLatestScoresGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/LatestScore}
+     */
+    apiLatestScoresGetApiLatestScoresGet(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = [];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = LatestScore;
+      return this.apiClient.callApi(
+        '/api/latest_scores', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
 
     /**
      * Callback function to receive the result of the apiScoresGetApiScoresGet operation.

@@ -152,6 +152,7 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredPatch**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPatch) | **PATCH** /api/players/registered | Patch data for registered Players
 *UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredPlayerGet**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPlayerGet) | **GET** /api/players/registered/{player} | Retrieve a specific registered Players
 *UltraStarWingman.PlayersApi* | [**apiRegisteredPlayersApiPlayersRegisteredPlayerPatch**](docs/PlayersApi.md#apiRegisteredPlayersApiPlayersRegisteredPlayerPatch) | **PATCH** /api/players/registered/{player} | Patch data for a specific player
+*UltraStarWingman.ScoresApi* | [**apiLatestScoresGetApiLatestScoresGet**](docs/ScoresApi.md#apiLatestScoresGetApiLatestScoresGet) | **GET** /api/latest_scores | Get latest scores and the song they belong to
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresGet**](docs/ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiScoresGetApiScoresSessionIdGet**](docs/ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
@@ -188,6 +189,7 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.BodyVerifyVerifyAuthVerifyPost](docs/BodyVerifyVerifyAuthVerifyPost.md)
  - [UltraStarWingman.ErrorModel](docs/ErrorModel.md)
  - [UltraStarWingman.HTTPValidationError](docs/HTTPValidationError.md)
+ - [UltraStarWingman.LatestScore](docs/LatestScore.md)
  - [UltraStarWingman.OrderEnum](docs/OrderEnum.md)
  - [UltraStarWingman.Paging](docs/Paging.md)
  - [UltraStarWingman.PermissionModel](docs/PermissionModel.md)
@@ -197,6 +199,7 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.PermissionsPatchResponseModel](docs/PermissionsPatchResponseModel.md)
  - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
+ - [UltraStarWingman.PlayerScore](docs/PlayerScore.md)
  - [UltraStarWingman.PlayersModel](docs/PlayersModel.md)
  - [UltraStarWingman.RegisteredPlayerModel](docs/RegisteredPlayerModel.md)
  - [UltraStarWingman.RegisteredPlayerPatchModel](docs/RegisteredPlayerPatchModel.md)

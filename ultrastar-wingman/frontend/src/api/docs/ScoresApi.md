@@ -4,10 +4,52 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**apiLatestScoresGetApiLatestScoresGet**](ScoresApi.md#apiLatestScoresGetApiLatestScoresGet) | **GET** /api/latest_scores | Get latest scores and the song they belong to
 [**apiScoresGetApiScoresGet**](ScoresApi.md#apiScoresGetApiScoresGet) | **GET** /api/scores | Get session scores
 [**apiScoresGetApiScoresSessionIdGet**](ScoresApi.md#apiScoresGetApiScoresSessionIdGet) | **GET** /api/scores/{session_id} | Get session scores
 [**apiSessionsGetApiSessionsGet**](ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
 
+
+
+## apiLatestScoresGetApiLatestScoresGet
+
+> LatestScore apiLatestScoresGetApiLatestScoresGet()
+
+Get latest scores and the song they belong to
+
+Gets the latest scores and the song they belong to.
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+
+let apiInstance = new UltraStarWingman.ScoresApi();
+apiInstance.apiLatestScoresGetApiLatestScoresGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**LatestScore**](LatestScore.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
 ## apiScoresGetApiScoresGet

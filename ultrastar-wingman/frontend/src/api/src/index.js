@@ -23,6 +23,7 @@ import BodyVerifyRequestTokenAuthRequestVerifyTokenPost from './model/BodyVerify
 import BodyVerifyVerifyAuthVerifyPost from './model/BodyVerifyVerifyAuthVerifyPost';
 import ErrorModel from './model/ErrorModel';
 import HTTPValidationError from './model/HTTPValidationError';
+import LatestScore from './model/LatestScore';
 import OrderEnum from './model/OrderEnum';
 import Paging from './model/Paging';
 import PermissionModel from './model/PermissionModel';
@@ -32,6 +33,7 @@ import PermissionsPatchModel from './model/PermissionsPatchModel';
 import PermissionsPatchResponseModel from './model/PermissionsPatchResponseModel';
 import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
+import PlayerScore from './model/PlayerScore';
 import PlayersModel from './model/PlayersModel';
 import RegisteredPlayerModel from './model/RegisteredPlayerModel';
 import RegisteredPlayerPatchModel from './model/RegisteredPlayerPatchModel';
@@ -170,6 +172,12 @@ export {
     HTTPValidationError,
 
     /**
+     * The LatestScore model constructor.
+     * @property {module:model/LatestScore}
+     */
+    LatestScore,
+
+    /**
      * The OrderEnum model constructor.
      * @property {module:model/OrderEnum}
      */
@@ -222,6 +230,12 @@ export {
      * @property {module:model/PlayerCreation}
      */
     PlayerCreation,
+
+    /**
+     * The PlayerScore model constructor.
+     * @property {module:model/PlayerScore}
+     */
+    PlayerScore,
 
     /**
      * The PlayersModel model constructor.

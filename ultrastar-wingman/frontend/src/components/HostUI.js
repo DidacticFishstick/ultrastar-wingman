@@ -3,10 +3,12 @@
 import React, {useRef, useState} from 'react';
 import QRCode from "react-qr-code";
 import './HostUI.css';
-import {useUltrastarWingmanState} from "../helpers";
+import {useLastScore, useUltrastarWingmanState} from "../helpers";
+import SongScore from "./SongScore";
 
 const HostUI = () => {
     const [ultrastarWingmanState, setUltrastarWingmanState] = useUltrastarWingmanState();
+    const [lastScore, setLastScore] = useLastScore();
 
     return <div className={"hostui-page"}>
         <div className={"header"}>
@@ -22,6 +24,14 @@ const HostUI = () => {
                 />
             }
         </div>
+        {lastScore.song && lastScore.scores &&
+            <div className={"latest-scores"}>
+                <SongScore
+                    song={lastScore.song}
+                    scores={lastScore.scores}
+                />
+            </div>
+        }
     </div>;
 };
 

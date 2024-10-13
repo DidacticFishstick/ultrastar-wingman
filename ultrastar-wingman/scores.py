@@ -1,6 +1,6 @@
 import datetime
 import time
-from typing import List, Optional
+from typing import List, Optional, Tuple
 import sqlite3
 
 import config
@@ -183,8 +183,10 @@ def get_session_data(session_id: Optional[int] = None) -> Optional[dict]:
 
 _latest_new_score_fetched = -1
 
+latest_score: Tuple[Optional[Song], Optional[List[dict]]] = (None, None)
 
-def get_new_latest_scores() -> Optional[List[dict]]:
+
+def get_new_latest_scores_from_db() -> Optional[List[dict]]:
     """
     Gets the latest scores for the current session.
     If no new scores are available, None will be returned.

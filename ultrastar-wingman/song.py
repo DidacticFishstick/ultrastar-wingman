@@ -23,6 +23,7 @@ import config
 import usdb
 import ws
 import usdx
+from users.players import Player
 
 
 class DownloadException(Exception):
@@ -357,17 +358,42 @@ class Song:
 
         async with cls.active_song_lock:
             if cls.active_song is not None and song.id == cls.active_song.id:
-                cls.active_song = None
-
                 # remove the temp song dir if it exists
                 tmp_path = Path(config.usdx_songs_dir) / cls.SONG_COPY_DIR
                 if tmp_path.exists():
                     shutil.rmtree(tmp_path)
 
                 await ws.broadcast(ws.MessageType.active_song, {})
+
                 import scores
-                if new_scores := scores.get_new_latest_scores():
-                    await ws.broadcast(ws.MessageType.new_scores, new_scores)
+                if new_scores := scores.get_new_latest_scores_from_db():
+                    score_list = []
+                    for score in new_scores:
+                        player = await Player.get_by_name(score["player"])
+                        print(f"{player=}")
+                        if player is not None:
+                            score_list.append({
+                                "player_id": player.id,
+                                "name": player.name,
+                                "registered": player.user is not None,
+                                "score": score["score"]
+                            })
+                        else:
+                            # Should never happen (unless some players was deleted since the song was started)
+                            score_list.append({
+                                "player_id": "",
+                                "name": score["player"],
+                                "registered": False,
+                                "score": score["score"]
+                            })
+
+                    scores.latest_score = (cls.active_song, score_list)
+                    await ws.broadcast(ws.MessageType.new_scores, {
+                        "song": cls.active_song.to_json(),
+                        "scores": score_list
+                    })
+
+                cls.active_song = None
 
     @classmethod
     async def _sing_song(cls, song: 'Song', players: List[Optional['Player']], force=False, copy_to_main_songs_dir=False) -> bool:

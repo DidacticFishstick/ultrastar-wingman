@@ -14,6 +14,7 @@ docs/BodyVerifyVerifyAuthVerifyPost.md
 docs/DefaultApi.md
 docs/ErrorModel.md
 docs/HTTPValidationError.md
+docs/LatestScore.md
 docs/OrderEnum.md
 docs/Paging.md
 docs/PermissionModel.md
@@ -24,6 +25,7 @@ docs/PermissionsPatchModel.md
 docs/PermissionsPatchResponseModel.md
 docs/PlayerConfig.md
 docs/PlayerCreation.md
+docs/PlayerScore.md
 docs/PlayersApi.md
 docs/PlayersModel.md
 docs/RegisteredPlayerModel.md
@@ -84,6 +86,7 @@ src/model/BodyVerifyRequestTokenAuthRequestVerifyTokenPost.js
 src/model/BodyVerifyVerifyAuthVerifyPost.js
 src/model/ErrorModel.js
 src/model/HTTPValidationError.js
+src/model/LatestScore.js
 src/model/OrderEnum.js
 src/model/Paging.js
 src/model/PermissionModel.js
@@ -93,6 +96,7 @@ src/model/PermissionsPatchModel.js
 src/model/PermissionsPatchResponseModel.js
 src/model/PlayerConfig.js
 src/model/PlayerCreation.js
+src/model/PlayerScore.js
 src/model/PlayersModel.js
 src/model/RegisteredPlayerModel.js
 src/model/RegisteredPlayerPatchModel.js

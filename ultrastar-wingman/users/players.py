@@ -124,7 +124,7 @@ class Player:
     @classmethod
     async def get_by_id(cls, id: str) -> Optional['Player']:
         """
-        Returns the registered player with the given id, None otherwise
+        Returns the player with the given id, None otherwise
 
         :param id: The id
         :return: The player or None
@@ -148,6 +148,39 @@ class Player:
                         logging.exception("Failed to look up user by id")
 
         return player
+
+    @classmethod
+    async def get_by_name(cls, name: str) -> Optional['Player']:
+        """
+        Returns the player with the given name, None otherwise
+
+        :param name: The player name
+        :return: The player or None
+        """
+
+        for player in cls._unregistered.values():
+            print(f"{player.name=}")
+            if player.name == name:
+                return player
+
+        # strip the [] that are placed around the name in temporary players
+        name = name.strip("[]")
+
+        for player in cls._unregistered.values():
+            print(f"{player.name=}")
+            if player.name == name:
+                return player
+
+        async with async_session_maker() as session:
+            async with session.begin():
+                try:
+                    result = await session.execute(select(UserModel).where(UserModel.email == name))
+                    users = result.scalars().all()
+
+                    if users:
+                        return cls.from_user(users[0])
+                except Exception as e:
+                    logging.exception("Failed to look up user by name")
 
     def __init__(self, name: str, user: Optional[User] = None):
         """
