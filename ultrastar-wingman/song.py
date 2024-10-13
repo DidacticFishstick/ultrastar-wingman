@@ -366,7 +366,8 @@ class Song:
 
                 await ws.broadcast(ws.MessageType.active_song, {})
                 import scores
-                await ws.broadcast(ws.MessageType.new_scores, scores.get_new_latest_scores())
+                if new_scores := scores.get_new_latest_scores():
+                    await ws.broadcast(ws.MessageType.new_scores, new_scores)
 
     @classmethod
     async def _sing_song(cls, song: 'Song', players: List[Optional['Player']], force=False, copy_to_main_songs_dir=False) -> bool:
