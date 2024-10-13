@@ -355,8 +355,6 @@ class Song:
         :param song: The song that ended
         """
 
-        # TODO: remove temp directory if it is present
-
         async with cls.active_song_lock:
             if cls.active_song is not None and song.id == cls.active_song.id:
                 cls.active_song = None
@@ -468,51 +466,21 @@ class Song:
             return f"[Song '{self.title} - {self.artist}' ({self.usdb_id})]"
         return f"[Song '{self.title} - {self.artist}']"
 
-    def sanitize_path(self) -> str:
+    def is_path_sanitized(self) -> bool:
         """
-        Check that the directory only has allowed characters and renames it otherwise.
+        Check that the directory only has allowed characters.
         This is needed as USDX does not do well with special characters in song dirs.
-        TODO: mention this as a warning in the readme
 
-        :return: The new directory
+        :return: If the path is already sanitized
         """
 
-        # Define the regex pattern for allowed characters
         pattern = re.compile(r'[^a-zA-Z0-9.,-_()+ ]')
 
-        # Get the directory name and parent directory
-        parent_dir = os.path.dirname(self.directory)
         dir_name = os.path.basename(self.directory)
 
-        # Remove non-ASCII characters
         new_dir_name = pattern.sub('', dir_name)
 
-        # Ensure the new directory name is not empty
-        if not new_dir_name:
-            return self.directory
-
-        if new_dir_name == dir_name:
-            return self.directory
-
-        new_path = os.path.join(parent_dir, new_dir_name)
-
-        # Append a number if the directory already exists
-        counter = 1
-        while os.path.exists(new_path):
-            new_path = os.path.join(parent_dir, f"{new_dir_name} ({counter})")
-            counter += 1
-
-        logging.info(f"Renaming '{self.directory}' to '{new_path}' to remove special characters")
-
-        try:
-            # Rename the directory
-            os.rename(self.directory, new_path)
-        except PermissionError as e:
-            logging.exception("Failed to rename directory")
-            return self.directory
-
-        self.directory = new_path
-        return new_path
+        return new_dir_name == dir_name
 
     def to_json(self):
         return {
@@ -579,9 +547,8 @@ class Song:
         :return: True if the given song was started, False otherwise
         """
 
-        if Path(self.directory).resolve().is_relative_to(Path(config.usdx_songs_dir).resolve()):
-            # This is already in the default songs dir
-            self.sanitize_path()
+        if Path(self.directory).resolve().is_relative_to(Path(config.usdx_songs_dir).resolve()) and self.is_path_sanitized():
+            # This is already in the default songs dir and has a path that works for USDX
             return await self._sing_song(self, players, force=force)
         else:
             return await self._sing_song(self, players, force=force, copy_to_main_songs_dir=True)
