@@ -46,12 +46,13 @@ async def _monitor_process(p, callback, song: Optional['Song']):
     await callback(song)
 
 
-async def start(song: Optional['Song'] = None, kill_previous=False, callback=None):
+async def start(song: Optional['Song'] = None, temp_song_dir: Optional[str] = None, kill_previous=False, callback=None):
     """
     Starts ultrastar wingman with an optional list of parameters.
     If ultrastar wingman is already running, the old proces will be killed first
 
     :param song: Optional song to start.
+    :param temp_song_dir: Optional temp dir the song is in. This will be deleted after USDX exists
     :param kill_previous: If the previous process should be killed (if it is still running).
     :param callback: A callback function to call when the process ends.
     """
@@ -60,7 +61,7 @@ async def start(song: Optional['Song'] = None, kill_previous=False, callback=Non
 
     params = []
     if song is not None:
-        params = ["-SongPath", str(song.directory), "-SingleSong"]
+        params = ["-SongPath", str(temp_song_dir or song.directory), "-SingleSong"]
 
     async with process_lock:
         try:

@@ -9,6 +9,7 @@ import tempfile
 import time
 import uuid
 from functools import lru_cache
+from pathlib import Path
 
 import chardet
 from typing import Optional, List, Dict
@@ -33,6 +34,8 @@ class Song:
     usdb_ids = set()
     active_song_lock = asyncio.Lock()
     active_song: Optional['Song'] = None
+
+    SONG_COPY_DIR = "ULTRASTAR_WINGMAN_SONG_COPY"
 
     @staticmethod
     def create_valid_dir_name(s):
@@ -352,22 +355,36 @@ class Song:
         :param song: The song that ended
         """
 
+        # TODO: remove temp directory if it is present
+
         async with cls.active_song_lock:
             if cls.active_song is not None and song.id == cls.active_song.id:
                 cls.active_song = None
+
+                # remove the temp song dir if it exists
+                tmp_path = Path(config.usdx_songs_dir) / cls.SONG_COPY_DIR
+                if tmp_path.exists():
+                    shutil.rmtree(tmp_path)
+
                 await ws.broadcast(ws.MessageType.active_song, {})
                 import scores
                 await ws.broadcast(ws.MessageType.new_scores, scores.get_new_latest_scores())
 
     @classmethod
-    async def _sing_song(cls, song: 'Song', players: List[Optional['Player']], force=False) -> bool:
+    async def _sing_song(cls, song: 'Song', players: List[Optional['Player']], force=False, copy_to_main_songs_dir=False) -> bool:
         """
         Starts a new ultrastar deluxe process with the given song.
         If another song is currently active, the new song will not be started.
 
+        If copy_to_main_songs_dir is set to True, the song will be copied to the default songs dir temporarily.
+        If using -SongPath as a command line parameter and the given song is not in the default dir,
+        all songs in the default dir are still loaded for some reason.
+        So to avoid this, the songs are copied.
+
         :param song: The song to start
         :param players: The list of players
         :param force: If set to True, any currently playing song will be canceled
+        :param copy_to_main_songs_dir: Moves the song to the main songs dir before starting
         :return: True if the given song was started, False otherwise
         """
 
@@ -379,10 +396,15 @@ class Song:
 
             logging.info(f"Starting song {song} for {', '.join([p.name for p in players if p is not None])}")
 
+            temp_song_dir = None
+            if copy_to_main_songs_dir:
+                temp_song_dir = cls._copy_to_main_songs_dir(song)
+
             usdx.change_config(players)
 
             await usdx.start(
                 song=song,
+                temp_song_dir=temp_song_dir,
                 kill_previous=True,
                 callback=cls._on_song_end
             )
@@ -518,6 +540,36 @@ class Song:
         with open(os.path.join(self.directory, "wingman.json"), 'w') as file:
             json.dump(data, file, indent=4)
 
+    def _copy_to_main_songs_dir(self):
+        """
+        Copies the song to the main songs dir.
+
+        If using -SongPath as a command line parameter and the given song is not in the default dir,
+        all songs in the default dir are still loaded for some reason.
+        So to avoid this, the songs are copied.
+        """
+
+        src_path = Path(self.directory)
+        dest_path = Path(config.usdx_songs_dir) / self.SONG_COPY_DIR
+
+        # Ensure source directory exists
+        if not src_path.exists() or not src_path.is_dir():
+            raise FileNotFoundError(f"Source directory {self.directory} does not exist or is not a directory.")
+
+        # Remove and recreate destination directory if it exists, or create it
+        if dest_path.exists():
+            shutil.rmtree(dest_path)
+        dest_path.mkdir(parents=True, exist_ok=True)
+
+        # Copy all contents from source to destination
+        for item in src_path.iterdir():
+            if item.is_dir():
+                shutil.copytree(item, dest_path / item.name)
+            else:
+                shutil.copy2(item, dest_path / item.name)
+
+        return str(dest_path)
+
     async def sing(self, players: List[Optional['Player']], force=False) -> bool:
         """
         Starts ultrastar deluxe with the song selected
@@ -527,6 +579,10 @@ class Song:
         :return: True if the given song was started, False otherwise
         """
 
-        self.sanitize_path()
+        if Path(self.directory).resolve().is_relative_to(Path(config.usdx_songs_dir).resolve()):
+            # This is already in the default songs dir
+            self.sanitize_path()
+            return await self._sing_song(self, players, force=force)
+        else:
+            return await self._sing_song(self, players, force=force, copy_to_main_songs_dir=True)
 
-        return await self._sing_song(self, players, force=force)
