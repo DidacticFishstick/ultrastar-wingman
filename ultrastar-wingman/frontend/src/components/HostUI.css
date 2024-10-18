@@ -11,9 +11,9 @@
     grid-template-rows: auto 1fr;
     grid-template-areas:
     "qr header ."
-    "latest-scores . .";
+    ". latest-scores .";
     padding: 20px;
-    gap: 20px;
+    gap: 80px 20px;
 }
 
 .hostui-page .header {

@@ -159,7 +159,6 @@ class Player:
         """
 
         for player in cls._unregistered.values():
-            print(f"{player.name=}")
             if player.name == name:
                 return player
 
@@ -167,7 +166,6 @@ class Player:
         name = name.strip("[]")
 
         for player in cls._unregistered.values():
-            print(f"{player.name=}")
             if player.name == name:
                 return player
 

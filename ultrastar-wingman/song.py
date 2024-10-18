@@ -370,7 +370,6 @@ class Song:
                     score_list = []
                     for score in new_scores:
                         player = await Player.get_by_name(score["player"])
-                        print(f"{player=}")
                         if player is not None:
                             score_list.append({
                                 "player_id": player.id,
