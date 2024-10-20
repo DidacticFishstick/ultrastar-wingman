@@ -2,7 +2,7 @@ import logging
 import os
 import re
 import uuid
-from typing import Dict, Optional, List, Tuple
+from typing import Dict, Optional, List, Tuple, Set
 
 from fastapi import HTTPException
 from fastapi.responses import FileResponse
@@ -26,6 +26,8 @@ def find_photo_file(directory, filename):
 class Player:
     _registered: Dict[str, 'Player'] = {}
     _unregistered: Dict[str, 'Player'] = {}
+    # Used to keep track of names that were queried but don't exist in the db
+    _non_existing_names: Set[str] = set()
 
     @classmethod
     def from_user(cls, user):
@@ -158,7 +160,7 @@ class Player:
         :return: The player or None
         """
 
-        for player in cls._unregistered.values():
+        for player in cls._registered.values():
             if player.name == name:
                 return player
 
@@ -169,16 +171,19 @@ class Player:
             if player.name == name:
                 return player
 
-        async with async_session_maker() as session:
-            async with session.begin():
-                try:
-                    result = await session.execute(select(UserModel).where(UserModel.email == name))
-                    users = result.scalars().all()
+        if name not in cls._non_existing_names:
+            async with async_session_maker() as session:
+                async with session.begin():
+                    try:
+                        result = await session.execute(select(UserModel).where(UserModel.email == name))
+                        users = result.scalars().all()
 
-                    if users:
-                        return cls.from_user(users[0])
-                except Exception as e:
-                    logging.exception("Failed to look up user by name")
+                        if users:
+                            return cls.from_user(users[0])
+                        else:
+                            cls._non_existing_names.add(name)
+                    except Exception as e:
+                        logging.exception("Failed to look up user by name")
 
     def __init__(self, name: str, user: Optional[User] = None):
         """

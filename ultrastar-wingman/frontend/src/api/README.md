@@ -135,11 +135,6 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.AuthApi* | [**resetResetPasswordAuthResetPasswordPost**](docs/AuthApi.md#resetResetPasswordAuthResetPasswordPost) | **POST** /auth/reset-password | Reset:Reset Password
 *UltraStarWingman.AuthApi* | [**verifyRequestTokenAuthRequestVerifyTokenPost**](docs/AuthApi.md#verifyRequestTokenAuthRequestVerifyTokenPost) | **POST** /auth/request-verify-token | Verify:Request-Token
 *UltraStarWingman.AuthApi* | [**verifyVerifyAuthVerifyPost**](docs/AuthApi.md#verifyVerifyAuthVerifyPost) | **POST** /auth/verify | Verify:Verify
-*UltraStarWingman.DefaultApi* | [**aliasRoutesScoresGet**](docs/DefaultApi.md#aliasRoutesScoresGet) | **GET** /scores | Alias Routes
-*UltraStarWingman.DefaultApi* | [**aliasRoutesSongsGet**](docs/DefaultApi.md#aliasRoutesSongsGet) | **GET** /songs | Alias Routes
-*UltraStarWingman.DefaultApi* | [**aliasRoutesUsdbGet**](docs/DefaultApi.md#aliasRoutesUsdbGet) | **GET** /usdb | Alias Routes
-*UltraStarWingman.DefaultApi* | [**aliasRoutesUsdbListGet**](docs/DefaultApi.md#aliasRoutesUsdbListGet) | **GET** /UsdbList | Alias Routes
-*UltraStarWingman.DefaultApi* | [**aliasRoutesUserGet**](docs/DefaultApi.md#aliasRoutesUserGet) | **GET** /user | Alias Routes
 *UltraStarWingman.PermissionsApi* | [**apiPermissionsGetApiPermissionsGet**](docs/PermissionsApi.md#apiPermissionsGetApiPermissionsGet) | **GET** /api/permissions | Get all permissions
 *UltraStarWingman.PermissionsApi* | [**apiPermissionsPatchApiPermissionsPatch**](docs/PermissionsApi.md#apiPermissionsPatchApiPermissionsPatch) | **PATCH** /api/permissions | Patch data for permissions
 *UltraStarWingman.PlayersApi* | [**apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet**](docs/PlayersApi.md#apiGetDefaultAvatarApiPlayersAvatarsDefaultColorGet) | **GET** /api/players/avatars/default/{color} | Api Get Default Avatar
@@ -158,6 +153,7 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.ScoresApi* | [**apiSessionsGetApiSessionsGet**](docs/ScoresApi.md#apiSessionsGetApiSessionsGet) | **GET** /api/sessions | Get all sessions
 *UltraStarWingman.SongsApi* | [**apiCoverApiSongsSongIdCoverGet**](docs/SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
 *UltraStarWingman.SongsApi* | [**apiGetSongByIdApiSongsSongIdGet**](docs/SongsApi.md#apiGetSongByIdApiSongsSongIdGet) | **GET** /api/songs/{song_id} | Retrieve the song with the given id. Use id &#39;random&#39; for a random song or &#39;current&#39; for the currently playing song.
+*UltraStarWingman.SongsApi* | [**apiGetSongByIdApiSongsSongIdScoresGet**](docs/SongsApi.md#apiGetSongByIdApiSongsSongIdScoresGet) | **GET** /api/songs/{song_id}/scores | All the scores for a given song (matched by USDX Id, so the scores might belong to different files).
 *UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 *UltraStarWingman.SongsApi* | [**apiSingSongApiSongsSongIdSingPost**](docs/SongsApi.md#apiSingSongApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
@@ -199,7 +195,6 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.PermissionsPatchResponseModel](docs/PermissionsPatchResponseModel.md)
  - [UltraStarWingman.PlayerConfig](docs/PlayerConfig.md)
  - [UltraStarWingman.PlayerCreation](docs/PlayerCreation.md)
- - [UltraStarWingman.PlayerScore](docs/PlayerScore.md)
  - [UltraStarWingman.PlayersModel](docs/PlayersModel.md)
  - [UltraStarWingman.RegisteredPlayerModel](docs/RegisteredPlayerModel.md)
  - [UltraStarWingman.RegisteredPlayerPatchModel](docs/RegisteredPlayerPatchModel.md)
@@ -207,11 +202,13 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.RegisteredPlayersModel](docs/RegisteredPlayersModel.md)
  - [UltraStarWingman.RegisteredPlayersPatchModel](docs/RegisteredPlayersPatchModel.md)
  - [UltraStarWingman.Score](docs/Score.md)
+ - [UltraStarWingman.ScoreWithSong](docs/ScoreWithSong.md)
  - [UltraStarWingman.ScoresModel](docs/ScoresModel.md)
  - [UltraStarWingman.SessionModel](docs/SessionModel.md)
  - [UltraStarWingman.SessionsListModel](docs/SessionsListModel.md)
  - [UltraStarWingman.SingModel](docs/SingModel.md)
  - [UltraStarWingman.Song](docs/Song.md)
+ - [UltraStarWingman.SongScoresModel](docs/SongScoresModel.md)
  - [UltraStarWingman.SongsResponse](docs/SongsResponse.md)
  - [UltraStarWingman.USDBSong](docs/USDBSong.md)
  - [UltraStarWingman.USDBSongsResponse](docs/USDBSongsResponse.md)

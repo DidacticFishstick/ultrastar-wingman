@@ -17,6 +17,7 @@ import BasicResponse from '../model/BasicResponse';
 import HTTPValidationError from '../model/HTTPValidationError';
 import SingModel from '../model/SingModel';
 import Song from '../model/Song';
+import SongScoresModel from '../model/SongScoresModel';
 import SongsResponse from '../model/SongsResponse';
 
 /**
@@ -117,6 +118,48 @@ export default class SongsApi {
       let returnType = Song;
       return this.apiClient.callApi(
         '/api/songs/{song_id}', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiGetSongByIdApiSongsSongIdScoresGet operation.
+     * @callback module:api/SongsApi~apiGetSongByIdApiSongsSongIdScoresGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SongScoresModel} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * All the scores for a given song (matched by USDX Id, so the scores might belong to different files).
+     * @param {Object} songId 
+     * @param {module:api/SongsApi~apiGetSongByIdApiSongsSongIdScoresGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SongScoresModel}
+     */
+    apiGetSongByIdApiSongsSongIdScoresGet(songId, callback) {
+      let postBody = null;
+      // verify the required parameter 'songId' is set
+      if (songId === undefined || songId === null) {
+        throw new Error("Missing the required parameter 'songId' when calling apiGetSongByIdApiSongsSongIdScoresGet");
+      }
+
+      let pathParams = {
+        'song_id': songId
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = SongScoresModel;
+      return this.apiClient.callApi(
+        '/api/songs/{song_id}/scores', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

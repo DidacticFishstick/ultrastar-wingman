@@ -5,6 +5,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **song** | [**Song**](Song.md) |  | 
-**scores** | [**[PlayerScore]**](PlayerScore.md) | List of scores. | [optional] 
+**newScores** | [**[Score]**](Score.md) | The scores of the latest singing. | [optional] 
+**allScores** | [**[Score]**](Score.md) | All scores for the song. | [optional] 
 
 

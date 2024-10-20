@@ -24,11 +24,12 @@ const HostUI = () => {
                 />
             }
         </div>
-        {lastScore.song && lastScore.scores &&
+        {lastScore.song && lastScore.new_scores &&
             <div className={"latest-scores"}>
                 <SongScore
                     song={lastScore.song}
-                    scores={lastScore.scores}
+                    scores={lastScore.new_scores}
+                    allScores={lastScore.all_scores}
                 />
             </div>
         }

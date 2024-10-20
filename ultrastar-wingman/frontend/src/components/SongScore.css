@@ -23,6 +23,28 @@
     color: var(--color-dark);
 }
 
+.song-score .stats {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 1em;
+    color: var(--color-dark);
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 1rem;
+}
+
+.song-score .stats span {
+    margin-left: 4px;
+}
+
+.song-score .stats svg {
+    color: var(--highlight-blue-light);
+    padding-right: 1px;
+    transform: translateY(2px);
+}
+
 .song-score .cover,
 .song-score .cover span {
     display: block;
@@ -36,7 +58,7 @@
 }
 
 .song-score .player-scores {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 .song-score .player-scores > div {
@@ -45,7 +67,7 @@
     width: 100%;
     height: 50px;
     gap: 1em;
-    margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 .song-score .player-score {
@@ -92,12 +114,47 @@
     transition: width 2s;
 }
 
+.song-score .stat-markers {
+    margin-bottom: 0 !important;
+}
+
+.song-score .stat-markers > div {
+    position: relative;
+}
+
+.song-score .stat-markers .marker {
+    display: block;
+    position: absolute;
+    bottom: 0;
+    /*height: 100%;*/
+    width: 0;
+}
+
+.song-score .stat-markers .marker svg {
+    color: var(--highlight-blue-light);
+    transform: translateX(-50%);
+    display: block;
+}
+
+.song-score .stat-markers .marker::after {
+    content: "";
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 0.4em solid transparent;
+    border-right: 0.4em solid transparent;
+    border-top: 0.6em solid var(--highlight-blue-light);
+    transform: translateX(-50%);
+    margin: 0.5em auto;
+}
+
 .song-score .player-score label {
     font-size: 1em;
     position: relative;
 }
 
 .song-score .player-score .name {
+    display: block;
     color: var(--color);
     font-weight: bold;
     overflow: hidden;
@@ -105,6 +162,28 @@
     white-space: nowrap;
 }
 
+.song-score .player-score .score-label {
+    display: block;
+    color: var(--highlight-blue-light);
+    font-weight: bold;
+    font-size: .75em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .song-score .player-score .score {
     color: var(--color-dark);
+    display: block;
+    text-align: right;
+}
+
+.song-score .player-score .highscore {
+    color: var(--highlight-gold-light);
+    display: block;
+    /*position: absolute;*/
+    top: 0;
+    text-align: right;
+    font-size: .75em;
+    font-weight: bold;
 }

@@ -366,31 +366,14 @@ class Song:
                 await ws.broadcast(ws.MessageType.active_song, {})
 
                 import scores
-                if new_scores := scores.get_new_latest_scores_from_db():
-                    score_list = []
-                    for score in new_scores:
-                        player = await Player.get_by_name(score["player"])
-                        if player is not None:
-                            score_list.append({
-                                "player_id": player.id,
-                                "name": player.name,
-                                "registered": player.user is not None,
-                                "score": score["score"]
-                            })
-                        else:
-                            # Should never happen (unless some players was deleted since the song was started)
-                            score_list.append({
-                                "player_id": "",
-                                "name": score["player"],
-                                "registered": False,
-                                "score": score["score"]
-                            })
-
-                    scores.latest_score = (cls.active_song, score_list)
-                    await ws.broadcast(ws.MessageType.new_scores, {
+                if new_scores := await scores.get_new_latest_scores_from_db():
+                    data = {
                         "song": cls.active_song.to_json(),
-                        "scores": score_list
-                    })
+                        "new_scores": new_scores,
+                        "all_scores": await scores.get_song_scores(cls.active_song.title, cls.active_song.artist)
+                    }
+                    scores.latest_score = data
+                    await ws.broadcast(ws.MessageType.new_scores, data)
 
                 cls.active_song = None
 

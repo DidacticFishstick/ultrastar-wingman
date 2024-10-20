@@ -47,23 +47,14 @@ class Score {
         if (data) {
             obj = obj || new Score();
 
-            if (data.hasOwnProperty('usdx_id')) {
-                obj['usdx_id'] = ApiClient.convertToType(data['usdx_id'], 'Number');
-            }
-            if (data.hasOwnProperty('artist')) {
-                obj['artist'] = ApiClient.convertToType(data['artist'], 'String');
-            }
-            if (data.hasOwnProperty('title')) {
-                obj['title'] = ApiClient.convertToType(data['title'], 'String');
-            }
-            if (data.hasOwnProperty('song_id')) {
-                obj['song_id'] = ApiClient.convertToType(data['song_id'], 'String');
-            }
-            if (data.hasOwnProperty('difficulty')) {
-                obj['difficulty'] = ApiClient.convertToType(data['difficulty'], 'Number');
+            if (data.hasOwnProperty('player_id')) {
+                obj['player_id'] = ApiClient.convertToType(data['player_id'], 'String');
             }
             if (data.hasOwnProperty('player')) {
                 obj['player'] = ApiClient.convertToType(data['player'], 'String');
+            }
+            if (data.hasOwnProperty('registered')) {
+                obj['registered'] = ApiClient.convertToType(data['registered'], 'Boolean');
             }
             if (data.hasOwnProperty('score')) {
                 obj['score'] = ApiClient.convertToType(data['score'], 'Number');
@@ -82,16 +73,8 @@ class Score {
      */
     static validateJSON(data) {
         // ensure the json data is a string
-        if (data['artist'] && !(typeof data['artist'] === 'string' || data['artist'] instanceof String)) {
-            throw new Error("Expected the field `artist` to be a primitive type in the JSON string but got " + data['artist']);
-        }
-        // ensure the json data is a string
-        if (data['title'] && !(typeof data['title'] === 'string' || data['title'] instanceof String)) {
-            throw new Error("Expected the field `title` to be a primitive type in the JSON string but got " + data['title']);
-        }
-        // ensure the json data is a string
-        if (data['song_id'] && !(typeof data['song_id'] === 'string' || data['song_id'] instanceof String)) {
-            throw new Error("Expected the field `song_id` to be a primitive type in the JSON string but got " + data['song_id']);
+        if (data['player_id'] && !(typeof data['player_id'] === 'string' || data['player_id'] instanceof String)) {
+            throw new Error("Expected the field `player_id` to be a primitive type in the JSON string but got " + data['player_id']);
         }
         // ensure the json data is a string
         if (data['player'] && !(typeof data['player'] === 'string' || data['player'] instanceof String)) {
@@ -107,40 +90,22 @@ class Score {
 
 
 /**
- * The id internally used by UltraStar Deluxe
- * @member {Number} usdx_id
+ * The player id.
+ * @member {String} player_id
  */
-Score.prototype['usdx_id'] = undefined;
-
-/**
- * The artist of the song.
- * @member {String} artist
- */
-Score.prototype['artist'] = undefined;
-
-/**
- * The title of the song.
- * @member {String} title
- */
-Score.prototype['title'] = undefined;
-
-/**
- * The id of the song (must not be the correct one as it has to be matched by title and artist :/).
- * @member {String} song_id
- */
-Score.prototype['song_id'] = undefined;
-
-/**
- * The difficulty of the song.
- * @member {Number} difficulty
- */
-Score.prototype['difficulty'] = undefined;
+Score.prototype['player_id'] = undefined;
 
 /**
  * The player name.
  * @member {String} player
  */
 Score.prototype['player'] = undefined;
+
+/**
+ * If the player is registered.
+ * @member {Boolean} registered
+ */
+Score.prototype['registered'] = undefined;
 
 /**
  * The score of the performance.

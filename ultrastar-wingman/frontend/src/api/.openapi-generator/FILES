@@ -11,7 +11,6 @@ docs/BodyResetForgotPasswordAuthForgotPasswordPost.md
 docs/BodyResetResetPasswordAuthResetPasswordPost.md
 docs/BodyVerifyRequestTokenAuthRequestVerifyTokenPost.md
 docs/BodyVerifyVerifyAuthVerifyPost.md
-docs/DefaultApi.md
 docs/ErrorModel.md
 docs/HTTPValidationError.md
 docs/LatestScore.md
@@ -25,7 +24,6 @@ docs/PermissionsPatchModel.md
 docs/PermissionsPatchResponseModel.md
 docs/PlayerConfig.md
 docs/PlayerCreation.md
-docs/PlayerScore.md
 docs/PlayersApi.md
 docs/PlayersModel.md
 docs/RegisteredPlayerModel.md
@@ -34,12 +32,14 @@ docs/RegisteredPlayerWithIdPatchModel.md
 docs/RegisteredPlayersModel.md
 docs/RegisteredPlayersPatchModel.md
 docs/Score.md
+docs/ScoreWithSong.md
 docs/ScoresApi.md
 docs/ScoresModel.md
 docs/SessionModel.md
 docs/SessionsListModel.md
 docs/SingModel.md
 docs/Song.md
+docs/SongScoresModel.md
 docs/SongsApi.md
 docs/SongsResponse.md
 docs/USDBApi.md
@@ -65,7 +65,6 @@ mocha.opts
 package.json
 src/ApiClient.js
 src/api/AuthApi.js
-src/api/DefaultApi.js
 src/api/PermissionsApi.js
 src/api/PlayersApi.js
 src/api/ScoresApi.js
@@ -96,7 +95,6 @@ src/model/PermissionsPatchModel.js
 src/model/PermissionsPatchResponseModel.js
 src/model/PlayerConfig.js
 src/model/PlayerCreation.js
-src/model/PlayerScore.js
 src/model/PlayersModel.js
 src/model/RegisteredPlayerModel.js
 src/model/RegisteredPlayerPatchModel.js
@@ -104,11 +102,13 @@ src/model/RegisteredPlayerWithIdPatchModel.js
 src/model/RegisteredPlayersModel.js
 src/model/RegisteredPlayersPatchModel.js
 src/model/Score.js
+src/model/ScoreWithSong.js
 src/model/ScoresModel.js
 src/model/SessionModel.js
 src/model/SessionsListModel.js
 src/model/SingModel.js
 src/model/Song.js
+src/model/SongScoresModel.js
 src/model/SongsResponse.js
 src/model/USDBSong.js
 src/model/USDBSongsResponse.js

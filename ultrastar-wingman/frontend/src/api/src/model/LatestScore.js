@@ -12,7 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
-import PlayerScore from './PlayerScore';
+import Score from './Score';
 import Song from './Song';
 
 /**
@@ -54,8 +54,11 @@ class LatestScore {
             if (data.hasOwnProperty('song')) {
                 obj['song'] = Song.constructFromObject(data['song']);
             }
-            if (data.hasOwnProperty('scores')) {
-                obj['scores'] = ApiClient.convertToType(data['scores'], [PlayerScore]);
+            if (data.hasOwnProperty('new_scores')) {
+                obj['new_scores'] = ApiClient.convertToType(data['new_scores'], [Score]);
+            }
+            if (data.hasOwnProperty('all_scores')) {
+                obj['all_scores'] = ApiClient.convertToType(data['all_scores'], [Score]);
             }
         }
         return obj;
@@ -77,14 +80,24 @@ class LatestScore {
         if (data['song']) { // data not null
           Song.validateJSON(data['song']);
         }
-        if (data['scores']) { // data not null
+        if (data['new_scores']) { // data not null
             // ensure the json data is an array
-            if (!Array.isArray(data['scores'])) {
-                throw new Error("Expected the field `scores` to be an array in the JSON data but got " + data['scores']);
+            if (!Array.isArray(data['new_scores'])) {
+                throw new Error("Expected the field `new_scores` to be an array in the JSON data but got " + data['new_scores']);
             }
-            // validate the optional field `scores` (array)
-            for (const item of data['scores']) {
-                PlayerScore.validateJSON(item);
+            // validate the optional field `new_scores` (array)
+            for (const item of data['new_scores']) {
+                Score.validateJSON(item);
+            };
+        }
+        if (data['all_scores']) { // data not null
+            // ensure the json data is an array
+            if (!Array.isArray(data['all_scores'])) {
+                throw new Error("Expected the field `all_scores` to be an array in the JSON data but got " + data['all_scores']);
+            }
+            // validate the optional field `all_scores` (array)
+            for (const item of data['all_scores']) {
+                Score.validateJSON(item);
             };
         }
 
@@ -102,10 +115,16 @@ LatestScore.RequiredProperties = ["song"];
 LatestScore.prototype['song'] = undefined;
 
 /**
- * List of scores.
- * @member {Array.<module:model/PlayerScore>} scores
+ * The scores of the latest singing.
+ * @member {Array.<module:model/Score>} new_scores
  */
-LatestScore.prototype['scores'] = undefined;
+LatestScore.prototype['new_scores'] = undefined;
+
+/**
+ * All scores for the song.
+ * @member {Array.<module:model/Score>} all_scores
+ */
+LatestScore.prototype['all_scores'] = undefined;
 
 
 

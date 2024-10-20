@@ -6,6 +6,7 @@ Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**apiCoverApiSongsSongIdCoverGet**](SongsApi.md#apiCoverApiSongsSongIdCoverGet) | **GET** /api/songs/{song_id}/cover | Api Cover
 [**apiGetSongByIdApiSongsSongIdGet**](SongsApi.md#apiGetSongByIdApiSongsSongIdGet) | **GET** /api/songs/{song_id} | Retrieve the song with the given id. Use id &#39;random&#39; for a random song or &#39;current&#39; for the currently playing song.
+[**apiGetSongByIdApiSongsSongIdScoresGet**](SongsApi.md#apiGetSongByIdApiSongsSongIdScoresGet) | **GET** /api/songs/{song_id}/scores | All the scores for a given song (matched by USDX Id, so the scores might belong to different files).
 [**apiMp3ApiSongsSongIdMp3Get**](SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 [**apiSingSongApiSongsSongIdSingPost**](SongsApi.md#apiSingSongApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 [**apiSongsApiSongsGet**](SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
@@ -95,6 +96,53 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**Song**](Song.md)
+
+### Authorization
+
+[OAuth2PasswordBearer](../README.md#OAuth2PasswordBearer)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## apiGetSongByIdApiSongsSongIdScoresGet
+
+> SongScoresModel apiGetSongByIdApiSongsSongIdScoresGet(songId)
+
+All the scores for a given song (matched by USDX Id, so the scores might belong to different files).
+
+### Example
+
+```javascript
+import UltraStarWingman from 'ultra_star_wingman';
+let defaultClient = UltraStarWingman.ApiClient.instance;
+// Configure OAuth2 access token for authorization: OAuth2PasswordBearer
+let OAuth2PasswordBearer = defaultClient.authentications['OAuth2PasswordBearer'];
+OAuth2PasswordBearer.accessToken = 'YOUR ACCESS TOKEN';
+
+let apiInstance = new UltraStarWingman.SongsApi();
+let songId = null; // Object | 
+apiInstance.apiGetSongByIdApiSongsSongIdScoresGet(songId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **songId** | [**Object**](.md)|  | 
+
+### Return type
+
+[**SongScoresModel**](SongScoresModel.md)
 
 ### Authorization
 

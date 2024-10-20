@@ -47,7 +47,7 @@ export default class ScoresApi {
 
     /**
      * Get latest scores and the song they belong to
-     * Gets the latest scores and the song they belong to.
+     * Gets the latest scores and the song they belong to as well as all songs for the song
      * @param {module:api/ScoresApi~apiLatestScoresGetApiLatestScoresGetCallback} callback The callback function, accepting three arguments: error, data, response
      * data is of type: {@link module:model/LatestScore}
      */

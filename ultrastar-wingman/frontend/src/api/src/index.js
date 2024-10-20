@@ -33,7 +33,6 @@ import PermissionsPatchModel from './model/PermissionsPatchModel';
 import PermissionsPatchResponseModel from './model/PermissionsPatchResponseModel';
 import PlayerConfig from './model/PlayerConfig';
 import PlayerCreation from './model/PlayerCreation';
-import PlayerScore from './model/PlayerScore';
 import PlayersModel from './model/PlayersModel';
 import RegisteredPlayerModel from './model/RegisteredPlayerModel';
 import RegisteredPlayerPatchModel from './model/RegisteredPlayerPatchModel';
@@ -41,11 +40,13 @@ import RegisteredPlayerWithIdPatchModel from './model/RegisteredPlayerWithIdPatc
 import RegisteredPlayersModel from './model/RegisteredPlayersModel';
 import RegisteredPlayersPatchModel from './model/RegisteredPlayersPatchModel';
 import Score from './model/Score';
+import ScoreWithSong from './model/ScoreWithSong';
 import ScoresModel from './model/ScoresModel';
 import SessionModel from './model/SessionModel';
 import SessionsListModel from './model/SessionsListModel';
 import SingModel from './model/SingModel';
 import Song from './model/Song';
+import SongScoresModel from './model/SongScoresModel';
 import SongsResponse from './model/SongsResponse';
 import USDBSong from './model/USDBSong';
 import USDBSongsResponse from './model/USDBSongsResponse';
@@ -61,7 +62,6 @@ import ValidationError from './model/ValidationError';
 import WishModel from './model/WishModel';
 import WishlistModel from './model/WishlistModel';
 import AuthApi from './api/AuthApi';
-import DefaultApi from './api/DefaultApi';
 import PermissionsApi from './api/PermissionsApi';
 import PlayersApi from './api/PlayersApi';
 import ScoresApi from './api/ScoresApi';
@@ -232,12 +232,6 @@ export {
     PlayerCreation,
 
     /**
-     * The PlayerScore model constructor.
-     * @property {module:model/PlayerScore}
-     */
-    PlayerScore,
-
-    /**
      * The PlayersModel model constructor.
      * @property {module:model/PlayersModel}
      */
@@ -280,6 +274,12 @@ export {
     Score,
 
     /**
+     * The ScoreWithSong model constructor.
+     * @property {module:model/ScoreWithSong}
+     */
+    ScoreWithSong,
+
+    /**
      * The ScoresModel model constructor.
      * @property {module:model/ScoresModel}
      */
@@ -308,6 +308,12 @@ export {
      * @property {module:model/Song}
      */
     Song,
+
+    /**
+     * The SongScoresModel model constructor.
+     * @property {module:model/SongScoresModel}
+     */
+    SongScoresModel,
 
     /**
      * The SongsResponse model constructor.
@@ -398,12 +404,6 @@ export {
     * @property {module:api/AuthApi}
     */
     AuthApi,
-
-    /**
-    * The DefaultApi service constructor.
-    * @property {module:api/DefaultApi}
-    */
-    DefaultApi,
 
     /**
     * The PermissionsApi service constructor.

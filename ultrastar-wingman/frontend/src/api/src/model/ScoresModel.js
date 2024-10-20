@@ -12,7 +12,7 @@
  */
 
 import ApiClient from '../ApiClient';
-import Score from './Score';
+import ScoreWithSong from './ScoreWithSong';
 import SessionModel from './SessionModel';
 
 /**
@@ -53,7 +53,7 @@ class ScoresModel {
                 obj['session'] = ApiClient.convertToType(data['session'], SessionModel);
             }
             if (data.hasOwnProperty('scores')) {
-                obj['scores'] = ApiClient.convertToType(data['scores'], [Score]);
+                obj['scores'] = ApiClient.convertToType(data['scores'], [ScoreWithSong]);
             }
         }
         return obj;
@@ -76,7 +76,7 @@ class ScoresModel {
             }
             // validate the optional field `scores` (array)
             for (const item of data['scores']) {
-                Score.validateJSON(item);
+                ScoreWithSong.validateJSON(item);
             };
         }
 
@@ -96,7 +96,7 @@ ScoresModel.prototype['session'] = undefined;
 
 /**
  * List of scores.
- * @member {Array.<module:model/Score>} scores
+ * @member {Array.<module:model/ScoreWithSong>} scores
  */
 ScoresModel.prototype['scores'] = undefined;
 

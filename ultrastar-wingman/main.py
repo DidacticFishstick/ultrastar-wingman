@@ -250,6 +250,18 @@ async def api_get_song_by_id(song_id, _: User = Depends(permissions.user_permiss
     return song.to_json()
 
 
+@app.get('/api/songs/{song_id}/scores', response_model=models.SongScoresModel, summary="All the scores for a given song (matched by USDX Id, so the scores might belong to different files).", response_description="The scores", tags=["Songs"])
+async def api_get_song_by_id(song_id, _: User = Depends(permissions.user_permissions(permissions.songs_browse))):
+    song = Song.get_song_by_id(song_id)
+
+    if song is None:
+        raise HTTPException(status_code=404, detail="Song not found")
+
+    return {
+        "scores": await scores.get_song_scores(song.title, song.artist)
+    }
+
+
 @app.get('/api/songs/{song_id}/cover', tags=["Songs"])
 async def api_cover(song_id, _: User = Depends(permissions.user_permissions(permissions.songs_browse))):
     song = Song.get_song_by_id(song_id)
@@ -527,8 +539,9 @@ async def api_scores_get(session_id: int = None, _: User = Depends(permissions.u
     """
 
     # TODO: check if the player is allowed to see more than the current session
+    # TODO: option for all sessions
 
-    data = scores.get_session_data(session_id)
+    data = await scores.get_session_data(session_id)
 
     if data is None:
         raise HTTPException(status_code=404, detail="Session does not exist")
@@ -539,18 +552,15 @@ async def api_scores_get(session_id: int = None, _: User = Depends(permissions.u
 @app.get('/api/latest_scores', response_model=models.LatestScore, status_code=status.HTTP_200_OK, summary="Get latest scores and the song they belong to", response_description="The song and the scores", tags=["Scores"])
 async def api_latest_scores_get():
     """
-    Gets the latest scores and the song they belong to.
+    Gets the latest scores and the song they belong to as well as all songs for the song
     """
 
-    song, song_scores = scores.latest_score
+    data = scores.latest_score
 
-    if song is None or song_scores is None:
+    if data is None:
         raise HTTPException(status_code=404, detail="No scores yet")
 
-    return {
-        "song": song.to_json(),
-        "scores": song_scores
-    }
+    return data
 
 
 @app.get('/api/wishlist/client', response_model=models.WishlistModel, status_code=status.HTTP_200_OK, summary="Get the clients wishlist", response_description="The songs on the wishlist", tags=["Wishlist"])
@@ -648,11 +658,11 @@ async def host_ui():
 
 # Everything is in the index.html but the URL changes as this is a single page application.
 # fastAPI does not like this -> custom routes
-@app.get("/songs")
-@app.get("/UsdbList")
-@app.get("/usdb")
-@app.get("/scores")
-@app.get("/user")
+@app.get("/songs", include_in_schema=False)
+@app.get("/UsdbList", include_in_schema=False)
+@app.get("/usdb", include_in_schema=False)
+@app.get("/scores", include_in_schema=False)
+@app.get("/user", include_in_schema=False)
 async def alias_routes():
     return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/build", "index.html"))
 

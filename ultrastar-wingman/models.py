@@ -1,3 +1,4 @@
+from optparse import Option
 from typing import List, Optional, Dict
 
 from pydantic import BaseModel, Field
@@ -131,14 +132,18 @@ class PermissionsPatchResponseModel(BaseModel):
 
 
 class Score(BaseModel):
+    player_id: Optional[str] = Field(None, description="The player id.")
+    player: str = Field(None, description="The player name.")
+    registered: bool = Field(None, description="If the player is registered.")
+    score: int = Field(None, description="The score of the performance.")
+    date: int = Field(None, description="The date of the performance.")
+
+
+class ScoreWithSong(Score):
     usdx_id: int = Field(None, description="The id internally used by UltraStar Deluxe")
     artist: str = Field(None, description="The artist of the song.")
     title: str = Field(None, description="The title of the song.")
     song_id: str = Field(None, description="The id of the song (must not be the correct one as it has to be matched by title and artist :/).")
-    difficulty: int = Field(None, description="The difficulty of the song.")
-    player: str = Field(None, description="The player name.")
-    score: int = Field(None, description="The score of the performance.")
-    date: int = Field(None, description="The date of the performance.")
 
 
 class SessionModel(BaseModel):
@@ -153,18 +158,17 @@ class SessionsListModel(BaseModel):
 
 class ScoresModel(BaseModel):
     session: SessionModel = Field(None, description="The session this data is for.")
+    scores: List[ScoreWithSong] = Field(None, description="List of scores.")
+
+
+class SongScoresModel(BaseModel):
     scores: List[Score] = Field(None, description="List of scores.")
 
 
-class PlayerScore(BaseModel):
-    player_id: str = Field(None, description="The id for the player.")
-    name: str = Field(None, description="The name of the player.")
-    registered: bool = Field(None, description="Whether the player is registered.")
-    score: int = Field(None, description="The score of the player.")
-
 class LatestScore(BaseModel):
     song: Song
-    scores: List[PlayerScore] = Field(None, description="List of scores.")
+    new_scores: List[Score] = Field(None, description="The scores of the latest singing.")
+    all_scores: List[Score] = Field(None, description="All scores for the song.")
 
 
 class SingModel(BaseModel):
