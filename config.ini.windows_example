@@ -15,3 +15,7 @@ client_url = http://192.168.178.42:8080
 [OTHER]
 youtube_dl = executables/yt-dlp.exe
 ffmpeg = executables/ffmpeg.exe
+
+[SPOTIFY]
+client_id = <create one here: https://developer.spotify.com/dashboard>
+client_secret = <create one here: https://developer.spotify.com/dashboard>

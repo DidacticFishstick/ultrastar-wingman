@@ -1,7 +1,8 @@
 import {useEffect, useState} from 'react';
-import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, ScoresApi, SongsApi, UltraStarDeluxeApi, UltraStarWingmanApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
+import {AuthApi, PermissionsApi, PlayerCreation, PlayersApi, ScoresApi, SongsApi, SpotifyApi, UltraStarDeluxeApi, UltraStarWingmanApi, USDBApi, UserCreate, UsersApi, WishlistApi} from "./api/src";
 import WebSocketService from "./websocketService";
 import ApiClient from "./api/src/ApiClient";
+import SpotifyAuthorize from "./api/src/model/SpotifyAuthorize";
 
 const ultraStarWingmanApi = new UltraStarWingmanApi();
 const wishlistApi = new WishlistApi();
@@ -13,6 +14,7 @@ const playersApi = new PlayersApi();
 const authApi = new AuthApi();
 const usersApi = new UsersApi();
 const permissionsApi = new PermissionsApi()
+const spotifyApi = new SpotifyApi()
 
 // set previously saved access token
 if (localStorage.getItem('access_token')) {
@@ -428,6 +430,26 @@ export function usePermissions() {
     return [permissions, setPermissions];
 }
 
+export function useSpotifyMe() {
+    const [spotifyMe, setSpotifyMe] = useState(null);
+
+    useEffect(() => {
+        spotifyApi.apiSpotifyMeApiSpotifyMeGet((error, data, response) => {
+            if (error) {
+                if (response.status === 403) {
+                    setSpotifyMe({});
+                } else {
+                    displayApiError(error, data, response);
+                }
+            } else {
+                setSpotifyMe(data);
+            }
+        });
+    }, []);
+
+    return [spotifyMe, setSpotifyMe];
+}
+
 // endregion
 // region auth
 
@@ -542,4 +564,21 @@ export function uploadAvatar(player, file, callback) {
 
 export function patchPermissions(permissions, callback) {
     permissionsApi.apiPermissionsPatchApiPermissionsPatch({permissions: permissions}, apiCallback(callback));
+}
+
+export function spotifyAuthorizeRedirect() {
+    // redirects to the spotify authorize url
+    spotifyApi.apiSpotifyAuthorizeApiSpotifyAuthorizeUrlGet(apiCallback(data => {
+        window.location.href = data.authorize_url;
+    }));
+}
+
+export function spotifyAuthorize(code, callback) {
+    // sends authorization code to backend
+    spotifyApi.apiSpotifyAuthorizeApiSpotifyAuthorizePost(new SpotifyAuthorize(code), apiCallback(callback));
+}
+
+export function spotifyLogout(callback) {
+    // logs out from Spotify
+    spotifyApi.apiSpotifyLogoutApiSpotifyLogoutPost(apiCallback(callback));
 }

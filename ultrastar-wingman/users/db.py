@@ -6,6 +6,8 @@ from sqlalchemy import Integer
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from spotify import SpotifyClient
+
 DATABASE_URL = "sqlite+aiosqlite:///./wingman.db"
 
 

@@ -6,7 +6,8 @@ import LoginForm from "./LoginForm";
 import {logout, uploadAvatar, usePermissions, useUser} from "../helpers";
 import Button from "./Button";
 import Permissions from "./Permissions";
-import Modal from "./Modal"; // Importing the CSS for styling
+import Modal from "./Modal";
+import SpotifyAccount from "./SpotifyAccount"; // Importing the CSS for styling
 
 const User = () => {
     const [user, setUser] = useUser();
@@ -65,6 +66,8 @@ const User = () => {
         </div>
 
         <Button onClick={() => setEditPermissionsOpen(true)}>Edit Permissions</Button>
+
+        <SpotifyAccount/>
 
         {editPermissionsOpen && user.access_level >= permissions.permissions["permissions.edit"].min_access_level &&
             <Modal

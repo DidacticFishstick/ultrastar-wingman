@@ -1,0 +1,38 @@
+/* components/SpotifyAccount.css */
+
+.spotify-account {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.5em;
+    align-items: center;
+    background: var(--input-bg);
+    padding: 0.5em;
+    border-radius: 1em;
+    border: 1px solid var(--input-border-color);
+    margin: 8px 16px;
+    cursor: pointer;
+}
+
+.spotify-account .logo {
+    display: block;
+    height: 2em;
+    width: 2em;
+    background-image: url("../../public/spotify.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.spotify-account label {
+    color: var(--color);
+    font-size: 1.2em;
+}
+
+.spotify-account label.name {
+    font-weight: bold;
+}
+
+.spotify-account svg {
+    color: var(--color-darker);
+    font-size: 2em;
+}

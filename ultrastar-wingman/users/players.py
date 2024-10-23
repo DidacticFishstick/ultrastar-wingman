@@ -11,6 +11,7 @@ from sqlalchemy import select, update
 from .db import User as UserModel, async_session_maker
 from .users import User
 from .permissions import AccessLevel
+from spotify import SpotifyClient
 
 possible_photo_extensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'heic']
 
@@ -200,6 +201,9 @@ class Player:
         else:
             self._id = str(self.user.id)
 
+        # save the token from this somewhere?
+        self._spotify_client = SpotifyClient()
+
     def __str__(self) -> str:
         return self._name
 
@@ -217,6 +221,17 @@ class Player:
     @property
     def user(self) -> Optional[User]:
         return self._user
+
+    @property
+    def spotify_client(self) -> SpotifyClient:
+        """
+        The spotify client
+        Only usable for registered players
+
+        :return: The spotify client
+        """
+
+        return self._spotify_client
 
     def set_user(self, user: User):
         """

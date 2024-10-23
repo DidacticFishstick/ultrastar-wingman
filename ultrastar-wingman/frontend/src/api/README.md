@@ -157,6 +157,10 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.SongsApi* | [**apiMp3ApiSongsSongIdMp3Get**](docs/SongsApi.md#apiMp3ApiSongsSongIdMp3Get) | **GET** /api/songs/{song_id}/mp3 | Api Mp3
 *UltraStarWingman.SongsApi* | [**apiSingSongApiSongsSongIdSingPost**](docs/SongsApi.md#apiSingSongApiSongsSongIdSingPost) | **POST** /api/songs/{song_id}/sing | Starts UltraStar Deluxe and loads the song
 *UltraStarWingman.SongsApi* | [**apiSongsApiSongsGet**](docs/SongsApi.md#apiSongsApiSongsGet) | **GET** /api/songs | Retrieve all downloaded songs
+*UltraStarWingman.SpotifyApi* | [**apiSpotifyAuthorizeApiSpotifyAuthorizePost**](docs/SpotifyApi.md#apiSpotifyAuthorizeApiSpotifyAuthorizePost) | **POST** /api/spotify/authorize | Sets the code for Spotify to get the token
+*UltraStarWingman.SpotifyApi* | [**apiSpotifyAuthorizeApiSpotifyAuthorizeUrlGet**](docs/SpotifyApi.md#apiSpotifyAuthorizeApiSpotifyAuthorizeUrlGet) | **GET** /api/spotify/authorize_url | Gets the url to access for the authorization code
+*UltraStarWingman.SpotifyApi* | [**apiSpotifyLogoutApiSpotifyLogoutPost**](docs/SpotifyApi.md#apiSpotifyLogoutApiSpotifyLogoutPost) | **POST** /api/spotify/logout | Logs out from Spotify, nothing happens if not logged in
+*UltraStarWingman.SpotifyApi* | [**apiSpotifyMeApiSpotifyMeGet**](docs/SpotifyApi.md#apiSpotifyMeApiSpotifyMeGet) | **GET** /api/spotify/me | Information about the connected account
 *UltraStarWingman.USDBApi* | [**apiUsdbDownloadApiUsdbDownloadPost**](docs/USDBApi.md#apiUsdbDownloadApiUsdbDownloadPost) | **POST** /api/usdb/download | Downloads the song with the given USDB ID
 *UltraStarWingman.USDBApi* | [**apiUsdbIdsApiUsdbIdsGet**](docs/USDBApi.md#apiUsdbIdsApiUsdbIdsGet) | **GET** /api/usdb/ids | Gets the list of all downloaded USDB IDs
 *UltraStarWingman.USDBApi* | [**apiUsdbSongsApiUsdbSongsGet**](docs/USDBApi.md#apiUsdbSongsApiUsdbSongsGet) | **GET** /api/usdb/songs | Search Songs
@@ -210,6 +214,9 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.Song](docs/Song.md)
  - [UltraStarWingman.SongScoresModel](docs/SongScoresModel.md)
  - [UltraStarWingman.SongsResponse](docs/SongsResponse.md)
+ - [UltraStarWingman.SpotifyAuthorize](docs/SpotifyAuthorize.md)
+ - [UltraStarWingman.SpotifyAuthorizeUrl](docs/SpotifyAuthorizeUrl.md)
+ - [UltraStarWingman.SpotifyMe](docs/SpotifyMe.md)
  - [UltraStarWingman.USDBSong](docs/USDBSong.md)
  - [UltraStarWingman.USDBSongsResponse](docs/USDBSongsResponse.md)
  - [UltraStarWingman.UdEnum](docs/UdEnum.md)

@@ -16,3 +16,4 @@ tqdm~=4.66.4
 fastapi-users[sqlalchemy]~=13.0.0
 aiosqlite~=0.20.0
 packaging~=23.2
+spotipy~=2.24.0

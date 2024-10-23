@@ -48,6 +48,9 @@ import SingModel from './model/SingModel';
 import Song from './model/Song';
 import SongScoresModel from './model/SongScoresModel';
 import SongsResponse from './model/SongsResponse';
+import SpotifyAuthorize from './model/SpotifyAuthorize';
+import SpotifyAuthorizeUrl from './model/SpotifyAuthorizeUrl';
+import SpotifyMe from './model/SpotifyMe';
 import USDBSong from './model/USDBSong';
 import USDBSongsResponse from './model/USDBSongsResponse';
 import UdEnum from './model/UdEnum';
@@ -66,6 +69,7 @@ import PermissionsApi from './api/PermissionsApi';
 import PlayersApi from './api/PlayersApi';
 import ScoresApi from './api/ScoresApi';
 import SongsApi from './api/SongsApi';
+import SpotifyApi from './api/SpotifyApi';
 import USDBApi from './api/USDBApi';
 import UltraStarDeluxeApi from './api/UltraStarDeluxeApi';
 import UltraStarWingmanApi from './api/UltraStarWingmanApi';
@@ -322,6 +326,24 @@ export {
     SongsResponse,
 
     /**
+     * The SpotifyAuthorize model constructor.
+     * @property {module:model/SpotifyAuthorize}
+     */
+    SpotifyAuthorize,
+
+    /**
+     * The SpotifyAuthorizeUrl model constructor.
+     * @property {module:model/SpotifyAuthorizeUrl}
+     */
+    SpotifyAuthorizeUrl,
+
+    /**
+     * The SpotifyMe model constructor.
+     * @property {module:model/SpotifyMe}
+     */
+    SpotifyMe,
+
+    /**
      * The USDBSong model constructor.
      * @property {module:model/USDBSong}
      */
@@ -428,6 +450,12 @@ export {
     * @property {module:api/SongsApi}
     */
     SongsApi,
+
+    /**
+    * The SpotifyApi service constructor.
+    * @property {module:api/SpotifyApi}
+    */
+    SpotifyApi,
 
     /**
     * The USDBApi service constructor.

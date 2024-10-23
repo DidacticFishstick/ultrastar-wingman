@@ -42,6 +42,10 @@ docs/Song.md
 docs/SongScoresModel.md
 docs/SongsApi.md
 docs/SongsResponse.md
+docs/SpotifyApi.md
+docs/SpotifyAuthorize.md
+docs/SpotifyAuthorizeUrl.md
+docs/SpotifyMe.md
 docs/USDBApi.md
 docs/USDBSong.md
 docs/USDBSongsResponse.md
@@ -69,6 +73,7 @@ src/api/PermissionsApi.js
 src/api/PlayersApi.js
 src/api/ScoresApi.js
 src/api/SongsApi.js
+src/api/SpotifyApi.js
 src/api/USDBApi.js
 src/api/UltraStarDeluxeApi.js
 src/api/UltraStarWingmanApi.js
@@ -110,6 +115,9 @@ src/model/SingModel.js
 src/model/Song.js
 src/model/SongScoresModel.js
 src/model/SongsResponse.js
+src/model/SpotifyAuthorize.js
+src/model/SpotifyAuthorizeUrl.js
+src/model/SpotifyMe.js
 src/model/USDBSong.js
 src/model/USDBSongsResponse.js
 src/model/UdEnum.js

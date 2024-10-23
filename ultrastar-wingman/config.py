@@ -78,6 +78,8 @@ else:
     youtube_dl = _config.get("OTHER", "youtube_dl")
     ffmpeg = _config.get("OTHER", "ffmpeg")
 
+spotify_client_id = _config.get("SPOTIFY", "client_id")
+spotify_client_secret = _config.get("SPOTIFY", "client_secret")
 
 def save_usdb_credentials(username, password):
     _config['USDB'] = {'username': username, 'password': password}

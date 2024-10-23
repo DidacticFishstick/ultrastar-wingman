@@ -11,3 +11,7 @@ base_path = C:/Program Files (x86)/UltraStar Deluxe/
 ; available colors: blue, brown, cyan, dark_blue, flame, gray, green, green_yellow, harlequin, orange, orchid, pink, rainbow, red, sky, violet, yellow
 colors = gray,dark_blue,yellow,flame
 client_url = http://192.168.178.42:8080
+
+[SPOTIFY]
+client_id = <create one here: https://developer.spotify.com/dashboard>
+client_secret = <create one here: https://developer.spotify.com/dashboard>

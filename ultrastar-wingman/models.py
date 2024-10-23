@@ -188,3 +188,15 @@ class WishlistModel(BaseModel):
 
 class AddToWishListModel(BaseModel):
     song_id: str = Field(description="The universal ID of the song.")
+
+
+class SpotifyAuthorizeUrl(BaseModel):
+    authorize_url: str = Field(description="The url to access for the authorization code.")
+
+
+class SpotifyAuthorize(BaseModel):
+    code: str = Field(description="The code from the spotify callback.")
+
+
+class SpotifyMe(BaseModel):
+    name: str = Field(description="The name of the spotify account.")

@@ -12,6 +12,8 @@ from typing import Optional, Dict
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from spotipy import SpotifyOauthError
+from starlette.responses import RedirectResponse
 
 import config
 import models
@@ -620,6 +622,82 @@ async def api_wishlist_global_get(_: User = Depends(permissions.user_permissions
     return Wishlist.get_global_wishlist()
 
 
+@app.get('/api/spotify/authorize_url', response_model=models.SpotifyAuthorizeUrl, status_code=status.HTTP_200_OK, summary="Gets the url to access for the authorization code", response_description="The authorization url", tags=["Spotify"])
+async def api_spotify_authorize(user: User = Depends(permissions.user_permissions(permissions.wishlist_view))):
+    """
+    Gets the url to access for the authorization code
+    """
+
+    print(user, type(user))
+
+    if user is None:
+        raise HTTPException(status_code=401, detail="You need to be logged in to use spotify.")
+
+    player = await Player.get_by_id(str(user.id))
+
+    print(player)
+
+    return {
+        "authorize_url": player.spotify_client.get_authorize_url()
+    }
+
+
+@app.post('/api/spotify/authorize', response_model=models.SpotifyMe, status_code=status.HTTP_200_OK, summary="Sets the code for Spotify to get the token", response_description="If the authorization was successful", tags=["Spotify"])
+async def api_spotify_authorize(authorize: models.SpotifyAuthorize, user: User = Depends(permissions.user_permissions())):
+    """
+    Sets the code for Spotify to get the token
+    """
+
+    if user is None:
+        raise HTTPException(status_code=401, detail="You need to be logged in to use spotify.")
+
+    player = await Player.get_by_id(str(user.id))
+
+    try:
+        player.spotify_client.authorize(authorize.code)
+    except SpotifyOauthError as e:
+        raise HTTPException(status_code=403, detail=f"Failed to authorize with Spotify: {e}")
+
+    return {
+        "name": player.spotify_client.client.current_user()["display_name"]
+    }
+
+
+@app.post('/api/spotify/logout', status_code=status.HTTP_204_NO_CONTENT, summary="Logs out from Spotify, nothing happens if not logged in", response_description="No response", tags=["Spotify"])
+async def api_spotify_logout(user: User = Depends(permissions.user_permissions())):
+    """
+    Logs out from Spotify, nothing happens if not logged in
+    """
+
+    if user is None:
+        return
+
+    player = await Player.get_by_id(str(user.id))
+
+    player.spotify_client.logout()
+
+    return {"success": True}
+
+
+@app.get('/api/spotify/me', response_model=models.SpotifyMe, status_code=status.HTTP_200_OK, summary="Information about the connected account", response_description="The Spotify account info", tags=["Spotify"])
+async def api_spotify_me(user: User = Depends(permissions.user_permissions())):
+    """
+    Information about the connected account
+    """
+
+    if user is None:
+        raise HTTPException(status_code=401, detail="You need to be logged in to use spotify.")
+
+    player = await Player.get_by_id(str(user.id))
+
+    if player.spotify_client.client is None:
+        raise HTTPException(status_code=403, detail=f"Not logged into Spotify")
+
+    return {
+        "name": player.spotify_client.client.current_user()["display_name"]
+    }
+
+
 @app.websocket("/ws")
 async def ws_endpoint(websocket: WebSocket):
     # TODO: somehow include in permission management
@@ -663,6 +741,7 @@ async def host_ui():
 @app.get("/usdb", include_in_schema=False)
 @app.get("/scores", include_in_schema=False)
 @app.get("/user", include_in_schema=False)
+@app.get("/spotify/callback", include_in_schema=False)
 async def alias_routes():
     return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/build", "index.html"))
 
