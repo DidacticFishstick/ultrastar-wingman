@@ -46,6 +46,10 @@ docs/SpotifyApi.md
 docs/SpotifyAuthorize.md
 docs/SpotifyAuthorizeUrl.md
 docs/SpotifyMe.md
+docs/SpotifyPlaylist.md
+docs/SpotifyPlaylistItems.md
+docs/SpotifyPlaylists.md
+docs/SpotifySong.md
 docs/USDBApi.md
 docs/USDBSong.md
 docs/USDBSongsResponse.md
@@ -118,6 +122,10 @@ src/model/SongsResponse.js
 src/model/SpotifyAuthorize.js
 src/model/SpotifyAuthorizeUrl.js
 src/model/SpotifyMe.js
+src/model/SpotifyPlaylist.js
+src/model/SpotifyPlaylistItems.js
+src/model/SpotifyPlaylists.js
+src/model/SpotifySong.js
 src/model/USDBSong.js
 src/model/USDBSongsResponse.js
 src/model/UdEnum.js
@@ -131,3 +139,7 @@ src/model/UserUpdate.js
 src/model/ValidationError.js
 src/model/WishModel.js
 src/model/WishlistModel.js
+test/model/SpotifyPlaylist.spec.js
+test/model/SpotifyPlaylistItems.spec.js
+test/model/SpotifyPlaylists.spec.js
+test/model/SpotifySong.spec.js

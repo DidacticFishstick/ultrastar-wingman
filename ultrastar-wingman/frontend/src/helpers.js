@@ -436,7 +436,7 @@ export function useSpotifyMe() {
     useEffect(() => {
         spotifyApi.apiSpotifyMeApiSpotifyMeGet((error, data, response) => {
             if (error) {
-                if (response.status === 403) {
+                if (response.status === 401 || response.status === 403) {
                     setSpotifyMe({});
                 } else {
                     displayApiError(error, data, response);
@@ -448,6 +448,26 @@ export function useSpotifyMe() {
     }, []);
 
     return [spotifyMe, setSpotifyMe];
+}
+
+export function useSpotifyPlaylists() {
+    const [spotifyPlaylists, setSpotifyPlaylists] = useState(null);
+
+    useEffect(() => {
+        spotifyApi.apiSpotifyPlaylistsApiSpotifyPlaylistsGet((error, data, response) => {
+            if (error) {
+                if (response.status === 401 || response.status === 403) {
+                    setSpotifyPlaylists([]);
+                } else {
+                    displayApiError(error, data, response);
+                }
+            } else {
+                setSpotifyPlaylists(data.playlists);
+            }
+        });
+    }, []);
+
+    return [spotifyPlaylists, setSpotifyPlaylists];
 }
 
 // endregion

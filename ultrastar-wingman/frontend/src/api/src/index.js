@@ -51,6 +51,10 @@ import SongsResponse from './model/SongsResponse';
 import SpotifyAuthorize from './model/SpotifyAuthorize';
 import SpotifyAuthorizeUrl from './model/SpotifyAuthorizeUrl';
 import SpotifyMe from './model/SpotifyMe';
+import SpotifyPlaylist from './model/SpotifyPlaylist';
+import SpotifyPlaylistItems from './model/SpotifyPlaylistItems';
+import SpotifyPlaylists from './model/SpotifyPlaylists';
+import SpotifySong from './model/SpotifySong';
 import USDBSong from './model/USDBSong';
 import USDBSongsResponse from './model/USDBSongsResponse';
 import UdEnum from './model/UdEnum';
@@ -342,6 +346,30 @@ export {
      * @property {module:model/SpotifyMe}
      */
     SpotifyMe,
+
+    /**
+     * The SpotifyPlaylist model constructor.
+     * @property {module:model/SpotifyPlaylist}
+     */
+    SpotifyPlaylist,
+
+    /**
+     * The SpotifyPlaylistItems model constructor.
+     * @property {module:model/SpotifyPlaylistItems}
+     */
+    SpotifyPlaylistItems,
+
+    /**
+     * The SpotifyPlaylists model constructor.
+     * @property {module:model/SpotifyPlaylists}
+     */
+    SpotifyPlaylists,
+
+    /**
+     * The SpotifySong model constructor.
+     * @property {module:model/SpotifySong}
+     */
+    SpotifySong,
 
     /**
      * The USDBSong model constructor.

@@ -12,6 +12,11 @@
     background-image: url("https://usdb.animux.de/images/browser_icon.ico");
 }
 
+.songs-page .download-options .tile.spotify {
+    background-size: 50%;
+    background-image: url("../../public/spotify.svg");
+}
+
 .songs-page .download-options .tile.ultra-singer {
     background-image: url("https://repository-images.githubusercontent.com/594208922/4befe3da-a448-4cbc-b6ef-93899119071b");
 }

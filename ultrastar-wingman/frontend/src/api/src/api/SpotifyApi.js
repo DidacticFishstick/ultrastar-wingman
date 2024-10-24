@@ -17,6 +17,8 @@ import HTTPValidationError from '../model/HTTPValidationError';
 import SpotifyAuthorize from '../model/SpotifyAuthorize';
 import SpotifyAuthorizeUrl from '../model/SpotifyAuthorizeUrl';
 import SpotifyMe from '../model/SpotifyMe';
+import SpotifyPlaylistItems from '../model/SpotifyPlaylistItems';
+import SpotifyPlaylists from '../model/SpotifyPlaylists';
 
 /**
 * Spotify service.
@@ -184,6 +186,92 @@ export default class SpotifyApi {
       let returnType = SpotifyMe;
       return this.apiClient.callApi(
         '/api/spotify/me', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiSpotifyPlaylistsApiSpotifyPlaylistsGet operation.
+     * @callback module:api/SpotifyApi~apiSpotifyPlaylistsApiSpotifyPlaylistsGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SpotifyPlaylists} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * All saved Spotify playlists
+     * All saved Spotify playlists
+     * @param {module:api/SpotifyApi~apiSpotifyPlaylistsApiSpotifyPlaylistsGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SpotifyPlaylists}
+     */
+    apiSpotifyPlaylistsApiSpotifyPlaylistsGet(callback) {
+      let postBody = null;
+
+      let pathParams = {
+      };
+      let queryParams = {
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = SpotifyPlaylists;
+      return this.apiClient.callApi(
+        '/api/spotify/playlists', 'GET',
+        pathParams, queryParams, headerParams, formParams, postBody,
+        authNames, contentTypes, accepts, returnType, null, callback
+      );
+    }
+
+    /**
+     * Callback function to receive the result of the apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGet operation.
+     * @callback module:api/SpotifyApi~apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGetCallback
+     * @param {String} error Error message, if any.
+     * @param {module:model/SpotifyPlaylistItems} data The data returned by the service call.
+     * @param {String} response The complete HTTP response.
+     */
+
+    /**
+     * The songs in the playlist, use /api/spotify/playlists/saved for the users saved songs
+     * The songs in the playlist  If playlist_id is saved, the users saved songs will be used
+     * @param {String} playlistId 
+     * @param {Object} opts Optional parameters
+     * @param {Number} [limit = 50)] 
+     * @param {Number} [offset = 0)] 
+     * @param {module:api/SpotifyApi~apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGetCallback} callback The callback function, accepting three arguments: error, data, response
+     * data is of type: {@link module:model/SpotifyPlaylistItems}
+     */
+    apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGet(playlistId, opts, callback) {
+      opts = opts || {};
+      let postBody = null;
+      // verify the required parameter 'playlistId' is set
+      if (playlistId === undefined || playlistId === null) {
+        throw new Error("Missing the required parameter 'playlistId' when calling apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGet");
+      }
+
+      let pathParams = {
+        'playlist_id': playlistId
+      };
+      let queryParams = {
+        'limit': opts['limit'],
+        'offset': opts['offset']
+      };
+      let headerParams = {
+      };
+      let formParams = {
+      };
+
+      let authNames = ['OAuth2PasswordBearer'];
+      let contentTypes = [];
+      let accepts = ['application/json'];
+      let returnType = SpotifyPlaylistItems;
+      return this.apiClient.callApi(
+        '/api/spotify/playlists/{playlist_id}', 'GET',
         pathParams, queryParams, headerParams, formParams, postBody,
         authNames, contentTypes, accepts, returnType, null, callback
       );

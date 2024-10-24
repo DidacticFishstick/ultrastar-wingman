@@ -200,3 +200,27 @@ class SpotifyAuthorize(BaseModel):
 
 class SpotifyMe(BaseModel):
     name: str = Field(description="The name of the spotify account.")
+
+
+class SpotifyPlaylist(BaseModel):
+    id: str = Field(description="The Spotify ID for the playlist.")
+    name: str = Field(description="The name of the playlist.")
+    image: Optional[str] = Field(description="The url for the playlist image.")
+
+
+class SpotifyPlaylists(BaseModel):
+    playlists: List[SpotifyPlaylist] = Field(description="A list of Spotify playlists.")
+
+
+class SpotifySong(BaseModel):
+    id: str = Field(description="The Spotify ID for the track.")
+    name: str = Field(description="The name of the track.")
+    image: Optional[str] = Field(description="The url for the song cover.")
+    artists: List[str] = Field(description="List of artists.")
+
+
+class SpotifyPlaylistItems(BaseModel):
+    limit: int = Field(description="The maximum number of items in the response.")
+    offset: int = Field(description="The offset of the items returned.")
+    total: int = Field(description="The total number of items available to return.")
+    songs: List[SpotifySong] = Field(description="A list of songs.")

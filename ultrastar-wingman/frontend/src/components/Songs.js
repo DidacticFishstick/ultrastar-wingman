@@ -46,11 +46,16 @@ function Songs() {
 
     return (
         <div className="songs-page">
-            <h2>Get New Songs</h2>
+            <h2>Explore New Songs</h2>
             <div className="download-options tile-container slim">
                 <NavLink to="/UsdbList">
                     <Tile className={"usdb clickable"}>
                         <label>USDB</label>
+                    </Tile>
+                </NavLink>
+                <NavLink to="/spotify">
+                    <Tile className={"spotify clickable"}>
+                        <label>Spotify</label>
                     </Tile>
                 </NavLink>
                 <NavLink to="/ultraSinger">

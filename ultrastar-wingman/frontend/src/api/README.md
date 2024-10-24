@@ -161,6 +161,8 @@ Class | Method | HTTP request | Description
 *UltraStarWingman.SpotifyApi* | [**apiSpotifyAuthorizeApiSpotifyAuthorizeUrlGet**](docs/SpotifyApi.md#apiSpotifyAuthorizeApiSpotifyAuthorizeUrlGet) | **GET** /api/spotify/authorize_url | Gets the url to access for the authorization code
 *UltraStarWingman.SpotifyApi* | [**apiSpotifyLogoutApiSpotifyLogoutPost**](docs/SpotifyApi.md#apiSpotifyLogoutApiSpotifyLogoutPost) | **POST** /api/spotify/logout | Logs out from Spotify, nothing happens if not logged in
 *UltraStarWingman.SpotifyApi* | [**apiSpotifyMeApiSpotifyMeGet**](docs/SpotifyApi.md#apiSpotifyMeApiSpotifyMeGet) | **GET** /api/spotify/me | Information about the connected account
+*UltraStarWingman.SpotifyApi* | [**apiSpotifyPlaylistsApiSpotifyPlaylistsGet**](docs/SpotifyApi.md#apiSpotifyPlaylistsApiSpotifyPlaylistsGet) | **GET** /api/spotify/playlists | All saved Spotify playlists
+*UltraStarWingman.SpotifyApi* | [**apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGet**](docs/SpotifyApi.md#apiSpotifyPlaylistsItemsApiSpotifyPlaylistsPlaylistIdGet) | **GET** /api/spotify/playlists/{playlist_id} | The songs in the playlist, use /api/spotify/playlists/saved for the users saved songs
 *UltraStarWingman.USDBApi* | [**apiUsdbDownloadApiUsdbDownloadPost**](docs/USDBApi.md#apiUsdbDownloadApiUsdbDownloadPost) | **POST** /api/usdb/download | Downloads the song with the given USDB ID
 *UltraStarWingman.USDBApi* | [**apiUsdbIdsApiUsdbIdsGet**](docs/USDBApi.md#apiUsdbIdsApiUsdbIdsGet) | **GET** /api/usdb/ids | Gets the list of all downloaded USDB IDs
 *UltraStarWingman.USDBApi* | [**apiUsdbSongsApiUsdbSongsGet**](docs/USDBApi.md#apiUsdbSongsApiUsdbSongsGet) | **GET** /api/usdb/songs | Search Songs
@@ -217,6 +219,10 @@ Class | Method | HTTP request | Description
  - [UltraStarWingman.SpotifyAuthorize](docs/SpotifyAuthorize.md)
  - [UltraStarWingman.SpotifyAuthorizeUrl](docs/SpotifyAuthorizeUrl.md)
  - [UltraStarWingman.SpotifyMe](docs/SpotifyMe.md)
+ - [UltraStarWingman.SpotifyPlaylist](docs/SpotifyPlaylist.md)
+ - [UltraStarWingman.SpotifyPlaylistItems](docs/SpotifyPlaylistItems.md)
+ - [UltraStarWingman.SpotifyPlaylists](docs/SpotifyPlaylists.md)
+ - [UltraStarWingman.SpotifySong](docs/SpotifySong.md)
  - [UltraStarWingman.USDBSong](docs/USDBSong.md)
  - [UltraStarWingman.USDBSongsResponse](docs/USDBSongsResponse.md)
  - [UltraStarWingman.UdEnum](docs/UdEnum.md)

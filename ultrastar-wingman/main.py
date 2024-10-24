@@ -5,6 +5,8 @@ import os.path
 import webbrowser
 from contextlib import asynccontextmanager
 from functools import lru_cache
+
+import spotipy
 from packaging import version
 
 import uvicorn
@@ -13,7 +15,6 @@ from fastapi import FastAPI, Request, HTTPException, Query, status, Response, We
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from spotipy import SpotifyOauthError
-from starlette.responses import RedirectResponse
 
 import config
 import models
@@ -21,6 +22,7 @@ import usdb
 import usdx
 import ws
 import scores
+import spotify
 from song import Song
 from wishlist import Wishlist
 from github import check_new_release
@@ -698,6 +700,92 @@ async def api_spotify_me(user: User = Depends(permissions.user_permissions())):
     }
 
 
+@app.get('/api/spotify/playlists', response_model=models.SpotifyPlaylists, status_code=status.HTTP_200_OK, summary="All saved Spotify playlists", response_description="All saved Spotify playlists", tags=["Spotify"])
+async def api_spotify_playlists(user: User = Depends(permissions.user_permissions())):
+    """
+    All saved Spotify playlists
+    """
+
+    if user is None:
+        raise HTTPException(status_code=401, detail="You need to be logged in to use spotify.")
+
+    player = await Player.get_by_id(str(user.id))
+
+    if (sp := player.spotify_client.client) is None:
+        raise HTTPException(status_code=403, detail=f"Not logged into Spotify")
+
+    sp: spotipy.Spotify
+
+    limit = 50
+    offset = 0
+
+    playlists = []
+
+    while True:
+        results = sp.current_user_playlists(limit=limit, offset=offset)
+        for item in results['items']:
+            playlists.append({
+                "id": item['id'],
+                "name": item['name'],
+                "image": item['images'][0].get("url") if item.get("images") else None
+            })
+
+        if results['next'] is None:
+            break
+
+        offset += limit
+
+    return {
+        "playlists": playlists
+    }
+
+
+@app.get('/api/spotify/playlists/{playlist_id}', response_model=models.SpotifyPlaylistItems, status_code=status.HTTP_200_OK, summary="The songs in the playlist, use /api/spotify/playlists/saved for the users saved songs", response_description="The songs in the playlist", tags=["Spotify"])
+async def api_spotify_playlists_items(playlist_id: str, limit: int = 50, offset: int = 0, user: User = Depends(permissions.user_permissions())):
+    """
+    The songs in the playlist
+
+    If playlist_id is saved, the users saved songs will be used
+    """
+
+    if user is None:
+        raise HTTPException(status_code=401, detail="You need to be logged in to use spotify.")
+
+    player = await Player.get_by_id(str(user.id))
+
+    if (sp := player.spotify_client.client) is None:
+        raise HTTPException(status_code=403, detail=f"Not logged into Spotify")
+
+    sp: spotipy.Spotify
+
+    songs = []
+
+    if playlist_id == "saved":
+        results = sp.current_user_saved_tracks(limit=limit, offset=offset)
+    else:
+        results = sp.playlist_items(playlist_id, limit=limit, offset=offset)
+
+    for item in results['items']:
+        if album := item['track'].get("album"):
+            image = album['images'][0].get("url") if album.get("images") else None
+        else:
+            image = item['track']['images'][0].get("url") if item['track'].get("images") else None
+
+        songs.append({
+            "id": item['track']['id'],
+            "name": item['track']['name'],
+            "image": image,
+            "artists": [a.get("name") for a in item['track']['artists']]
+        })
+
+    return {
+        "limit": results["limit"],
+        "offset": results["offset"],
+        "total": results["total"],
+        "songs": songs
+    }
+
+
 @app.websocket("/ws")
 async def ws_endpoint(websocket: WebSocket):
     # TODO: somehow include in permission management
@@ -741,6 +829,7 @@ async def host_ui():
 @app.get("/usdb", include_in_schema=False)
 @app.get("/scores", include_in_schema=False)
 @app.get("/user", include_in_schema=False)
+@app.get("/spotify", include_in_schema=False)
 @app.get("/spotify/callback", include_in_schema=False)
 async def alias_routes():
     return FileResponse(os.path.join(SCRIPT_BASE_PATH, "frontend/build", "index.html"))

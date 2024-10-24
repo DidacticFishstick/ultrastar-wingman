@@ -10,6 +10,7 @@ import './App.css';
 import User from "./components/User";
 import HostUI from "./components/HostUI";
 import SpotifyCallback from "./components/SpotifyCallback";
+import Spotify from "./components/Spotify";
 
 const defaultClient = ApiClient.instance;
 defaultClient.basePath = window.location.origin;
@@ -28,6 +29,7 @@ function Layout() {
                 <Route path="/scores" element={<Scores/>}/>
                 <Route path="/user" element={<User/>}/>
                 <Route path="/host_ui" element={<HostUI/>}/>
+                <Route path="/spotify" element={<Spotify/>}/>
                 <Route path="/spotify/callback" element={<SpotifyCallback/>}/>
             </Routes>
             {!hideBottomNavRoutes.includes(location.pathname) && <BottomNav />}
