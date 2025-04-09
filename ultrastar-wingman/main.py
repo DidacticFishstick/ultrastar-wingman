@@ -1,37 +1,34 @@
-import os
 import asyncio
 import logging
+import os
 import os.path
 import webbrowser
 from contextlib import asynccontextmanager
 from functools import lru_cache
-
-import spotipy
-from packaging import version
+from typing import Optional, Dict, List
 
 import uvicorn
-from typing import Optional, Dict, List
 from fastapi import FastAPI, Request, HTTPException, Query, status, Response, WebSocket, WebSocketDisconnect, Depends, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from packaging import version
 from spotipy import SpotifyOauthError
 
 import config
 import models
-import usdb
-import usdx
-import ws
 import scores
 import spotify
-from song import Song
-from wishlist import Wishlist
+import usdb
+import usdx
+import users.permissions as permissions
+import ws
 from github import check_new_release
-
+from song import Song
 from users.db import User, create_db_and_tables
+from users.players import Player
 from users.schemas import UserCreate, UserRead, UserUpdate
 from users.users import auth_backend, current_active_user, fastapi_users
-from users.players import Player
-import users.permissions as permissions
+from wishlist import Wishlist
 
 __version__ = "2.0.0"
 

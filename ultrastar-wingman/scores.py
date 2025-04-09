@@ -1,6 +1,6 @@
 import datetime
 import time
-from typing import List, Optional, Tuple
+from typing import List, Optional
 import sqlite3
 
 import config

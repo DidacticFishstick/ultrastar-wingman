@@ -9,7 +9,6 @@ from fastapi import HTTPException
 
 import config
 import ws
-from song import Song
 
 session = httpx.AsyncClient()
 
@@ -196,6 +195,7 @@ async def download_queue_consumer(queue: asyncio.Queue):
 
     :param queue: The queue to download songs from
     """
+    from song import Song
 
     logging.info("Starting download queue consumer")
 

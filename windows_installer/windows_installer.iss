@@ -27,8 +27,8 @@ PrivilegesRequiredOverridesAllowed=dialog
 OutputBaseFilename=UltrastarWingman_{#MyAppVersion}
 Compression=lzma
 SolidCompression=yes
-SetupIconFile=../static/icons/wingman.ico
-WizardSmallImageFile=../static/icons/wingman.bmp
+SetupIconFile=app_icon.ico
+WizardSmallImageFile=app_icon.bmp
 WizardImageFile=wizard_banner.bmp
 WizardStyle=modern
 
@@ -40,12 +40,12 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 
 [Files]
 Source: "./dist/{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "../static/icons/wingman.ico"; DestDir: "{app}\logo"; Flags: ignoreversion
+Source: "app_icon.ico"; DestDir: "{app}\logo"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo\wingman.ico"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo\wingman.ico"; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo\app_icon.ico"
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; IconFilename: "{app}\logo\app_icon.ico"; Tasks: desktopicon
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent

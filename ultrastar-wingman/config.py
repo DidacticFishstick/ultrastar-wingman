@@ -3,6 +3,7 @@ import configparser
 import os
 import shutil
 from pathlib import Path
+
 from appdirs import user_config_dir
 
 SCRIPT_BASE_PATH = os.path.abspath(os.path.dirname(__file__))

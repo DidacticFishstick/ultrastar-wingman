@@ -1,9 +1,7 @@
 import logging
 import os
-from statistics import pstdev
 from typing import Optional
 
-from spotipy import CacheFileHandler
 from spotipy.oauth2 import SpotifyOAuth, SpotifyOauthError
 
 import spotipy
